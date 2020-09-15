@@ -5,10 +5,12 @@
 #                                                     +:+ +:+         +:+      #
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/05/04 09:45:09 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/15 19:40:06 by hthomas          ###   ########.fr        #
+#    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
+#    Updated: 2020/09/15 20:30:51 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+
 
 NAME = minishell
 
@@ -68,4 +70,5 @@ re:		fclean all
 
 ###########################TEST
 test: $(NAME)
-	./$<
+	./$< scenes/test.cub
+

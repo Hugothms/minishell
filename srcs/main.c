@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/15 19:31:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/15 20:46:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 int		main(const int argc, const char *argv[])
 {
-	if (argc == 0)
+	char	*str;
+
+	if (!ft_strcmp(argv[1], "pwd"))
 	{
-		return (1);
+		str = getcwd(NULL, 0);
+		ft_putstr(str);
 	}
 	return (0);
 }
