@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugo <hugo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:29:01 by hthomas           #+#    #+#             */
-/*   Updated: 2020/03/07 11:40:47 by hugo             ###   ########.fr       */
+/*   Updated: 2020/09/16 00:54:30 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 
-int				get_next_line(int fd, char **line);
-size_t			find_pos_eol(const char *line);
-char			*ft_strjoin_special(char const *s1, char const *s2);
+int		get_next_line_custom(char **line);
 
 #endif
