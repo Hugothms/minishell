@@ -1,0 +1,12 @@
+*.DS_Store
+.vscode/*
+ressources/*
+*.txt
+*/*.o
+*.o
+*.code-workspace
+*.out*
+.fuse*
+minishell
+libft.a
+libft/libft.a
