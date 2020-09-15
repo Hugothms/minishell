@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/15 20:30:51 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/15 21:11:20 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ NAME = minishell
 --CFLAGS += -Wall -Werror -Wextra
 --LDFLAGS += -g3 -fsanitize=address
 
---SRCS =	srcs/main.c
+--SRCS =	srcs/main.c	\
+			srcs/get_next_line.c
+
+
 --OBJS = $(--SRCS:.c=.o)
 --INCL = includes/
 --HEADER = $(--INCL)minishell.h
