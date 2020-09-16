@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/16 14:34:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/16 16:18:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,26 @@ char	*pwd()
 	return(getcwd(NULL, 0));
 }
 
-int		main(const int argc, const char *argv[])
+void	command(char **input)
 {
-	char	*line;
 	char	*tmp;
 
-	// ft_putstr(WELCOME_MSG);
 	ft_putstr(tmp = pwd());
 	free(tmp);
-	get_next_line_custom(&line);
-	ft_putstr(line);
-	free(line);
+	get_next_line_custom(input);
+}
+
+int		main(const int argc, const char *argv[])
+{
+	char	*input;
+
+	// ft_putstr(WELCOME_MSG);
+	input = malloc(1);
+	while(ft_strcmp(input, "exit"))
+	{
+		free(input);
+		command(&input);
+	}
+	free(input);
 	return (0);
 }
