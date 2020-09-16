@@ -13,12 +13,12 @@
 #ifndef minishell_H
 # define minishell_H
 
+# include <unistd.h>
+# include <sys/types.h>
 # include <time.h>
-# include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>
-# include <unistd.h>
 # include "../libft/libft.h"
 # include "../ft_printf/includes/ft_printf.h"
 # include "get_next_line.h"

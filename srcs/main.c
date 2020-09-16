@@ -6,27 +6,25 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/16 00:54:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:34:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	pwd()
+char	*pwd()
 {
-	char	*pwd = getcwd(NULL, 0);
-	ft_putstr("\xF0\x9F\x98\x8D \xF0\x9F\x99\x88 \xF0\x9F\x92\x96 \xF0\x9F\x8C\x9F \xE2\x9C\x85 ");
-	ft_putstr(pwd);
-	ft_putchar(' ');
-	free(pwd);
+	return(getcwd(NULL, 0));
 }
 
 int		main(const int argc, const char *argv[])
 {
 	char	*line;
+	char	*tmp;
 
-	ft_putstr(WELCOME_MSG);
-	pwd();
+	// ft_putstr(WELCOME_MSG);
+	ft_putstr(tmp = pwd());
+	free(tmp);
 	get_next_line_custom(&line);
 	ft_putstr(line);
 	free(line);
