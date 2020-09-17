@@ -6,11 +6,19 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:29:42 by hthomas           #+#    #+#             */
-/*   Updated: 2020/01/09 12:26:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/17 14:28:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+/*
+** malloc, concatenate 2 strings and null terminatethe resulting string
+** (doesn't free s1 & s2)
+** @param s1	first string
+** @param s2	second string
+** @return		joined string
+*/
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
