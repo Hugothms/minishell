@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/17 16:56:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:36:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,20 @@ char	*exec_command(char **command)
 		return (ft_strjoin("minishell: command not found:", command[0]));
 }
 
+void	print_pwd_msg()
+{
+	char	*msg;
+
+	ft_putstr("\xE2\x9E\xA1 ");
+	msg = ft_pwd();
+	ft_putstr(msg);
+	free(msg);
+	ft_putstr(": ");
+}
+
 int		main(const int argc, const char *argv[])
 {
 	char	*input;
-	char	*tmp;
 	char	**command;
 
 	ft_putstr(WELCOME_MSG);
@@ -43,8 +53,7 @@ int		main(const int argc, const char *argv[])
 	while(1)
 	{
 		free(input);
-		ft_putstr(tmp = ft_pwd());
-		free(tmp);
+		print_pwd_msg();
 		get_next_line_custom(&input);
 		if(parse_input(input, command))
 		{
