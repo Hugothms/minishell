@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/17 17:36:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:49:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	print_pwd_msg()
 	char	*msg;
 
 	ft_putstr("\xE2\x9E\xA1 ");
-	msg = ft_pwd();
-	ft_putstr(msg);
-	free(msg);
+	pwd = ft_pwd();
+	ft_putstr(pwd);
+	free(pwd);
 	ft_putstr(": ");
 }
 
