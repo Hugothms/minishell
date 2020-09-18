@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/17 17:47:19 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/18 15:41:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ char	*ft_env(char **args);
 char	*ft_exit(char **args);
 
 //Parse
-int		parse_input(char *line, char **args);
+int		parse_input(char *line, char ***args);
 
-
+//Utils
+void	ft_putstr_clean(char *str);
 
 
 

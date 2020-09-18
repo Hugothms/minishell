@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/17 17:14:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:17:00 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ char	*ft_echo(char **args)
 	int		i;
 	char	*ret;
 
+	if (!*args)
+	{
+		ret = malloc(sizeof(char));
+		*ret = '\0';
+		return (ret);
+	}
 	i = 0;
 	if (ft_strcmp(args[i], "-n"))
 		i++;

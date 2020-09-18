@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/07/01 13:27:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:02:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,10 @@ int					ft_max_int(int a, int b);
 float				ft_max_float(float a, float b);
 int					ft_min_int(int a, int b);
 float				ft_min_float(float a, float b);
+void				ft_print_tabint(int *tab, int size);
+void				ft_print_tabstr(char **tab);
+void				ft_free_tab(char **tab);
+
+
 
 #endif

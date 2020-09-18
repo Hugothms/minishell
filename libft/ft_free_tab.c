@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_free_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/18 15:54:17 by hthomas          ###   ########.fr       */
+/*   Created: 2020/09/18 15:58:38 by hthomas           #+#    #+#             */
+/*   Updated: 2020/09/18 16:07:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int		parse_input(char *input, char ***command)
+void	ft_free_tab(char **tab)
 {
-	if (!ft_strcmp(input, "parse"))
-		return (1);
-	*command = ft_split_set(input, " \t");
-	return (0);
+	while (*tab)
+		free(*tab++);
 }
