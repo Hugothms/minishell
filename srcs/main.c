@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 19:47:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/20 20:07:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*exec_command(char **command)
 	}
 }
 
-void	print_prompt()
+void	print_prompt(void)
 {
 	char	*pwd;
 
