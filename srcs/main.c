@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 18:05:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/20 19:47:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*exec_command(char **command)
 	}
 }
 
-void	print_console_msg()
+void	print_prompt()
 {
 	char	*pwd;
 
@@ -67,7 +67,7 @@ int		main(const int argc, const char *argv[])
 	while(1)
 	{
 		free(input);
-		print_console_msg();
+		print_prompt();
 		get_next_line_custom(&input);
 		if(parse_input(input, &command))
 		{

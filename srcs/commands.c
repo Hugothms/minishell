@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 19:43:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/20 19:45:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char	*ft_unset(char **args)
 }
 
 
-// echo		with option ’-n’
+// echo	with option ’-n’ //!and $VAR
 // cd		with only a relative or absolute path
 // pwd		without any options
 //! export	without any options
