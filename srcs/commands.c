@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 18:58:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/20 19:43:26 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,11 @@ char	*ft_env(char **args)
 
 char	*ft_exit(char **args)
 {
-	if (*args)
-		exit(**args - '0');
+	if(*args)
+	{	
+		if (ft_isdigit(**args))
+			exit(**args - '0');
+	}
 	exit(0);
 	return(NULL);
 }
@@ -123,7 +126,7 @@ char	*ft_unset(char **args)
 
 
 // echo		with option ’-n’
-//! cd		with only a relative or absolute path
+// cd		with only a relative or absolute path
 // pwd		without any options
 //! export	without any options
 //! unset	without any options
