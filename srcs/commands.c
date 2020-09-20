@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 18:06:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/20 18:58:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,36 @@ char	*ft_echo(char **args)
 
 char	*ft_cd(char **args)
 {
-	return(NULL);
+	char		*ret;
+	char		*tmp;	
+	struct stat	stats;
+
+	if (!*args)
+		chdir("/");
+    if (stat(*args, &stats) != 0)
+    {
+		ret = ft_strdup("cd: no such file or directory: ");
+		tmp = ret;
+		ret = ft_strjoin(ret, *args);
+		free(tmp);
+		tmp = ret;
+		ret = ft_strjoin(ret, "\n");
+		free(tmp);
+		return(ret);
+	}
+	else
+		if(chdir(*args))
+		{
+			ret = (ft_strdup("cd: not a directory: "));
+			tmp = ret;
+			ret = ft_strjoin(ret, *args);
+			free(tmp);
+			tmp = ret;
+			ret = ft_strjoin(ret, "\n");
+			free(tmp);
+			return(ret);
+		}
+	return(ft_strdup(""));
 }
 
 char	*ft_env(char **args)
@@ -93,10 +122,10 @@ char	*ft_unset(char **args)
 }
 
 
-// echo	with option ’-n’
-// cd		with only a relative or absolute path
+// echo		with option ’-n’
+//! cd		with only a relative or absolute path
 // pwd		without any options
-// export	without any options
-// unset	without any options
-// env		without any options and any arguments
-// exit	without any options
+//! export	without any options
+//! unset	without any options
+//! env		without any options and any arguments
+// exit		without any options
