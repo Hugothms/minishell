@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 11:11:05 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 16:39:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <time.h>
+# include <sys/wait.h>
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>

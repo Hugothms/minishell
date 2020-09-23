@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 12:28:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:10:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,57 @@ char	**get_path(char **envp)
 	return (path);
 }
 
-int		search_command(char *command, char **path, t_execve exec)
+int		try_path(char *command, char **envp, t_execve exec)
 {
 	int		i;
+	int		cpt;
+	int		ret;
+	char	**path;
 	char	*full_path;
 	char	*tmp;
 
+	path = get_path(envp);
 	i = 0;
+	cpt = 0;
+	ret = 1;
 	while (path[i])
 	{
 		full_path = ft_strjoin(path[i], "/");
 		tmp = full_path;
 		full_path = ft_strjoin(full_path, command);
 		free(tmp);
-		pid_t pid = fork();
-		if (pid != 0)
-			execve(full_path, exec.argv, exec.envp);
+		if(execve(full_path, exec.argv, exec.envp))
+			cpt++;
 		free(full_path);
+		if(i != cpt)
+			ret = 0;
 		i++;
 	}
-	return (0);
+	ft_free_tab(path);
+	free(path);
+	return (ret);
 }
 
-char	*exec_command(char **command, char **path, t_execve exec)
+int		search_command(char *command, char **envp, t_execve exec)
+{
+	int	ret;
+
+	ret = 1;
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		if(try_path(command, envp, exec))
+			exit(0);
+	}
+	else
+	{
+		ret = 0;
+		wait(0);
+	}
+	return (ret);
+}
+
+char	*exec_command(char **command, char **envp, t_execve exec)
 {
 	char *ret;
 	char *tmp;
@@ -69,7 +97,7 @@ char	*exec_command(char **command, char **path, t_execve exec)
 		return(ft_env(&command[1]));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
-	else if(search_command(*command, path, exec))
+	else if(search_command(*command, envp, exec))
 	{
 		ret = ft_strjoin("minishell: command not found: ", command[0]);
 		tmp = ret;
@@ -90,12 +118,11 @@ void	print_prompt(void)
 	ft_putstr(": ");
 }
 
-int		main(const int argc, const char *argv[], char *envp[])
+int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	char		**command;
 	char		*ret;
-	char		**path;
 	t_execve	exec;
 
 	// ft_putstr(WELCOME_MSG);
@@ -115,14 +142,11 @@ int		main(const int argc, const char *argv[], char *envp[])
 		}
 		if(*command)
 		{
-			path = get_path(envp);
-			if(ret = exec_command(command, path, exec))
+			if(ret = exec_command(command, envp, exec))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
-			ft_free_tab(path);
-			free(path);
 			ft_free_tab(command);	
 		}
 		free(command);
