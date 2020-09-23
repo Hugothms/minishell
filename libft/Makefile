@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/20 19:27:16 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/23 18:55:06 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,91 +15,101 @@ OBJS		=	${SRCS:.c=.o}
 INCLUDES	=	libft.h
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
-SRCS 		=	ft_swap.c				\
-				ft_memset.c				\
-				ft_bzero.c				\
-				ft_memcpy.c				\
-				ft_memccpy.c			\
-				ft_memmove.c			\
-				ft_memchr.c				\
-				ft_memcmp.c				\
-				ft_strlen.c				\
-				ft_isalpha.c			\
-				ft_isdigit.c			\
-				ft_issign.c				\
-				ft_isalnum.c			\
-				ft_isascii.c			\
-				ft_isprint.c			\
-				ft_toupper.c			\
-				ft_tolower.c			\
-				ft_strchr.c				\
-				ft_strrchr.c			\
-				ft_strncmp.c			\
-				ft_strnstr.c			\
-				ft_strlcpy.c			\
-				ft_strlcat.c			\
-				ft_atoi.c				\
-				ft_atoi_strict.c		\
-				ft_atoi_base.c			\
-				ft_atol.c				\
-				ft_atof.c				\
-				ft_itoa.c				\
-				ft_uitoa.c				\
-				ft_ltoa.c				\
-				ft_ltoa_base.c			\
-				ft_uitoa_base.c			\
-				ft_putnbr_base.c		\
-				ft_convert_base.c		\
-				ft_calloc.c				\
-				ft_chardup.c			\
-				ft_strdup.c				\
-				ft_substr.c				\
-				ft_putnbr_fd.c			\
-				ft_putnbr.c				\
-				ft_putnbr_unsigned_fd.c	\
-				ft_putnbr_unsigned.c	\
-				ft_puthex.c				\
-				ft_putpointer.c			\
-				ft_count_len_hex.c		\
-				ft_putchar_fd.c			\
-				ft_putstr_fd.c			\
-				ft_putendl_fd.c			\
-				ft_strmapi.c			\
-				ft_split.c				\
-				ft_strtrim.c			\
-				ft_strjoin.c			\
-				ft_lstnew.c				\
-				ft_lstadd_front.c		\
-				ft_lstsize.c			\
-				ft_lstlast.c			\
-				ft_lstadd_back.c		\
-				ft_lstdelone.c			\
-				ft_lstclear.c			\
-				ft_lstiter.c			\
-				ft_lstmap.c				\
-				ft_putchar.c			\
-				ft_putstr.c				\
-				ft_putstrn.c			\
-				ft_putstrn_fd.c			\
-				ft_putnbr_base.c		\
-				ft_strcmp.c				\
-				ft_strncmp_rev.c		\
-				ft_strstr.c				\
-				ft_strcat.c				\
-				ft_strmap.c				\
-				ft_split_set.c			\
-				ft_strjoin_sep.c		\
-				ft_is_from_charset.c	\
-				ft_pow.c				\
-				ft_nbrlen.c				\
-				ft_itoa_width.c			\
-				ft_max_float.c			\
-				ft_min_int.c			\
-				ft_min_float.c			\
-				ft_print_tabstr.c		\
-				ft_print_tabint.c		\
-				ft_free_tab.c
 
+# io
+SRCS		=	io/ft_print_tabint.c			\
+				io/ft_putnbr.c					\
+				io/ft_putnbr_fd.c				\
+				io/ft_putnbr_unsigned_fd.c		\
+				io/ft_putnbr_unsigned.c			\
+				io/ft_putchar.c					\
+				io/ft_putchar_fd.c				\
+				io/ft_putendl_fd.c				\
+				io/ft_puthex.c					\
+				io/ft_putpointer.c				\
+				io/ft_putstrn_fd.c				\
+				io/ft_putstr_fd.c				\
+				io/ft_putstr.c					\
+				io/ft_putstrn.c					\
+				io/ft_print_tabstr.c			\
+
+
+# linked-list
+SRCS		+=	linked-list/ft_lstnew.c				\
+				linked-list/ft_lstadd_front.c		\
+				linked-list/ft_lstsize.c			\
+				linked-list/ft_lstlast.c			\
+				linked-list/ft_lstadd_back.c		\
+				linked-list/ft_lstdelone.c			\
+				linked-list/ft_lstclear.c			\
+				linked-list/ft_lstiter.c			\
+				linked-list/ft_lstmap.c				\
+
+# memory
+SRCS		+=	memory/ft_swap.c					\
+				memory/ft_memset.c					\
+				memory/ft_memcpy.c					\
+				memory/ft_memccpy.c					\
+				memory/ft_memmove.c					\
+				memory/ft_memchr.c					\
+				memory/ft_memcmp.c					\
+				memory/ft_calloc.c					\
+				memory/ft_bzero.c					\
+				memory/ft_chardup.c					\
+				memory/ft_free_tab.c				\
+
+# numeric
+SRCS		+=	numeric/ft_nbrlen.c				\
+				numeric/ft_convert_base.c		\
+				numeric/ft_itoa.c				\
+				numeric/ft_atol.c				\
+				numeric/ft_uitoa.c				\
+				numeric/ft_ltoa.c				\
+				numeric/ft_ltoa_base.c			\
+				numeric/ft_uitoa_base.c			\
+				numeric/ft_itoa_width.c			\
+				numeric/ft_pow.c				\
+				numeric/ft_atoi.c				\
+				numeric/ft_atoi_strict.c		\
+				numeric/ft_atof.c				\
+				numeric/ft_atoi_base.c			\
+				numeric/ft_max_int.c			\
+				numeric/ft_max_float.c			\
+				numeric/ft_min_int.c			\
+				numeric/ft_min_float.c			\
+
+# string
+SRCS		+=	string/ft_is_from_charset.c		\
+				string/ft_strlen.c				\
+				string/ft_strdup.c				\
+				string/ft_strcpy.c				\
+				string/ft_strlcpy.c				\
+				string/ft_strcat.c				\
+				string/ft_strlcat.c				\
+				string/ft_strcmp.c				\
+				string/ft_strncmp_rev.c			\
+				string/ft_strncmp.c				\
+				string/ft_strchr.c				\
+				string/ft_strrchr.c				\
+				string/ft_strmap.c				\
+				string/ft_strmapi.c				\
+				string/ft_substr.c				\
+				string/ft_split_set.c			\
+				string/ft_strjoin.c				\
+				string/ft_strjoin_sep.c			\
+				string/ft_strjoin_free.c		\
+				string/ft_strtrim.c				\
+				string/ft_strstr.c				\
+				string/ft_strnstr.c				\
+				string/ft_isprint.c				\
+				string/ft_isalpha.c				\
+				string/ft_isdigit.c				\
+				string/ft_issign.c				\
+				string/ft_isalnum.c				\
+				string/ft_isascii.c				\
+				string/ft_toupper.c				\
+				string/ft_tolower.c				\
+				string/ft_split.c
 
 
 ###########################
