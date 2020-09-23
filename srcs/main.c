@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 10:43:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:10:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,22 @@ char	**get_path(char **envp)
 	return (path);
 }
 
-int		search_command(char *command, char **path)
+int		search_command(char *command, char **path, t_execve exec)
 {
 	int i;
 
 	i = 0;
 	while (path[i])
 	{
-		DIR *dir = opendir(path[i]);
-		struct dirent *dirent = readdir(dir);
-		ft_putchar(dirent->d_name);
-		ft_putchar('\n');
-		ft_putchar(dirent->d_type);
-		ft_putchar('\n');
-		ft_putnbr(dirent->d_reclen);
-		ft_putchar('\n');
-		ft_putnbr(dirent->d_ino);
-		ft_putchar('\n');
-		ft_putnbr(dirent->d_off);
-		ft_putchar('\n');
-		closedir(dir);
-		ft_putchar('\n');
+		pid_t pid = fork();
+		if (pid == 0)
+			execve("/usr/bin/ls", exec.argv, exec.envp);
 		i++;
 	}
 	return (0);
 }
 
-char	*exec_command(char **command, char **path)
+char	*exec_command(char **command, char **path, t_execve exec)
 {
 	char *ret;
 	char *tmp;
@@ -73,7 +62,7 @@ char	*exec_command(char **command, char **path)
 		return(ft_env(&command[1]));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
-	else if(search_command(*command, path))
+	else if(search_command(*command, path, exec))
 	{
 		ret = ft_strjoin("minishell: command not found: ", command[0]);
 		tmp = ret;
@@ -96,12 +85,15 @@ void	print_prompt(void)
 
 int		main(const int argc, const char *argv[], char *envp[])
 {
-	char	*input;
-	char	**command;
-	char	*ret;
-	char	**path;
+	char		*input;
+	char		**command;
+	char		*ret;
+	char		**path;
+	t_execve	exec;
 
 	// ft_putstr(WELCOME_MSG);
+	exec.argv = argv;
+	exec.envp = envp;
 	input = malloc(1);
 	while(1)
 	{
@@ -117,7 +109,7 @@ int		main(const int argc, const char *argv[], char *envp[])
 		if(*command)
 		{
 			path = get_path(envp);
-			if(ret = exec_command(command, path))
+			if(ret = exec_command(command, path, exec))
 			{
 				ft_putstr(ret);
 				free(ret);
