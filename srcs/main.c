@@ -6,13 +6,30 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 20:07:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 10:25:48 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*exec_command(char **command)
+char	**get_path(char **envp)
+{
+	int		i;
+	char	**path;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
+		i++;
+	path = ft_split(&envp[i][5], ':');
+	return (path);
+}
+
+int		search_command(char **command, char **path)
+{
+	return (0);
+}
+
+char	*exec_command(char **command, char **path)
 {
 	char *ret;
 	char *tmp;
@@ -35,7 +52,7 @@ char	*exec_command(char **command)
 		return(ft_env(&command[1]));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
-	else
+	else if(search_command(command, path))
 	{
 		ret = ft_strjoin("minishell: command not found: ", command[0]);
 		tmp = ret;
@@ -56,16 +73,18 @@ void	print_prompt(void)
 	ft_putstr(": ");
 }
 
-int		main(const int argc, const char *argv[])
+int		main(const int argc, const char *argv[], char *envp[])
 {
 	char	*input;
 	char	**command;
 	char	*ret;
+	char	**path;
 
 	// ft_putstr(WELCOME_MSG);
 	input = malloc(1);
 	while(1)
 	{
+		ft_print_tabstr(envp);
 		free(input);
 		print_prompt();
 		get_next_line_custom(&input);
@@ -77,11 +96,14 @@ int		main(const int argc, const char *argv[])
 		}
 		if(*command)
 		{
-			if(ret = exec_command(command))
+			path = get_path(envp);
+			if(ret = exec_command(command, path))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
+			ft_free_tab(path);
+			free(path);
 			ft_free_tab(command);	
 		}
 		free(command);
