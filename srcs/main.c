@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 18:01:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:59:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		try_path(char **command, char **envp, t_execve exec)
 	int		ret;
 	char	**path;
 	char	*full_path;
-	char	*tmp;
 
 	path = get_path(envp);
 	i = 0;
@@ -40,13 +39,11 @@ int		try_path(char **command, char **envp, t_execve exec)
 	while (path[i])
 	{
 		full_path = ft_strjoin(path[i], "/");
-		tmp = full_path;
-		full_path = ft_strjoin(full_path, *command);
-		free(tmp);
-		if(execve(full_path, command, exec.envp))
+		full_path = ft_strjoin_free(full_path, *command);
+		if (execve(full_path, command, exec.envp))
 			cpt++;
 		free(full_path);
-		if(i != cpt)
+		if (i != cpt)
 			ret = 0;
 		i++;
 	}
@@ -63,7 +60,7 @@ int		search_command(char **command, char **envp, t_execve exec)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		if(try_path(command, envp, exec))
+		if (try_path(command, envp, exec))
 			exit(0);
 	}
 	else
@@ -90,10 +87,8 @@ void	not_found(char *command)
 
 char	*exec_command(char **command, char **envp, t_execve exec)
 {
-	if(!command)
+	if (!command)
 		return (NULL);
-	// else if (!(command[0]))
-	// 	return (NULL);
 	else if (!ft_strcmp(command[0], "echo"))
 		return(ft_echo(&command[1]));
 	else if (!ft_strcmp(command[0], "cd"))
@@ -108,7 +103,7 @@ char	*exec_command(char **command, char **envp, t_execve exec)
 		return(ft_env(&command[1]));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
-	else if(search_command(command, envp, exec))
+	else if (search_command(command, envp, exec))
 		not_found(command[0]);
 }
 
@@ -134,20 +129,20 @@ int		main(const int argc, char *argv[], char *envp[])
 	exec.argv = argv;
 	exec.envp = envp;
 	input = malloc(1);
-	while(1)
+	while (1)
 	{
 		free(input);
 		print_prompt();
 		get_next_line_custom(&input);
-		if(parse_input(input, &command))
+		if (parse_input(input, &command))
 		{
 			ft_putstr("minishell: parse error\n");
 			free(input);
 			exit(1);
 		}
-		if(*command)
+		if (*command)
 		{
-			if(ret = exec_command(command, envp, exec))
+			if (ret = exec_command(command, envp, exec))
 			{
 				ft_putstr(ret);
 				free(ret);

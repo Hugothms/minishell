@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 19:45:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:03:19 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_echo(char **args)
 		nflag = 1;
 		i++;
 	}
-	while(args[i])
+	while (args[i])
 	{
 		tmp = ret;
 		ret = ft_strjoin(ret, args[i]);
@@ -55,7 +55,7 @@ char	*ft_echo(char **args)
 		}		
 		i++;
 	}
-	if(!nflag)
+	if (!nflag)
 	{
 		tmp = ret;
 		ret = ft_strjoin(ret, "\n");
@@ -84,7 +84,7 @@ char	*ft_cd(char **args)
 		return(ret);
 	}
 	else
-		if(chdir(*args))
+		if (chdir(*args))
 		{
 			ret = (ft_strdup("cd: not a directory: "));
 			tmp = ret;
@@ -105,7 +105,7 @@ char	*ft_env(char **args)
 
 char	*ft_exit(char **args)
 {
-	if(*args)
+	if (*args)
 	{	
 		if (ft_isdigit(**args))
 			exit(**args - '0');
