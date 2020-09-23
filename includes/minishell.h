@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/20 18:46:21 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 10:30:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <sys/types.h>
+# include <dirent.h>
 # include <sys/stat.h>
 # include <time.h>
 # include <stdlib.h>
