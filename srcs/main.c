@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 11:10:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 12:28:31 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,21 @@ char	**get_path(char **envp)
 
 int		search_command(char *command, char **path, t_execve exec)
 {
-	int i;
+	int		i;
+	char	*full_path;
+	char	*tmp;
 
 	i = 0;
 	while (path[i])
 	{
+		full_path = ft_strjoin(path[i], "/");
+		tmp = full_path;
+		full_path = ft_strjoin(full_path, command);
+		free(tmp);
 		pid_t pid = fork();
-		if (pid == 0)
-			execve("/usr/bin/ls", exec.argv, exec.envp);
+		if (pid != 0)
+			execve(full_path, exec.argv, exec.envp);
+		free(full_path);
 		i++;
 	}
 	return (0);
