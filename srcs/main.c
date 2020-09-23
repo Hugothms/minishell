@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 17:10:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:01:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**get_path(char **envp)
 	return (path);
 }
 
-int		try_path(char *command, char **envp, t_execve exec)
+int		try_path(char **command, char **envp, t_execve exec)
 {
 	int		i;
 	int		cpt;
@@ -41,9 +41,9 @@ int		try_path(char *command, char **envp, t_execve exec)
 	{
 		full_path = ft_strjoin(path[i], "/");
 		tmp = full_path;
-		full_path = ft_strjoin(full_path, command);
+		full_path = ft_strjoin(full_path, *command);
 		free(tmp);
-		if(execve(full_path, exec.argv, exec.envp))
+		if(execve(full_path, command, exec.envp))
 			cpt++;
 		free(full_path);
 		if(i != cpt)
@@ -55,7 +55,7 @@ int		try_path(char *command, char **envp, t_execve exec)
 	return (ret);
 }
 
-int		search_command(char *command, char **envp, t_execve exec)
+int		search_command(char **command, char **envp, t_execve exec)
 {
 	int	ret;
 
@@ -74,11 +74,22 @@ int		search_command(char *command, char **envp, t_execve exec)
 	return (ret);
 }
 
-char	*exec_command(char **command, char **envp, t_execve exec)
+void	not_found(char *command)
 {
 	char *ret;
 	char *tmp;
 
+	ret = ft_strjoin("minishell: command not found: ", command);
+	tmp = ret;
+	ret = ft_strjoin(ret, "\n");
+	free(tmp);
+	ft_putstr(ret);
+	free(ret);
+	exit(0);
+}
+
+char	*exec_command(char **command, char **envp, t_execve exec)
+{
 	if(!command)
 		return (NULL);
 	// else if (!(command[0]))
@@ -97,14 +108,8 @@ char	*exec_command(char **command, char **envp, t_execve exec)
 		return(ft_env(&command[1]));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
-	else if(search_command(*command, envp, exec))
-	{
-		ret = ft_strjoin("minishell: command not found: ", command[0]);
-		tmp = ret;
-		ret = ft_strjoin(ret, "\n");
-		free(tmp);
-		return (ret);
-	}
+	else if(search_command(command, envp, exec))
+		not_found(command[0]);
 }
 
 void	print_prompt(void)
