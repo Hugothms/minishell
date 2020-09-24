@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 18:38:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:21:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,18 @@ char	*ft_echo(char **args)
 	return (ret);
 }
 
-char	*find_home_directory(char **envp)
+char	*find_var_env(char **envp, char *var)
 {
-	//TO DO
-	return ("/");
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], var, 5))
+			return (envp[i]);
+		i++;
+	}
+	return (NULL);
 }
 
 char	*ft_cd(char **args, char **envp)
@@ -77,7 +85,7 @@ char	*ft_cd(char **args, char **envp)
 	struct stat	stats;
 
 	if (!*args)
-		chdir(find_home_directory(envp));
+		chdir(&find_var_env(envp, "HOME=")[5]);  
     if (stat(*args, &stats) != 0)
     {
 		ret = ft_strdup("cd: no such file or directory: ");
@@ -161,7 +169,7 @@ char	*ft_unset(char **args, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strcmp(envp[i], var))
+		if (!ft_strcmp(envp[i], var))
 		{
 			envp[i][ft_strlen(var)] = '\0';
 			break ;
