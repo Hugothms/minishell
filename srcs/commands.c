@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 16:23:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/24 18:38:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_pwd(void)
 	tmp = ret;
 	ret = ft_strjoin(ret, "\n");
 	free(tmp);
-	return(ret);
+	return (ret);
 }
 
 char	*ft_echo(char **args)
@@ -64,14 +64,20 @@ char	*ft_echo(char **args)
 	return (ret);
 }
 
-char	*ft_cd(char **args)
+char	*find_home_directory(char **envp)
+{
+	//TO DO
+	return ("/");
+}
+
+char	*ft_cd(char **args, char **envp)
 {
 	char		*ret;
 	char		*tmp;	
 	struct stat	stats;
 
 	if (!*args)
-		chdir("/");
+		chdir(find_home_directory(envp));
     if (stat(*args, &stats) != 0)
     {
 		ret = ft_strdup("cd: no such file or directory: ");
@@ -81,7 +87,7 @@ char	*ft_cd(char **args)
 		tmp = ret;
 		ret = ft_strjoin(ret, "\n");
 		free(tmp);
-		return(ret);
+		return (ret);
 	}
 	else
 		if (chdir(*args))
@@ -93,9 +99,9 @@ char	*ft_cd(char **args)
 			tmp = ret;
 			ret = ft_strjoin(ret, "\n");
 			free(tmp);
-			return(ret);
+			return (ret);
 		}
-	return(ft_strdup(""));
+	return (ft_strdup(""));
 }
 
 char	*ft_env(char **args, char **envp)
@@ -110,13 +116,28 @@ char	*ft_env(char **args, char **envp)
 		ret = ft_strjoin_free(ret, envp[i++]);
 		ret = ft_strjoin_free(ret, "\n");
 	}
-	return(ret);
+	return (ret);
 }
 
 char	*ft_export(char **args, char **envp)
 {
+	char	*var;
+	char	**tmp;
+	int		equal_pos;
 	int		i;
 
+	if (!*args)
+		return (ft_env(args,envp));
+	equal_pos = 0;
+	while ((*args)[equal_pos] && (*args)[equal_pos] != '=')
+		equal_pos++;
+	if (equal_pos != ft_strlen(*args))
+		
+		
+	tmp = ft_split(*args, '=');
+	var = ft_strdup(*tmp);
+	ft_free_tab(tmp);
+	free(tmp);
 	i = 0;
 	while (envp[i])
 	{
@@ -132,7 +153,7 @@ char	*ft_unset(char **args, char **envp)
 	int		i;
 
 	if (!*args)
-		return(ft_strdup(""));
+		return (ft_strdup(""));
 	tmp = ft_split(*args, '=');
 	var = ft_strdup(*tmp);
 	ft_free_tab(tmp);
@@ -140,15 +161,15 @@ char	*ft_unset(char **args, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if(ft_strcmp(envp[i], var))
+		if (ft_strcmp(envp[i], var))
 		{
 			envp[i][ft_strlen(var)] = '\0';
-			break;
+			break ;
 		}
 		i++;
 	}
 	free(var);
-	return(ft_strdup(""));
+	return (ft_strdup(""));
 }
 
 char	*ft_exit(char **args)
@@ -159,7 +180,7 @@ char	*ft_exit(char **args)
 			exit(**args - '0');
 	}
 	exit(0);
-	return(NULL);
+	return (NULL);
 }
 
 
