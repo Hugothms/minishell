@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/23 17:56:18 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/24 14:39:38 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ NAME = minishell
 			srcs/get_next_line.c	\
 			srcs/main.c				\
 			srcs/parse.c			\
+			srcs/search_command.c	\
 			srcs/utils.c
 
 
