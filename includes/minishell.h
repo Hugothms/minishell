@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 14:39:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/24 15:39:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct	s_execve
 char	*ft_echo(char **args);
 char	*ft_cd(char **args);
 char	*ft_pwd(void);
-char	*ft_export(char **args);
-char	*ft_unset(char **args);
-char	*ft_env(char **args);
+char	*ft_export(char **args, char **envp);
+char	*ft_unset(char **args, char **envp);
+char	*ft_env(char **args, char **envp);
 char	*ft_exit(char **args);
 
 //parse

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 13:03:18 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/24 15:39:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ char	*exec_command(char **command, char **envp, t_execve exec)
 	else if (!ft_strcmp(command[0], "pwd"))
 		return(ft_pwd());
 	else if (!ft_strcmp(command[0], "export"))
-		return(ft_export(&command[1]));
+		return(ft_export(&command[1], envp));
 	else if (!ft_strcmp(command[0], "unset"))
-		return(ft_unset(&command[1]));
+		return(ft_unset(&command[1], envp));
 	else if (!ft_strcmp(command[0], "env"))
-		return(ft_env(&command[1]));
+		return(ft_env(&command[1], envp));
 	else if (!ft_strcmp(command[0], "exit"))
 		return(ft_exit(&command[1]));
 	else if (search_command(command, envp, exec))

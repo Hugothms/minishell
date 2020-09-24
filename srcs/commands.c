@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 18:03:19 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/24 16:23:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,57 @@ char	*ft_cd(char **args)
 	return(ft_strdup(""));
 }
 
-char	*ft_env(char **args)
+char	*ft_env(char **args, char **envp)
 {
-	return(NULL);
+	char	*ret;
+	int		i;
+
+	ret = ft_strdup("");
+	i = 0;
+	while (envp[i])
+	{
+		ret = ft_strjoin_free(ret, envp[i++]);
+		ret = ft_strjoin_free(ret, "\n");
+	}
+	return(ret);
+}
+
+char	*ft_export(char **args, char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		i++;
+	}
+	return (ft_strdup(""));
+}
+
+char	*ft_unset(char **args, char **envp)
+{
+	char	*var;
+	char	**tmp;
+	int		i;
+
+	if (!*args)
+		return(ft_strdup(""));
+	tmp = ft_split(*args, '=');
+	var = ft_strdup(*tmp);
+	ft_free_tab(tmp);
+	free(tmp);
+	i = 0;
+	while (envp[i])
+	{
+		if(ft_strcmp(envp[i], var))
+		{
+			envp[i][ft_strlen(var)] = '\0';
+			break;
+		}
+		i++;
+	}
+	free(var);
+	return(ft_strdup(""));
 }
 
 char	*ft_exit(char **args)
@@ -111,16 +159,6 @@ char	*ft_exit(char **args)
 			exit(**args - '0');
 	}
 	exit(0);
-	return(NULL);
-}
-
-char	*ft_export(char **args)
-{
-	return(NULL);
-}
-
-char	*ft_unset(char **args)
-{
 	return(NULL);
 }
 
