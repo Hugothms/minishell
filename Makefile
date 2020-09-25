@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/24 14:39:38 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/25 13:40:05 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ NAME = minishell
 
 
 ###########################ALL
-all : $(--LIBFTDIR)/$(--LIBFT) $(NAME)
+all: $(NAME)
 
 $(NAME) : $(--OBJS) $(--HEADER) $(--LIBFTDIR)/$(--LIBFT)
 	$(--CC) $(--LDFLAGS) -o $@ $(--OBJS) $(--LIBFTLINK)

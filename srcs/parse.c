@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/25 12:56:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/25 13:43:08 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 int		open_quotes(char *input, char ***command)
 {
 	int	i;
+	int	c;
 	int	pos;
 	int	in_simple;
 	int	in_double;
@@ -23,16 +24,23 @@ int		open_quotes(char *input, char ***command)
 	in_simple = 0;
 	in_double = 0;
 	i = 0;
+	c = 0;
 	while (input[i])
 	{
 		if(input[i] == '\'' && !in_double)
 		{
 			if (!in_simple)
-			{
 				pos = i;
-			}
+			else
+			{
+				(*command)[c++] = ft_strndup(input, pos);
+			}			
 			in_simple += (in_simple == 0 ? 1 : -1);
 		}
+
+
+
+		//same same... but different
 		else if(input[i] == '\"' && !in_simple)
 		{
 
