@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/23 18:35:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/25 13:42:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ char				*fill_positivenbr_base(long nbr, char *base,
 char				*fill_nbr_base(char *res, long nbr, char *base, int sign);
 
 
-
 // string
 int					ft_is_from_charset(const char *str, const char *charset);
 char				*ft_strrev_minus_1(char *res);
 size_t				ft_strlen(const char *str);
 char				*ft_strdup(const char *src);
+char				*ft_strndup(char const *src, int size);
 char				*ft_strcpy(char *dest, const char *src);
 size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char				*ft_strcat(char *dest, const char *src);

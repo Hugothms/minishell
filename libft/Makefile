@@ -6,13 +6,13 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/23 18:55:06 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/25 13:47:22 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= 	libft.a
 OBJS		=	${SRCS:.c=.o}
-INCLUDES	=	libft.h
+HEADER		=	libft.h
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 
@@ -82,6 +82,7 @@ SRCS		+=	numeric/ft_nbrlen.c				\
 SRCS		+=	string/ft_is_from_charset.c		\
 				string/ft_strlen.c				\
 				string/ft_strdup.c				\
+				string/ft_strndup.c				\
 				string/ft_strcpy.c				\
 				string/ft_strlcpy.c				\
 				string/ft_strcat.c				\
@@ -130,8 +131,8 @@ OPTI = -Ofast #-O3
 
 all:		$(NAME)
 
-$(NAME):	${OBJS}
-	#echo "Creating $(GREEN_FG)libft.a$(CLEAR_COLOR)"
+$(NAME):	${OBJS} $(HEADER)
+	@echo "Creating $(GREEN_FG)libft.a$(CLEAR_COLOR)"
 	ar rc	$(NAME) ${OBJS}
 	ranlib	$(NAME)
 
