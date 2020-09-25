@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 19:33:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/25 12:07:12 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 char	*ft_pwd(void)
 {
 	char	*ret;
-	char	*tmp;
 
 	ret = getcwd(NULL, 0);
-	tmp = ret;
-	ret = ft_strjoin(ret, "\n");
-	free(tmp);
+	ret = ft_strjoin_free(ret, "\n");
 	return (ret);
 }
 
@@ -29,7 +26,6 @@ char	*ft_echo(char **args)
 	int		i;
 	int		nflag;
 	char	*ret;
-	char	*tmp;
 
 	nflag = 0;
 	if (!*args)
@@ -43,23 +39,13 @@ char	*ft_echo(char **args)
 	ret = ft_strdup("");
 	while (args[i])
 	{
-		tmp = ret;
-		ret = ft_strjoin(ret, args[i]);
-		free(tmp);
+		ret = ft_strjoin_free(ret, args[i]);
 		if (args[i + 1])
-		{
-			tmp = ret;
-			ret = ft_strjoin(ret, " ");
-			free(tmp);
-		}		
+			ret = ft_strjoin_free(ret, " ");
 		i++;
 	}
 	if (!nflag)
-	{
-		tmp = ret;
-		ret = ft_strjoin(ret, "\n");
-		free(tmp);
-	}
+		ret = ft_strjoin_free(ret, "\n");
 	return (ret);
 }
 
@@ -80,7 +66,6 @@ char	*find_var_env(char **envp, char *var)
 char	*ft_cd(char **args, char **envp)
 {
 	char		*ret;
-	char		*tmp;	
 	struct stat	stats;
 
 	if (!*args)
@@ -88,24 +73,16 @@ char	*ft_cd(char **args, char **envp)
     if (stat(*args, &stats) != 0)
     {
 		ret = ft_strdup("cd: no such file or directory: ");
-		tmp = ret;
-		ret = ft_strjoin(ret, *args);
-		free(tmp);
-		tmp = ret;
-		ret = ft_strjoin(ret, "\n");
-		free(tmp);
+		ret = ft_strjoin_free(ret, *args);
+		ret = ft_strjoin_free(ret, "\n");
 		return (ret);
 	}
 	else
 		if (chdir(*args))
 		{
 			ret = (ft_strdup("cd: not a directory: "));
-			tmp = ret;
-			ret = ft_strjoin(ret, *args);
-			free(tmp);
-			tmp = ret;
-			ret = ft_strjoin(ret, "\n");
-			free(tmp);
+			ret = ft_strjoin_free(ret, *args);
+			ret = ft_strjoin_free(ret, "\n");
 			return (ret);
 		}
 	return (ft_strdup(""));
