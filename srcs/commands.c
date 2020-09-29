@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/25 12:07:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/29 18:09:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ char	*ft_env(char **args, char **envp)
 
 char	*ft_export(char **args, char **envp)
 {
-	char	*var;
+	char	*key;
+	char	*value;
 	char	**tmp;
 	int		equal_pos;
 	int		i;
@@ -116,17 +117,23 @@ char	*ft_export(char **args, char **envp)
 	while ((*args)[equal_pos] && (*args)[equal_pos] != '=')
 		equal_pos++;
 	if (equal_pos != ft_strlen(*args))
-		
-		
+	
 	tmp = ft_split(*args, '=');
-	var = ft_strdup(*tmp);
+	key = ft_strdup(tmp[0]);
+	value = ft_strdup(tmp[1]);
 	ft_free_tab(tmp);
 	free(tmp);
 	i = 0;
 	while (envp[i])
 	{
+		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
+		{
+			envp[i] = malloc(sizeof(char) * ((ft_strlen(key) + ft_strlen(value)) + 2));
+			envp[i] = ft_strjoin_sep((ft_strlen(key) + ft_strlen(value)) + 2, tmp, "=");
+		}
 		i++;
 	}
+	envp[i] = *args;
 	return (ft_strdup(""));
 }
 
