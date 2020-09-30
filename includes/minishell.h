@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/25 12:14:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 14:04:20 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>
-# include "../libft/libft.h"
-# include "../ft_printf/includes/ft_printf.h"
-# include "get_next_line.h"
+# include "../libft/header/libft.h"
+
 
 
 typedef struct	s_execve

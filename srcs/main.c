@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 13:08:56 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 14:05:36 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*ret;
 	t_execve	exec;
 
-	// ft_putstr(WELCOME_MSG);
+	ft_putstr(WELCOME_MSG);
 	exec.argv = argv;
 	exec.envp = envp;
 	input = malloc(1);
@@ -88,7 +88,7 @@ int		main(const int argc, char *argv[], char *envp[])
 				ft_putstr(ret);
 				free(ret);
 			}
-			ft_free_tab(command);	
+			ft_free_tab(command);
 		}
 		free(command);
 	}

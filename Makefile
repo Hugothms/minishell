@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/30 13:23:02 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/30 14:04:19 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,10 +33,6 @@ NAME = minishell
 --LIBFTDIR = libft
 --LIBFTLINK = -L $(--LIBFTDIR) -lft
 
---FTPRINTF = libftprintf.a
---FTPRINTFDIR = ft_printf
---FTPRINTFLINK = -L $(--FTPRINTFDIR) -lftprintf
-
 
 ###########################ALL
 all: $(NAME)
@@ -49,9 +45,6 @@ $(NAME) : $(--OBJS) $(--HEADER) $(--LIBFTDIR)/$(--LIBFT)
 $(--LIBFTDIR)/$(--LIBFT) :
 	$(--MAKE) -C libft all
 
-$(--FTPRINTFDIR)/$(--FTPRINTF) :
-	$(--MAKE) -C $(--FTPRINTFDIR) all
-
 %.o: %.c $(--HEADER)
 	$(--CC) -c $(--LDFLAGS) -I $(--INCL) -o $@ $<
 
@@ -63,7 +56,6 @@ clean:
 fclean:		clean
 	#echo "$(RED_FG)Deleting exe$(CLEAR_COLOR)"
 	cd $(--LIBFTDIR) && $(--MAKE) fclean
-	cd $(--FTPRINTFDIR) && $(--MAKE) fclean
 	rm -f $(--OBJS)
 	rm -f $(NAME) a.out
 
