@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/29 18:40:42 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 13:27:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,55 @@ int 	dollar(char *input, char ***command)
 	return (0);
 }
 
+int		count_words(const char *str, char *charset)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (str[i])
+	{
+		while (str[i])
+		{
+			if (!ft_in_charset(str[i], charset))
+			{
+				count++;
+				break ;
+			}
+			i++;
+		}
+		while (str[i])
+		{
+			if (ft_in_charset(str[i++], charset))
+				break ;
+		}
+	}
+	return (count);
+}
+
+
 int		parse_input(char *input, char ***command)
 {
-	if(dollar(input, command))
-		return (1);
-	if (open_quotes(input, command))
-		return (1);
-	// *command = ft_split_set(input, " \t");
-	ft_putstr("COMMAND:\n");
-	ft_print_tabstr(*command);
+	// int i;
+	// int cpt;
+	
+	// if(dollar(input, command))
+	// 	return (1);
+	// if (open_quotes(input, command))
+	// 	return (1);
+	// i = 0;
+	// cpt = 0;
+	// while(*command[i])
+	// {
+	// 	if (*command[i][ft_strlen(*command[i])] != '"')
+	// 		cpt += count_words(input, " \t");
+	// 	i++;
+	// }
+	// cpt += i;
+	// ft_putnbr(cpt);
+	*command = ft_split_set(input, " \t");
+	// ft_putstr("COMMAND:\n");
+	// ft_print_tabstr(*command);
 	return (0);
 }

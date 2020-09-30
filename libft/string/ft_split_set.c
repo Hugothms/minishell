@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:16:10 by hthomas           #+#    #+#             */
-/*   Updated: 2020/04/15 14:12:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 13:26:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_in_charset(char c, char const *charset)
+int			ft_in_charset(char c, char const *charset)
 {
 	int	i_charset;
 
@@ -25,7 +25,7 @@ int		ft_in_charset(char c, char const *charset)
 	return (0);
 }
 
-int		*count_lengths(int *words_len, const char *str, char *charset)
+static int	*count_lengths(int *words_len, const char *str, char *charset)
 {
 	int	i_length;
 	int	i_str;
@@ -52,7 +52,7 @@ int		*count_lengths(int *words_len, const char *str, char *charset)
 	return (words_len);
 }
 
-int		count_words(const char *str, char *charset)
+static int	count_words(const char *str, char *charset)
 {
 	int	count;
 	int	i_str;
@@ -79,7 +79,7 @@ int		count_words(const char *str, char *charset)
 	return (count);
 }
 
-int		fill_tab(char **tab, int *words_len, const char *str, char *charset)
+static int	fill_tab(char **tab, int *words_len, const char *str, char *charset)
 {
 	int		d1;
 	int		d2;
@@ -112,7 +112,7 @@ int		fill_tab(char **tab, int *words_len, const char *str, char *charset)
 ** @return			a tab of "words"
 */
 
-char	**ft_split_set(const char *str, char *charset)
+char		**ft_split_set(const char *str, char *charset)
 {
 	char	**tab;
 	int		words_count;

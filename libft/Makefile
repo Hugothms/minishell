@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/25 13:47:22 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/30 13:16:02 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCS		=	io/ft_print_tabint.c			\
 				io/ft_putstr.c					\
 				io/ft_putstrn.c					\
 				io/ft_print_tabstr.c			\
+				io/get_next_line.c				\
 
 
 # linked-list

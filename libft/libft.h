@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/25 13:42:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 13:15:05 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void				ft_putstrn_fd(const char *str, int fd, unsigned int n);
 void				ft_putstr_fd(const char *str, int fd);
 void				ft_putstr(const char *str);
 void				ft_putstrn(const char *str, unsigned int n);
-
+int					get_next_line(char **out, int fd);
 
 
 // linked-list

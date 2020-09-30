@@ -6,10 +6,9 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/25 13:40:05 by hthomas          ###   ########.fr        #
+#    Updated: 2020/09/30 13:23:02 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 
 NAME = minishell
@@ -20,7 +19,6 @@ NAME = minishell
 --LDFLAGS += -g3 -fsanitize=address
 
 --SRCS =	srcs/commands.c			\
-			srcs/get_next_line.c	\
 			srcs/main.c				\
 			srcs/parse.c			\
 			srcs/search_command.c	\
