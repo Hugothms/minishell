@@ -3,127 +3,166 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/05 15:18:39 by vmoreau           #+#    #+#              #
-#    Updated: 2020/04/08 18:23:44 by vmoreau          ###   ########.fr        #
+#    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
+#    Updated: 2020/09/30 14:37:32 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME 		= 	libft.a
+OBJS		=	${SRCS:.c=.o}
+INCLUDES	=	includes
+HEADER		=	$(INCLUDES)/libft.h
+CC			=	gcc
+CFLAGS		=	-Wall -Wextra -Werror
 
-####################################COLOR######################################
-#----------------reset----------------#
-NC = \033[0m
+# io
+SRCS		=	srcs/io/ft_print_tabint.c			\
+				srcs/io/ft_putnbr.c					\
+				srcs/io/ft_putnbr_fd.c				\
+				srcs/io/ft_putnbr_unsigned_fd.c		\
+				srcs/io/ft_putnbr_unsigned.c		\
+				srcs/io/ft_putchar.c				\
+				srcs/io/ft_putchar_fd.c				\
+				srcs/io/ft_putendl_fd.c				\
+				srcs/io/ft_puthex.c					\
+				srcs/io/ft_putpointer.c				\
+				srcs/io/ft_putstrn_fd.c				\
+				srcs/io/ft_putstr_fd.c				\
+				srcs/io/ft_putstr.c					\
+				srcs/io/ft_putstrn.c				\
+				srcs/io/ft_print_tabstr.c			\
 
-#-----------Regular Colors------------#
-BLACK = \033[0;30m
-RED = \033[0;31m
-GREEN = \033[32m
-YELLOW = \033[33;33m
-BLUE = \033[0;34m
-PURPLE = \033[35m
-CYAN = \033[1;36m
-WHITE = \033[0;37m
 
-#####################################PATH######################################
-MEM = src/memory/
-CHAR = src/char/
-STR = src/string/
-OP = src/output/
-CONV = src/conversion/
-LST = src/list/
-GNL = src/gnl/
-PTF = src/printf/
-####################################SOURCES####################################
+# linked-list
+SRCS		+=	srcs/linked-list/ft_lstnew.c		\
+				srcs/linked-list/ft_lstadd_front.c	\
+				srcs/linked-list/ft_lstsize.c		\
+				srcs/linked-list/ft_lstlast.c		\
+				srcs/linked-list/ft_lstadd_back.c	\
+				srcs/linked-list/ft_lstdelone.c		\
+				srcs/linked-list/ft_lstclear.c		\
+				srcs/linked-list/ft_lstiter.c		\
+				srcs/linked-list/ft_lstmap.c		\
 
-#----------------CHAR----------------#
-SRCS += $(CHAR)ft_isascii.c		$(CHAR)ft_isdigit.c $(CHAR)ft_isprint.c	\
-		$(CHAR)ft_isalnum.c		$(CHAR)ft_isalpha.c $(CHAR)ft_tolower.c	\
-		$(CHAR)ft_toupper.c
+# memory
+SRCS		+=	srcs/memory/ft_swap.c				\
+				srcs/memory/ft_memset.c				\
+				srcs/memory/ft_memcpy.c				\
+				srcs/memory/ft_memccpy.c			\
+				srcs/memory/ft_memmove.c			\
+				srcs/memory/ft_memchr.c				\
+				srcs/memory/ft_memcmp.c				\
+				srcs/memory/ft_calloc.c				\
+				srcs/memory/ft_bzero.c				\
+				srcs/memory/ft_chardup.c			\
+				srcs/memory/ft_free_tab.c			\
 
-#---------------STRING---------------#
-SRCS += $(STR)ft_strlcat.c		$(STR)ft_strncmp.c	$(STR)ft_strcmp.c	\
-		$(STR)ft_strchr.c		$(STR)ft_strlcpy.c	$(STR)ft_strlen.c	\
-		$(STR)ft_strrchr.c		$(STR)ft_strnstr.c	$(STR)ft_strdup.c	\
-		$(STR)ft_substr.c		$(STR)ft_strjoin.c	$(STR)ft_strtrim.c	\
-		$(STR)ft_strmapi.c		$(STR)ft_split.c
+# numeric
+SRCS		+=	srcs/numeric/ft_nbrlen.c			\
+				srcs/numeric/ft_convert_base.c		\
+				srcs/numeric/ft_itoa.c				\
+				srcs/numeric/ft_atol.c				\
+				srcs/numeric/ft_uitoa.c				\
+				srcs/numeric/ft_ltoa.c				\
+				srcs/numeric/ft_ltoa_base.c			\
+				srcs/numeric/ft_uitoa_base.c		\
+				srcs/numeric/ft_itoa_width.c		\
+				srcs/numeric/ft_pow.c				\
+				srcs/numeric/ft_atoi.c				\
+				srcs/numeric/ft_atoi_strict.c		\
+				srcs/numeric/ft_atof.c				\
+				srcs/numeric/ft_atoi_base.c			\
+				srcs/numeric/ft_max_int.c			\
+				srcs/numeric/ft_max_float.c			\
+				srcs/numeric/ft_min_int.c			\
+				srcs/numeric/ft_min_float.c			\
 
-#---------------OUTPUT---------------#
-SRCS += $(OP)ft_putchar_fd.c	$(OP)ft_putstr_fd.c	$(OP)ft_putendl_fd.c \
-		$(OP)ft_putnbr_fd.c		$(OP)ft_putnbr.c	$(OP)ft_putchar.c	\
-		$(OP)ft_putstr.c
+# string
+SRCS		+=	srcs/string/ft_is_from_charset.c	\
+				srcs/string/ft_strlen.c				\
+				srcs/string/ft_strdup.c				\
+				srcs/string/ft_strndup.c			\
+				srcs/string/ft_strcpy.c				\
+				srcs/string/ft_strlcpy.c			\
+				srcs/string/ft_strcat.c				\
+				srcs/string/ft_strlcat.c			\
+				srcs/string/ft_strcmp.c				\
+				srcs/string/ft_strncmp_rev.c		\
+				srcs/string/ft_strncmp.c			\
+				srcs/string/ft_strchr.c				\
+				srcs/string/ft_strrchr.c			\
+				srcs/string/ft_strmap.c				\
+				srcs/string/ft_strmapi.c			\
+				srcs/string/ft_substr.c				\
+				srcs/string/ft_split_set.c			\
+				srcs/string/ft_strjoin.c			\
+				srcs/string/ft_strjoin_sep.c		\
+				srcs/string/ft_strjoin_free.c		\
+				srcs/string/ft_strtrim.c			\
+				srcs/string/ft_strstr.c				\
+				srcs/string/ft_strnstr.c			\
+				srcs/string/ft_isprint.c			\
+				srcs/string/ft_isalpha.c			\
+				srcs/string/ft_isdigit.c			\
+				srcs/string/ft_issign.c				\
+				srcs/string/ft_isalnum.c			\
+				srcs/string/ft_isascii.c			\
+				srcs/string/ft_toupper.c			\
+				srcs/string/ft_tolower.c			\
+				srcs/string/ft_split.c				\
 
-#-------------CONVERSION-------------#
-SRCS += $(CONV)ft_atoi.c		$(CONV)ft_itoa.c
 
-#---------------MEMORY---------------#
-SRCS +=	$(MEM)ft_memset.c		$(MEM)ft_bzero.c	$(MEM)ft_memcpy.c	\
-		$(MEM)ft_memccpy.c		$(MEM)ft_memcmp.c	$(MEM)ft_memchr.c	\
-		$(MEM)ft_memmove.c		$(MEM)ft_calloc.c
+# ft_printf
+SRCS 		+= 	srcs/ft_printf/ft_printf.c			\
+				srcs/ft_printf/ft_s_printf_utils.c	\
+				srcs/ft_printf/ft_char.c			\
+				srcs/ft_printf/ft_hex.c				\
+				srcs/ft_printf/ft_integer.c			\
+				srcs/ft_printf/ft_integer2.c		\
+				srcs/ft_printf/ft_pointer.c			\
+				srcs/ft_printf/ft_string.c			\
+				srcs/ft_printf/ft_unsigned_int.c	\
+				srcs/ft_printf/ft_percent.c			\
+				srcs/ft_printf/ft_width.c			\
+				srcs/ft_printf/ft_flags.c			\
+				srcs/ft_printf/ft_atoi_no_sign.c	\
 
-#----------------LIST----------------#
-SRCS += $(LST)ft_lstadd_back.c	$(LST)ft_lstmap.c	$(LST)ft_lstclear.c	\
-		$(LST)ft_lstdelone.c	$(LST)ft_lstiter.c	$(LST)ft_lstsize.c	\
-		$(LST)ft_lstadd_front.c	$(LST)ft_lstlast.c	$(LST)ft_lstnew.c
+SRCS		+=	srcs/gnl/get_next_line.c
 
-#------------GET NEXT LINE-----------#
-SRCS += $(GNL)get_next_line.c	$(GNL)get_next_line_utils.c
 
-#---------------PRINTF---------------#
-SRCS +=	$(PTF)ft_printf.c		$(PTF)check_flags.c	$(PTF)find_size.c	\
-		$(PTF)init_struct.c		$(PTF)itoas.c		$(PTF)print_s.c		\
-		$(PTF)print_u.c			$(PTF)print_c.c		$(PTF)print_x.c		\
-		$(PTF)print_p.c			$(PTF)print_di.c	$(PTF)print_0.c		\
-		$(PTF)check_di.c		$(PTF)check_s.c		$(PTF)check_cper.c	\
-		$(PTF)check_uxp.c		$(PTF)check_di_d.c	$(PTF)set_ret.c
 
-####################################BASIC######################################
+###########################
+BLACK_FG = \033[38;5;0m
+RED_FG = \033[38;5;196m
+GREEN_FG = \033[38;5;46m
 
-CFLAGS = -Wall -Wextra -Werror
+BLACK_BG = \033[48;5;0m
+BLUE_BG = \033[48;5;39m
+PINK_BG = \033[48;5;213m
+YELLOW_BG = \033[48;5;11m
+RANLIB_BG = \033[48;5;172m
 
-CC = clang
+CLEAR_COLOR = \033[m
+###########################
 
-INC = header/
+OPTI = -Ofast #-O3
 
-HEADER = $(INC)libft.h
+all:		$(NAME)
 
-OBJ = $(SRCS:.c=.o)
+$(NAME):	${OBJS} $(HEADER)
+	@echo "Creating $(GREEN_FG)libft.a$(CLEAR_COLOR)"
+	ar rc	$(NAME) ${OBJS}
+	ranlib	$(NAME)
 
-#####################################RULE######################################
+.c.o:
+	${CC} -c ${CFLAGS} -I. -o $@ $<
 
-all : $(NAME)
+clean:
+	rm -f $(OBJS)
 
-$(NAME) : echoCL $(OBJ) echoOK echoCS echoAR
-	ar rcs $@ $(OBJ)
+fclean:		clean
+	rm -f $(NAME)
 
-$(OBJ) : %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -I $(INC) -c $< -o $@
-	printf "$(CYAN)."
-
-clean :	echoCLEAN
-	$(RM) $(OBJ)
-
-fclean : clean echoFCLEAN
-	$(RM) $(NAME)
-
-re : fclean all
-
-####################################ECHO######################################
-
-echoCL:
-	echo "$(YELLOW)===> Compiling Libft$(NC)"
-echoOK:
-	echo "$(GREEN)OK$(NC)"
-echoCS :
-	echo "$(GREEN)===> Compilation Success$(NC)"
-echoCLEAN :
-	echo "$(PURPLE)===> Cleanning OBJ libft$(NC)"
-echoFCLEAN :
-	echo "$(PURPLE)===> Cleanning Libft.a$(NC)"
-echoAR :
-	echo "$(CYAN)===> Archiving Libft$(NC)"
-
-.PHONY : all clean fclean re
-
-.SILENT :
+re:			fclean all
