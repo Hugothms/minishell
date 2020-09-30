@@ -6,14 +6,14 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/27 13:44:08 by hthomas           #+#    #+#             */
-/*   Updated: 2020/07/01 13:26:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/09/30 15:16:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include "../../libft/libft.h"
+# include "libft.h"
 # include <stdarg.h>
 # include <stdlib.h>
 # include <limits.h>
