@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/30 14:04:19 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/10/02 18:22:36 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,12 @@ NAME = minishell
 --LDFLAGS += -g3 -fsanitize=address
 
 --SRCS =	srcs/commands.c			\
+			srcs/linked_list.c		\
+			srcs/linked_list2.c		\
 			srcs/main.c				\
 			srcs/parse.c			\
 			srcs/search_command.c	\
-			srcs/utils.c
-
+			srcs/utils.c			
 
 --OBJS = $(--SRCS:.c=.o)
 --INCL = includes/

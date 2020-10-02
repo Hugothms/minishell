@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:05:36 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/02 18:50:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@ void	not_found(char *command)
 	exit(0);
 }
 
-char	*exec_command(char **command, char **envp, t_execve exec)
+char	*exec_command(t_list_command *command, char **envp, t_execve exec)
 {
 	if (!command)
 		return (NULL);
-	else if (!ft_strcmp(command[0], "echo"))
-		return (ft_echo(&command[1]));
-	else if (!ft_strcmp(command[0], "cd"))
-		return (ft_cd(&command[1], envp));
-	else if (!ft_strcmp(command[0], "pwd"))
+	else if (!ft_strcmp(command->str, "echo"))
+		return (ft_echo(command->next));
+	else if (!ft_strcmp(command->str, "cd"))
+		return (ft_cd(command->next, envp));
+	else if (!ft_strcmp(command->str, "pwd"))
 		return (ft_pwd());
-	else if (!ft_strcmp(command[0], "export"))
-		return (ft_export(&command[1], envp));
-	else if (!ft_strcmp(command[0], "unset"))
-		return (ft_unset(&command[1], envp));
-	else if (!ft_strcmp(command[0], "env"))
-		return (ft_env(&command[1], envp));
-	else if (!ft_strcmp(command[0], "exit"))
-		return (ft_exit(&command[1]));
+	else if (!ft_strcmp(command->str, "export"))
+		return (ft_export(command->next, envp));
+	else if (!ft_strcmp(command->str, "unset"))
+		return (ft_unset(command->next, envp));
+	else if (!ft_strcmp(command->str, "env"))
+		return (ft_env(command->next, envp));
+	else if (!ft_strcmp(command->str, "exit"))
+		return (ft_exit(command->next));
 	else if (search_command(command, envp, exec))
-		not_found(command[0]);
+		not_found(command->str);
 }
 
 void	print_prompt(void)
@@ -61,10 +61,10 @@ void	print_prompt(void)
 
 int		main(const int argc, char *argv[], char *envp[])
 {
-	char		*input;
-	char		**command;
-	char		*ret;
-	t_execve	exec;
+	char			*input;
+	t_list_command	*command;
+	char			*ret;
+	t_execve		exec;
 
 	ft_putstr(WELCOME_MSG);
 	exec.argv = argv;
@@ -81,16 +81,16 @@ int		main(const int argc, char *argv[], char *envp[])
 			free(input);
 			exit(1);
 		}
-		if (*command)
+		if (command)
 		{
 			if (ret = exec_command(command, envp, exec))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
-			ft_free_tab(command);
+			// ft_free_tab(command);
 		}
-		free(command);
+		c_lstclear(&command, free);
 	}
 	free(input);
 	return (0);

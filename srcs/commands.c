@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/29 18:09:34 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/02 18:56:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,26 @@ char	*ft_pwd(void)
 	return (ret);
 }
 
-char	*ft_echo(char **args)
+char	*ft_echo(t_list_command *args)
 {
-	int		i;
 	int		nflag;
 	char	*ret;
 
 	nflag = 0;
-	if (!*args)
+	if (!args || !args->str)
 		return (ft_strdup("\n"));
-	i = 0;
-	while (!ft_strcmp(args[i], "-n"))
+	while (!ft_strcmp(args->str, "-n"))
 	{
 		nflag = 1;
-		i++;
+		args = args->next;
 	}
 	ret = ft_strdup("");
-	while (args[i])
+	while (args)
 	{
-		ret = ft_strjoin_free(ret, args[i]);
-		if (args[i + 1])
+		ret = ft_strjoin_free(ret, args->str);
+		if (args->next)
 			ret = ft_strjoin_free(ret, " ");
-		i++;
+		args = args->next;
 	}
 	if (!nflag)
 		ret = ft_strjoin_free(ret, "\n");
@@ -63,32 +61,32 @@ char	*find_var_env(char **envp, char *var)
 	return (NULL);
 }
 
-char	*ft_cd(char **args, char **envp)
+char	*ft_cd(t_list_command *args, char **envp)
 {
 	char		*ret;
 	struct stat	stats;
 
-	if (!*args)
+	if (!args || !args->str)
 		chdir(&find_var_env(envp, "HOME=")[5]);  
-    if (stat(*args, &stats) != 0)
+    else if (stat(args->str, &stats) != 0)
     {
 		ret = ft_strdup("cd: no such file or directory: ");
-		ret = ft_strjoin_free(ret, *args);
+		ret = ft_strjoin_free(ret, args->str);
 		ret = ft_strjoin_free(ret, "\n");
 		return (ret);
 	}
 	else
-		if (chdir(*args))
+		if (chdir(args->str))
 		{
 			ret = (ft_strdup("cd: not a directory: "));
-			ret = ft_strjoin_free(ret, *args);
+			ret = ft_strjoin_free(ret, args->str);
 			ret = ft_strjoin_free(ret, "\n");
 			return (ret);
 		}
 	return (ft_strdup(""));
 }
 
-char	*ft_env(char **args, char **envp)
+char	*ft_env(t_list_command *args, char **envp)
 {
 	char	*ret;
 	int		i;
@@ -103,7 +101,7 @@ char	*ft_env(char **args, char **envp)
 	return (ret);
 }
 
-char	*ft_export(char **args, char **envp)
+char	*ft_export(t_list_command *args, char **envp)
 {
 	char	*key;
 	char	*value;
@@ -111,14 +109,14 @@ char	*ft_export(char **args, char **envp)
 	int		equal_pos;
 	int		i;
 
-	if (!*args)
+	if (!args || !args->str)
 		return (ft_env(args,envp));
 	equal_pos = 0;
-	while ((*args)[equal_pos] && (*args)[equal_pos] != '=')
+	while (args->str[equal_pos] && args->str[equal_pos] != '=')
 		equal_pos++;
-	if (equal_pos != ft_strlen(*args))
+	if (equal_pos != ft_strlen(args->str))
 	
-	tmp = ft_split(*args, '=');
+	tmp = ft_split(args->str, '=');
 	key = ft_strdup(tmp[0]);
 	value = ft_strdup(tmp[1]);
 	ft_free_tab(tmp);
@@ -133,19 +131,19 @@ char	*ft_export(char **args, char **envp)
 		}
 		i++;
 	}
-	envp[i] = *args;
+	envp[i] = args->str;
 	return (ft_strdup(""));
 }
 
-char	*ft_unset(char **args, char **envp)
+char	*ft_unset(t_list_command *args, char **envp)
 {
 	char	*var;
 	char	**tmp;
 	int		i;
 
-	if (!*args)
+	if (!args || !args->str)
 		return (ft_strdup(""));
-	tmp = ft_split(*args, '=');
+	tmp = ft_split(args->str, '=');
 	var = ft_strdup(*tmp);
 	ft_free_tab(tmp);
 	free(tmp);
@@ -163,12 +161,14 @@ char	*ft_unset(char **args, char **envp)
 	return (ft_strdup(""));
 }
 
-char	*ft_exit(char **args)
+char	*ft_exit(t_list_command *args)
 {
-	if (*args)
+	int	err;
+	
+	if (args)
 	{	
-		if (ft_isdigit(**args))
-			exit(**args - '0');
+		if (err = ft_atoi(args->str))
+			exit(err);
 	}
 	exit(0);
 	return (NULL);

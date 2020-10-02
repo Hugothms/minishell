@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 13:04:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/02 15:28:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**get_path(char **envp)
 	return (path);
 }
 
-int		try_path(char **command, char **envp, t_execve exec)
+int		try_path(t_list_command *command, char **envp, t_execve exec)
 {
 	int		i;
 	int		cpt;
@@ -39,7 +39,7 @@ int		try_path(char **command, char **envp, t_execve exec)
 	while (path[i])
 	{
 		full_path = ft_strjoin(path[i], "/");
-		full_path = ft_strjoin_free(full_path, *command);
+		full_path = ft_strjoin_free(full_path, command->str);
 		if (execve(full_path, command, exec.envp))
 			cpt++;
 		free(full_path);
@@ -52,7 +52,7 @@ int		try_path(char **command, char **envp, t_execve exec)
 	return (ret);
 }
 
-int		search_command(char **command, char **envp, t_execve exec)
+int		search_command(t_list_command *command, char **envp, t_execve exec)
 {
 	int	ret;
 
