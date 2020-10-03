@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/02 18:22:36 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/03 17:13:49 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ $(NAME) : $(--OBJS) $(--HEADER) $(--LIBFTDIR)/$(--LIBFT)
 
 ###########################LIBS
 $(--LIBFTDIR)/$(--LIBFT) :
-	$(--MAKE) -C libft all
+	$(--MAKE) -C libft
 
 %.o: %.c $(--HEADER)
 	$(--CC) -c $(--LDFLAGS) -I $(--INCL) -o $@ $<

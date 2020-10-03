@@ -6,21 +6,21 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 16:51:17 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:05:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 17:15:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
 /*
-** Iterates the list ’lst’ and applies the function ’f’ to the content of each 
-** element. Creates a newlist resulting of the successive applications of the 
-** function ’f’. The ’del’ function is used to delete the content of an 
-** element if needed.
+** Iterates the list ’lst’ and applies the function ’f’ to the content of each
+**  element. Creates a newlist resulting of the successive applications of the
+**  function ’f’. The ’del’ function is used to delete the content of an
+**  element if needed.
 ** @param lst	The adress of a pointer to an element.
 ** @param f		The adress of the function used to iterate on the list.
-** @param del	The adress of the function used to delete the content of an 
-*** element if needed.
+** @param del	The adress of the function used to delete the content of an
+**				 element if needed.
 ** @return		The new list. NULL if the allocation fails.
 */
 

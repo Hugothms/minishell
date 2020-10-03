@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:38:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 17:22:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <stdlib.h>
 # include <limits.h>
 
-#include "ft_printf.h"
-#include "get_next_line.h"
+# include "ft_printf.h"
+# include "get_next_line.h"
 
 typedef struct		s_list
 {
@@ -28,9 +28,9 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-
-
-// io
+/*
+** io
+*/
 void				ft_print_tabint(int *tab, int size);
 void				ft_putnbr(int nb);
 void				ft_putnbr_fd(int nb, int fd);
@@ -46,8 +46,9 @@ void				ft_putstr_fd(const char *str, int fd);
 void				ft_putstr(const char *str);
 void				ft_putstrn(const char *str, unsigned int n);
 
-
-// linked-list
+/*
+** linked-list
+*/
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **alst, t_list *new);
 int					ft_lstsize(t_list *lst);
@@ -59,9 +60,9 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 
-
-
-// memory
+/*
+** memory
+*/
 void				ft_swap(void *a, void *b);
 void				*ft_memset(void *b, int c, size_t len);
 void				*ft_memcpy(void *dst, const void *src, size_t n);
@@ -74,9 +75,9 @@ void				ft_bzero(void *b, size_t n);
 char				*ft_chardup(char const c);
 void				ft_free_tab(char **tab);
 
-
-
-// numeric
+/*
+** numeric
+*/
 int					ft_nbrlen(int n);
 char				*ft_convert_base(char *nbr, char *base_from, char *base_to);
 char				*ft_itoa(int nbr);
@@ -101,8 +102,9 @@ char				*fill_positivenbr_base(long nbr, char *base,
 					char *res, int i);
 char				*fill_nbr_base(char *res, long nbr, char *base, int sign);
 
-
-// string
+/*
+** string
+*/
 int					ft_is_from_charset(const char *str, const char *charset);
 char				*ft_strrev_minus_1(char *res);
 size_t				ft_strlen(const char *str);
