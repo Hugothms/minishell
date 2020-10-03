@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:35:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 15:26:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_list_command	*c_lstnew(char *str, char type)
 	if (!(new = malloc(sizeof(t_list_command))))
 		return (NULL);
 	new->str = ft_strdup(str);
-	new->type = type;
+	new->flags = type;
 	new->next = NULL;
 	return (new);
 }

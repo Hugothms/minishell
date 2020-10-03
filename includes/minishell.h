@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:38:48 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 18:19:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,13 @@
 # include <errno.h>
 # include "../libft/includes/libft.h"
 
+# define WHITESPACES    " \t"
 
+# define NOTHING        0
+# define SIMPLE_QUOTES  0b0001
+# define DOUBLE_QUOTES  0b0010
+# define NO_SPACE_AFTER 0b0100
+# define B              0b1000
 
 typedef struct	s_execve
 {
@@ -36,7 +42,7 @@ typedef struct	s_execve
 typedef struct		s_list_command
 {
 	char					*str;
-	char					type;
+	int					  flags;
 	struct s_list_command	*next;
 }					t_list_command;
 

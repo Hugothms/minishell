@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:20:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 15:26:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ t_list_command	*c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(vo
 	if (!lst || !f || !del)
 		return (NULL);
 	tmp = lst;
-	if (!(mapedlst = c_lstnew(f(tmp->str), tmp->type)))
+	if (!(mapedlst = c_lstnew(f(tmp->str), tmp->flags)))
 		c_lstclear(&mapedlst, del);
 	tmp = tmp->next;
 	while (tmp)
 	{
-		if (!(new = c_lstnew(f(tmp->str), tmp->type)))
+		if (!(new = c_lstnew(f(tmp->str), tmp->flags)))
 			c_lstclear(&mapedlst, del);
 		c_lstadd_back(&mapedlst, new);
 		tmp = tmp->next;

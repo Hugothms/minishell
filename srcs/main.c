@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:50:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 00:33:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int		main(const int argc, char *argv[], char *envp[])
 	t_execve		exec;
 
 	ft_putstr(WELCOME_MSG);
-	exec.argv = argv;
 	exec.envp = envp;
 	input = malloc(1);
 	while (1)
@@ -75,6 +74,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
+		command = NULL;
 		if (parse_input(input, &command))
 		{
 			ft_putstr("minishell: parse error\n");
@@ -88,7 +88,6 @@ int		main(const int argc, char *argv[], char *envp[])
 				ft_putstr(ret);
 				free(ret);
 			}
-			// ft_free_tab(command);
 		}
 		c_lstclear(&command, free);
 	}

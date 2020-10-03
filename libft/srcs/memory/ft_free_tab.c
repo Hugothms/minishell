@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:58:38 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 18:10:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	ft_free_tab(char **tab)
 {
-	while (*tab)
-		free(*tab++);
+	int	i;
+	
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
 }

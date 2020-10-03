@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/02 18:56:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 18:27:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_echo(t_list_command *args)
 	while (args)
 	{
 		ret = ft_strjoin_free(ret, args->str);
-		if (args->next)
+		if (args->next && !(args->flags & NO_SPACE_AFTER))
 			ret = ft_strjoin_free(ret, " ");
 		args = args->next;
 	}
@@ -120,7 +120,6 @@ char	*ft_export(t_list_command *args, char **envp)
 	key = ft_strdup(tmp[0]);
 	value = ft_strdup(tmp[1]);
 	ft_free_tab(tmp);
-	free(tmp);
 	i = 0;
 	while (envp[i])
 	{
@@ -146,7 +145,6 @@ char	*ft_unset(t_list_command *args, char **envp)
 	tmp = ft_split(args->str, '=');
 	var = ft_strdup(*tmp);
 	ft_free_tab(tmp);
-	free(tmp);
 	i = 0;
 	while (envp[i])
 	{
@@ -175,7 +173,7 @@ char	*ft_exit(t_list_command *args)
 }
 
 
-// echo	with option ’-n’ //!and $VAR
+// echo	with option ’-n’
 // cd		with only a relative or absolute path
 // pwd		without any options
 //! export	without any options
