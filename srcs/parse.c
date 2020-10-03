@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 00:44:48 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 00:53:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,16 +104,22 @@ int		parse_input(char *input, t_list_command **command)
 			{
 				char *str = ft_strndup(&input[pos + 1], i - pos - 1);
 				c_lstadd_back(command, c_lstnew(str, SIMPLE_QUOTES));
+				free(str);
 			}
 			pos = i;
 			in_simple += (in_simple == 0 ? 1 : -1);
 		}
-		//same same... but different
-		// else if(input[i] == '\"' && !in_simple)
-		// {
-		// 	in_double += (in_double == 0 ? 1 : -1);
-		// }
-
+		else if(input[i] == '\"' && !in_simple)
+		{
+			if (in_double)
+			{
+				char *str = ft_strndup(&input[pos + 1], i - pos - 1);
+				c_lstadd_back(command, c_lstnew(str, SIMPLE_QUOTES));
+				free(str);
+			}
+			pos = i;
+			in_double += (in_double == 0 ? 1 : -1);
+		}
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[i], WHITESPACES) && !in_simple && !in_double)
 		{
@@ -131,5 +137,5 @@ int		parse_input(char *input, t_list_command **command)
 		i++;
 	}
 	// default_tmp(input, command);
-	return (0);
+	return (in_simple || in_double);
 }
