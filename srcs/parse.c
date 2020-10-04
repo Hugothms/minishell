@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 01:10:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 02:28:05 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int		parse_input(char *input, t_list_command **command)
 		par.i++;
 	}
 	// default_tmp(input, command);
+
 	return (par.in_simple || par.in_double);
 }
