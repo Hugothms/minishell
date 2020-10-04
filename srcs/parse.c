@@ -6,31 +6,31 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 01:10:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 13:10:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int 	dollar(char *input, t_list_command *command)
+int 	replace_dollar(t_list_command **command, char **envp)
 {
 	int i;
 
 	i = 0;
-	while (input[i])
+	while (command)
 	{
-		// if (input[i] == '$' && ft_isascii(input[i + 1]))
+		// if (command == '$' && ft_isascii(input[i + 1]))
 		// {
 		// 	if (input[ i + 1] == '?')
 		// 		print err code();
 		// 	replace_var_env();
 		// }
-		i++;
+		*command = (*command)->next;
 	}
 	return (0);
 }
 
-void	default_tmp(char *input, t_list_command **command)
+void	ancien_parsing_a_supprimer(char *input, t_list_command **command)
 {
 	char **tmp;
 	int i;
@@ -43,7 +43,7 @@ void	default_tmp(char *input, t_list_command **command)
 	ft_free_tab(tmp);
 }
 
-int		parse_input(char *input, t_list_command **command)
+int		parse_input(char *input, t_list_command **command, char **envp)
 {
 	t_parse		par;
 
@@ -59,6 +59,7 @@ int		parse_input(char *input, t_list_command **command)
 			end_word(input, command, &par);
 		par.i++;
 	}
-	// default_tmp(input, command);
+	// replace_dollar(command, envp);
+	// ancien_parsing_a_supprimer(input, command);
 	return (par.in_simple || par.in_double);
 }

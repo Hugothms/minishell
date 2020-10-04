@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 00:33:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 13:06:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	not_found(char *command)
 	exit(0);
 }
 
-char	*exec_command(t_list_command *command, char **envp, t_execve exec)
+char	*exec_command(t_list_command *command, char **envp)
 {
 	if (!command)
 		return (NULL);
@@ -44,7 +44,7 @@ char	*exec_command(t_list_command *command, char **envp, t_execve exec)
 		return (ft_env(command->next, envp));
 	else if (!ft_strcmp(command->str, "exit"))
 		return (ft_exit(command->next));
-	else if (search_command(command, envp, exec))
+	else if (search_command(command, envp))
 		not_found(command->str);
 }
 
@@ -64,10 +64,8 @@ int		main(const int argc, char *argv[], char *envp[])
 	char			*input;
 	t_list_command	*command;
 	char			*ret;
-	t_execve		exec;
 
 	ft_putstr(WELCOME_MSG);
-	exec.envp = envp;
 	input = malloc(1);
 	while (1)
 	{
@@ -75,7 +73,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		print_prompt();
 		get_next_line(&input, 0);
 		command = NULL;
-		if (parse_input(input, &command))
+		if (parse_input(input, &command, envp))
 		{
 			ft_putstr("minishell: parse error\n");
 			free(input);
@@ -83,7 +81,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		}
 		if (command)
 		{
-			if (ret = exec_command(command, envp, exec))
+			if (ret = exec_command(command, envp))
 			{
 				ft_putstr(ret);
 				free(ret);
