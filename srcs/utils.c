@@ -6,14 +6,15 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/18 15:40:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 16:22:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_putstr_clean(char *str)
+int		escaped(char *str, int i)
 {
-	ft_putstr(str);
-	ft_putchar('\n');
+	if (i == 0)
+		return (0);
+	return (str[i - 1] == '\\');
 }
