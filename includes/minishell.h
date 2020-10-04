@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 18:19:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 01:12:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,23 @@ typedef struct	s_execve
 {
 	char	**argv;
 	char	**envp;
-}				t_execve;
-
+}			        	t_execve;
 
 typedef struct		s_list_command
 {
-	char					*str;
-	int					  flags;
+	char					        *str;
+	int					          flags;
 	struct s_list_command	*next;
 }					t_list_command;
+
+typedef struct		s_parse
+{
+	int	in_simple;
+	int	in_double;
+	int	pos;
+	int	i;
+}			        		t_parse;
+
 
 
 //commands
@@ -58,6 +66,12 @@ char	*ft_exit(t_list_command *args);
 
 //parse
 int		parse_input(char *line, t_list_command **command);
+
+//parse2
+void	simple_quotes(char *input, t_list_command **command, t_parse *par);
+void	double_quotes(char *input, t_list_command **command, t_parse *par);
+void	end_word(char *input, t_list_command **command, t_parse *par);
+void	init_par(t_parse *par);
 
 //search_command
 int		search_command(t_list_command *command, char **envp, t_execve exec);

@@ -6,51 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 00:53:34 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 01:10:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// int		quotes(char *input, t_list_command *command, int c)
-// {
-// 	int	in_simple;
-// 	int	in_double;
-// 	int	pos;
-// 	int	i;
-
-// 	in_simple = 0;
-// 	in_double = 0;
-// 	i = 0;
-// 	while (input[i])
-// 	{
-// 		if(input[i] == '\"' && !in_double)
-// 		{
-// 			if (!in_simple)
-// 				pos = i;
-// 			else
-// 			{
-// 				if (pos != 0)
-// 					(*command)[c++] = ft_strndup(input, pos);
-// 				(*command)[c++] = ft_strndup(&input[pos + 1], i - pos - 1);
-// 				(*command)[c] = NULL;
-// 				if (quotes(&input[i + 1], command, c))
-// 					return (c);
-// 				return 0;
-// 			}
-// 			in_simple += (in_simple == 0 ? 1 : -1);
-// 		}
-
-// 		//same same... but different
-// 		// else if(input[i] == '\"' && !in_simple)
-// 		// {
-
-// 		// 	in_double += (in_double == 0 ? 1 : -1);
-// 		// }
-// 		i++;
-// 	}
-// 	return (in_simple || in_double);
-// }
 
 int 	dollar(char *input, t_list_command *command)
 {
@@ -83,59 +43,22 @@ void	default_tmp(char *input, t_list_command **command)
 	ft_free_tab(tmp);
 }
 
-char	**lst_to_strs(t_list_command *command);
-
 int		parse_input(char *input, t_list_command **command)
 {
-	int	in_simple;
-	int	in_double;
-	int	pos;
-	int	i;
+	t_parse		par;
 
-	in_simple = 0;
-	in_double = 0;
-	i = 0;
-	pos = 0;
-	while (input[i])
+	init_par(&par);
+	while (input[par.i])
 	{
-		if(input[i] == '\'' && !in_double)
-		{
-			if (in_simple)
-			{
-				char *str = ft_strndup(&input[pos + 1], i - pos - 1);
-				c_lstadd_back(command, c_lstnew(str, SIMPLE_QUOTES));
-				free(str);
-			}
-			pos = i;
-			in_simple += (in_simple == 0 ? 1 : -1);
-		}
-		else if(input[i] == '\"' && !in_simple)
-		{
-			if (in_double)
-			{
-				char *str = ft_strndup(&input[pos + 1], i - pos - 1);
-				c_lstadd_back(command, c_lstnew(str, SIMPLE_QUOTES));
-				free(str);
-			}
-			pos = i;
-			in_double += (in_double == 0 ? 1 : -1);
-		}
+		if(input[par.i] == '\'' && !par.in_double)
+			simple_quotes(input, command, &par);
+		else if(input[par.i] == '\"' && !par.in_simple)
+			double_quotes(input, command, &par);
 		// si je suis sur un mot et hors de quotes
-		else if (!ft_in_charset(input[i], WHITESPACES) && !in_simple && !in_double)
-		{
-			// si je suis sur le dernier caractere du mot
-			if(!input[i + 1] || ft_in_charset(input[i + 1], WHITESPACES))
-			{
-				while(ft_in_charset(input[pos], WHITESPACES))
-					pos++;
-				char *str = ft_strndup(&input[pos], i - pos + 1);
-				c_lstadd_back(command, c_lstnew(str, NOTHING));
-				free(str);
-				pos = i + 1;
-			}
-		}
-		i++;
+		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
+			end_word(input, command, &par);
+		par.i++;
 	}
 	// default_tmp(input, command);
-	return (in_simple || in_double);
+	return (par.in_simple || par.in_double);
 }
