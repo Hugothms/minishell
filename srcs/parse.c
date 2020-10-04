@@ -6,26 +6,40 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 13:10:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 15:17:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int 	replace_dollar(t_list_command **command, char **envp)
+void	replace_var_env(t_list_command *command, char **envp)
+{
+	char *str;
+	
+	str = 
+	command->str = str;
+
+}
+
+int 	replace_dollar(t_list_command *command, char **envp)
 {
 	int i;
 
-	i = 0;
 	while (command)
 	{
-		// if (command == '$' && ft_isascii(input[i + 1]))
-		// {
-		// 	if (input[ i + 1] == '?')
-		// 		print err code();
-		// 	replace_var_env();
-		// }
-		*command = (*command)->next;
+		i = 0;
+		while ((command)->str[i])
+		{
+			if ((command)->str[i] == '$' && ft_isascii((command)->str[i + 1]))
+			{
+				// if ((command)->str[i + 1] == '?')
+				// 	err_code();
+				// else
+				// 	replace_var_env(command, envp);
+			}
+			i++;
+		}
+		command = (command)->next;
 	}
 	return (0);
 }
@@ -59,7 +73,7 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 			end_word(input, command, &par);
 		par.i++;
 	}
-	// replace_dollar(command, envp);
+	replace_dollar(*command, envp);
 	// ancien_parsing_a_supprimer(input, command);
 	return (par.in_simple || par.in_double);
 }

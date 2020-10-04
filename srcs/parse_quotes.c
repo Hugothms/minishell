@@ -6,11 +6,19 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 13:21:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 13:27:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	init_par(t_parse *par)
+{
+	par->in_simple = 0;
+	par->in_double = 0;
+	par->i = 0;
+	par->pos = 0;
+}
 
 void	add_substr_to_cmd(char *input, t_list_command **command, int start, int size, int flags)
 {
@@ -61,12 +69,4 @@ void	end_word(char *input, t_list_command **command, t_parse *par)
 		add_substr_to_cmd(input, command, par->pos, par->i - par->pos + 1, NOTHING);
 		par->pos = par->i + 1;
 	}
-}
-
-void	init_par(t_parse *par)
-{
-	par->in_simple = 0;
-	par->in_double = 0;
-	par->i = 0;
-	par->pos = 0;
 }

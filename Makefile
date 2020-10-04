@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/04 01:12:11 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/04 13:38:21 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NAME = minishell
 			srcs/linked_list2.c		\
 			srcs/main.c				\
 			srcs/parse.c			\
-			srcs/parse2.c			\
+			srcs/parse_quotes.c		\
 			srcs/search_command.c	\
 			srcs/utils.c			
 
