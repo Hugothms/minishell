@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:16:10 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/03 17:04:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char		**ft_split_set(const char *str, char *charset)
 	char	**tab;
 	int		words_count;
 	int		words_len[count_words(str, charset)];
-	int		allgood;
 	int		i;
 
 	if (!str)
@@ -129,8 +128,7 @@ char		**ft_split_set(const char *str, char *charset)
 	while (i < words_count)
 		words_len[i++] = 0;
 	count_lengths(words_len, str, charset);
-	allgood = fill_tab(tab, words_len, str, charset);
-	if (allgood)
+	if (fill_tab(tab, words_len, str, charset))
 		return (tab);
 	return (0);
 }

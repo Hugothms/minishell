@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/24 13:04:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 00:45:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(char **envp)
+char	**get_paths(char **envp)
 {
 	int		i;
 	char	**path;
@@ -24,35 +24,56 @@ char	**get_path(char **envp)
 	return (path);
 }
 
-int		try_path(char **command, char **envp, t_execve exec)
+char	**lst_to_strs(t_list_command *command)
+{
+	char	**argv;
+	int		i;
+
+	if(!(argv = malloc(sizeof(*argv) * (c_lstsize(command) + 1))))
+		return (NULL);
+	i = 0;
+	while (command)
+	{
+		argv[i++] = ft_strdup(command->str);
+		command = command->next;
+	}
+	argv[i] = NULL;
+	return (argv);
+}
+
+int		try_path(t_list_command *command, char **envp, t_execve exec)
 {
 	int		i;
 	int		cpt;
 	int		ret;
 	char	**path;
 	char	*full_path;
+	char	**argv;
 
-	path = get_path(envp);
+	path = get_paths(envp);
 	i = 0;
 	cpt = 0;
 	ret = 1;
 	while (path[i])
 	{
 		full_path = ft_strjoin(path[i], "/");
-		full_path = ft_strjoin_free(full_path, *command);
-		if (execve(full_path, command, exec.envp))
-			cpt++;
+		full_path = ft_strjoin_free(full_path, command->str);
+		if (argv = lst_to_strs(command))
+		{
+			if (execve(full_path, argv, exec.envp))
+				cpt++;
+			ft_free_tab(argv);
+		}
 		free(full_path);
 		if (i != cpt)
 			ret = 0;
 		i++;
 	}
 	ft_free_tab(path);
-	free(path);
 	return (ret);
 }
 
-int		search_command(char **command, char **envp, t_execve exec)
+int		search_command(t_list_command *command, char **envp, t_execve exec)
 {
 	int	ret;
 
