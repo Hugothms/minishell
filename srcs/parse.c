@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 15:17:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 16:14:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,45 @@
 
 void	replace_var_env(t_list_command *command, char **envp)
 {
-	char *str;
-	
-	str = 
-	command->str = str;
+	int		i;
+	char	*tmp;
 
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], &(command->str[1]), ft_strlen(command->str) - 1) && envp[i][ft_strlen(command->str) - 1] == '=')
+		{
+			tmp = command->str;
+			command->str = ft_strdup(&(envp[i][ft_strlen(command->str)]));
+			free(tmp);
+			return ;
+		}
+		i++;
+	}
+	command->str = NULL;
+}
+
+void	err_code(t_list_command *command, char **envp)
+{
+	ft_putstr("err_code\n");
+	return ;
 }
 
 int 	replace_dollar(t_list_command *command, char **envp)
 {
-	int i;
+	int	i;
 
 	while (command)
 	{
 		i = 0;
-		while ((command)->str[i])
+		while (command->str && (command)->str[i])
 		{
-			if ((command)->str[i] == '$' && ft_isascii((command)->str[i + 1]))
+			if ((command)->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii((command)->str[i + 1]))
 			{
-				// if ((command)->str[i + 1] == '?')
-				// 	err_code();
-				// else
-				// 	replace_var_env(command, envp);
+				if ((command)->str[i + 1] == '?')
+					err_code(command, envp);
+				else
+					replace_var_env(command, envp);
 			}
 			i++;
 		}

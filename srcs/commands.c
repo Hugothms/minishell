@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 15:29:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 15:36:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,8 @@ char	*ft_export(t_list_command *args, char **envp)
 		}
 		i++;
 	}
-	envp[i] = ft_strjoin(key, "=");
+	envp[i] = ft_strjoin_free(key, "=");
 	envp[i] = ft_strjoin_free(envp[i], value);
-	free(key);
 	free(value);
 	envp[i + 1] = NULL;
 	return (ft_strdup(""));
