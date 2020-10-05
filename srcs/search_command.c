@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 00:45:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:32:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**lst_to_strs(t_list_command *command)
 	return (argv);
 }
 
-int		try_path(t_list_command *command, char **envp, t_execve exec)
+int		try_path(t_list_command *command, char **envp)
 {
 	int		i;
 	int		cpt;
@@ -60,7 +60,7 @@ int		try_path(t_list_command *command, char **envp, t_execve exec)
 		full_path = ft_strjoin_free(full_path, command->str);
 		if (argv = lst_to_strs(command))
 		{
-			if (execve(full_path, argv, exec.envp))
+			if (execve(full_path, argv, envp))
 				cpt++;
 			ft_free_tab(argv);
 		}
@@ -73,21 +73,25 @@ int		try_path(t_list_command *command, char **envp, t_execve exec)
 	return (ret);
 }
 
-int		search_command(t_list_command *command, char **envp, t_execve exec)
+int		search_command(t_list_command *command, char **envp)
 {
 	int	ret;
+	int	status;
 
 	ret = 1;
 	pid_t pid = fork();
+	ft_putstr("azerty\n");
+	ft_putnbr(pid);
 	if (pid == 0)
 	{
-		if (try_path(command, envp, exec))
+		if (try_path(command, envp))
 			exit(0);
 	}
 	else
 	{
 		ret = 0;
-		wait(0);
+		wait(&status);
 	}
+	ft_putnbr(pid);
 	return (ret);
 }

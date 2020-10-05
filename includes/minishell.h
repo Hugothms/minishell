@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 01:12:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/04 16:23:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@
 # define DOUBLE_QUOTES  0b0010
 # define NO_SPACE_AFTER 0b0100
 # define B              0b1000
-
-typedef struct	s_execve
-{
-	char	**argv;
-	char	**envp;
-}			        	t_execve;
 
 typedef struct		s_list_command
 {
@@ -65,19 +59,19 @@ char	*ft_env(t_list_command *args, char **envp);
 char	*ft_exit(t_list_command *args);
 
 //parse
-int		parse_input(char *line, t_list_command **command);
+int		parse_input(char *line, t_list_command **command, char **envp);
 
-//parse2
+//parse_quotes
 void	simple_quotes(char *input, t_list_command **command, t_parse *par);
 void	double_quotes(char *input, t_list_command **command, t_parse *par);
 void	end_word(char *input, t_list_command **command, t_parse *par);
 void	init_par(t_parse *par);
 
 //search_command
-int		search_command(t_list_command *command, char **envp, t_execve exec);
+int		search_command(t_list_command *command, char **envp);
 
 //utils
-void	ft_putstr_clean(char *str);
+int		escaped(char *str, int i);
 
 //linked_list
 t_list_command  *c_lstnew(char *str, char type);
@@ -86,7 +80,7 @@ int	            c_lstsize(t_list_command *lst);
 t_list_command  *c_lstlast(t_list_command *lst);
 void	          c_lstadd_back(t_list_command **alst, t_list_command *new);
 void	          c_lstdelone(t_list_command *lst, void (*del)(void*));
-void	          c_lstclear(t_list_command **lst, void (*del)(void*));
+void	          c_lstclear(t_list_command **alst, void (*del)(void*));
 void	          c_lstiter(t_list_command *lst, void (*f)(void *));
 t_list_command  *c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(void *));
 

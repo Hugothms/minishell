@@ -6,31 +6,83 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 01:10:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:28:07 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int 	dollar(char *input, t_list_command *command)
+void	replace_var_env(t_list_command *command, char **envp, int i)
 {
-	int i;
+	char	*tmp;
 
-	i = 0;
-	while (input[i])
+	while (envp[i])
 	{
-		// if (input[i] == '$' && ft_isascii(input[i + 1]))
-		// {
-		// 	if (input[ i + 1] == '?')
-		// 		print err code();
-		// 	replace_var_env();
-		// }
+		if (!ft_strncmp(envp[i], &(command->str[1]), ft_strlen(command->str) - 1) && envp[i][ft_strlen(command->str) - 1] == '=')
+		{
+			tmp = command->str;
+			command->str = ft_strdup(&(envp[i][ft_strlen(command->str)]));
+			free(tmp);
+			return ;
+		}
 		i++;
+	}
+	command->str = NULL;
+}
+
+void	err_code(t_list_command *command, char **envp)
+{
+	ft_putstr("err_code\n");
+	return ;
+}
+
+int 	replace_dollar(t_list_command *command, char **envp)
+{
+	int	i;
+
+	while (command)
+	{
+		i = 0;
+		while (command->str && (command)->str[i])
+		{
+			if ((command)->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii((command)->str[i + 1]))
+			{
+				if ((command)->str[i + 1] == '?')
+					err_code(command, envp);
+				else
+					replace_var_env(command, envp, i);
+			}
+			i++;
+		}
+		command = (command)->next;
 	}
 	return (0);
 }
 
-void	default_tmp(char *input, t_list_command **command)
+int 	deal_backslash(t_list_command *command, char **envp)
+{
+	int	i;
+
+	while (command)
+	{
+		i = 0;
+		while (command->str && (command)->str[i])
+		{
+			if ((command)->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii((command)->str[i + 1]))
+			{
+				if ((command)->str[i + 1] == '?')
+					err_code(command, envp);
+				else
+					replace_var_env(command, envp, i);
+			}
+			i++;
+		}
+		command = (command)->next;
+	}
+	return (0);
+}
+
+void	ancien_parsing_a_supprimer(char *input, t_list_command **command)
 {
 	char **tmp;
 	int i;
@@ -43,22 +95,24 @@ void	default_tmp(char *input, t_list_command **command)
 	ft_free_tab(tmp);
 }
 
-int		parse_input(char *input, t_list_command **command)
+int		parse_input(char *input, t_list_command **command, char **envp)
 {
 	t_parse		par;
 
 	init_par(&par);
 	while (input[par.i])
 	{
-		if(input[par.i] == '\'' && !par.in_double)
+		if(input[par.i] == '\'' && !par.in_double && !escaped(input, par.i))
 			simple_quotes(input, command, &par);
-		else if(input[par.i] == '\"' && !par.in_simple)
+		else if(input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
 			double_quotes(input, command, &par);
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
 			end_word(input, command, &par);
 		par.i++;
 	}
-	// default_tmp(input, command);
+	// deal_backslash(*command, envp);
+	replace_dollar(*command, envp);
+	// ancien_parsing_a_supprimer(input, command);
 	return (par.in_simple || par.in_double);
 }

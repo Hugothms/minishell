@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 15:26:18 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:35:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ void	c_lstdelone(t_list_command *lst, void (*del)(void*))
 ** @param del	The adress of the function used to delete the content of the 
 ** element.
 */
-void	c_lstclear(t_list_command **lst, void (*del)(void*))
+void	c_lstclear(t_list_command **alst, void (*del)(void*))
 {
-	if (!*lst)
+	if (!*alst)
 		return ;
-	if ((*lst)->next)
+	if ((*alst)->next)
 	{
-		c_lstclear(&((*lst)->next), del);
-		free((*lst)->next);
+		c_lstclear(&((*alst)->next), del);
+		free((*alst)->next);
 	}
-	c_lstdelone(*lst, del);
-	*lst = NULL;
+	c_lstdelone(*alst, del);
+	*alst = NULL;
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 16:50:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 17:14:48 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:37:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 **  element.
 */
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_lstclear(t_list **alst, void (*del)(void*))
 {
-	if (!*lst)
+	if (!*alst)
 		return ;
-	if ((*lst)->next)
+	if ((*alst)->next)
 	{
-		ft_lstclear(&((*lst)->next), del);
-		free((*lst)->next);
+		ft_lstclear(&((*alst)->next), del);
+		free((*alst)->next);
 	}
-	ft_lstdelone(*lst, del);
-	*lst = NULL;
+	ft_lstdelone(*alst, del);
+	*alst = NULL;
 }
