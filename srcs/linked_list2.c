@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 16:26:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:35:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	c_lstclear(t_list_command **alst, void (*del)(void*))
 		free((*alst)->next);
 	}
 	c_lstdelone(*alst, del);
+	*alst = NULL;
 }
 
 /*

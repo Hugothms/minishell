@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 13:09:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:32:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ int		try_path(t_list_command *command, char **envp)
 int		search_command(t_list_command *command, char **envp)
 {
 	int	ret;
+	int	status;
 
 	ret = 1;
 	pid_t pid = fork();
+	ft_putstr("azerty\n");
+	ft_putnbr(pid);
 	if (pid == 0)
 	{
 		if (try_path(command, envp))
@@ -87,7 +90,8 @@ int		search_command(t_list_command *command, char **envp)
 	else
 	{
 		ret = 0;
-		wait(0);
+		wait(&status);
 	}
+	ft_putnbr(pid);
 	return (ret);
 }
