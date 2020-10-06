@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 15:36:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 16:45:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_echo(t_list_command *args)
 			ret = ft_strjoin_free(ret, " ");
 		args = args->next;
 	}
+	ret = ft_strjoin_free(ret, "|"); // to delete
 	if (!nflag)
 		ret = ft_strjoin_free(ret, "\n");
 	return (ret);
