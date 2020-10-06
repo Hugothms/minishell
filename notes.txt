@@ -105,18 +105,8 @@ good test:
 
 
 
-
-$ echo $HOME
-/home/hugothms
-
-$ echo "$HOME"
-/home/hugothms
-
-$ echo "\$HOME"
-$HOME
-
-$ echo '$HOME'
-$HOME
-
-$ echo '\$HOME'
-\$HOME
+TO DO:
+export	without any options
+unset	without any options
+env		without any options and any arguments
+echo	$?

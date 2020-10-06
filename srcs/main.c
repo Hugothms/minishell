@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 22:30:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:33:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		get_next_line(&input, 0);
 		command = NULL;
 		if (parse_input(input, &command, envp))
-		{
-			ft_putstr("minishell: parse error\n");
-			free(input);
-			exit(1);
-		}
+			parse_error_exit(input);
 		if (command)
 		{
 			if (ret = exec_command(command, envp))

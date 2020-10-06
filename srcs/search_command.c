@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 22:29:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:32:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**lst_to_strs(t_list_command *command)
 	char	**argv;
 	int		i;
 
-	if(!(argv = malloc(sizeof(*argv) * (c_lst_size(command) + 1))))
+	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(command) + 1))))
 		return (NULL);
 	i = 0;
 	while (command)
@@ -41,14 +41,28 @@ char	**lst_to_strs(t_list_command *command)
 	return (argv);
 }
 
+void	try_path2(t_list_command *command, char **envp, char *begin, int *cpt)
+{
+	char	*full_path;
+	char	**argv;
+
+	full_path = ft_strjoin(begin, "/");
+	full_path = ft_strjoin_free(full_path, command->str);
+	if (argv = lst_to_strs(command))
+	{
+		if (execve(full_path, argv, envp))
+			*cpt++;
+		ft_free_tab(argv);
+	}
+	free(full_path);
+}
+
 int		try_path(t_list_command *command, char **envp)
 {
 	int		i;
 	int		cpt;
 	int		ret;
 	char	**path;
-	char	*full_path;
-	char	**argv;
 
 	path = get_paths(envp);
 	i = 0;
@@ -56,15 +70,7 @@ int		try_path(t_list_command *command, char **envp)
 	ret = 1;
 	while (path[i])
 	{
-		full_path = ft_strjoin(path[i], "/");
-		full_path = ft_strjoin_free(full_path, command->str);
-		if (argv = lst_to_strs(command))
-		{
-			if (execve(full_path, argv, envp))
-				cpt++;
-			ft_free_tab(argv);
-		}
-		free(full_path);
+		try_path2(command, envp, path[i], &cpt);
 		if (i != cpt)
 			ret = 0;
 		i++;
@@ -75,11 +81,12 @@ int		try_path(t_list_command *command, char **envp)
 
 int		search_command(t_list_command *command, char **envp)
 {
-	int	ret;
-	int	status;
+	int		ret;
+	int		status;
+	pid_t	pid;
 
 	ret = 1;
-	pid_t pid = fork();
+	pid = fork();
 	if (pid == 0)
 	{
 		if (try_path(command, envp))

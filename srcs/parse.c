@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:03:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:26:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	replace_all_var_env(t_list_command *command, char **envp, int i)
 	azerty = 0;
 	while (envp[azerty])
 	{
-		if (!ft_strncmp(envp[azerty], &(command->str[i+1]), ft_strlen(&(command->str[i])) - 1) && envp[azerty][ft_strlen(&(command->str[i])) - 1] == '=')
+		if (!ft_strncmp(envp[azerty], &(command->str[i + 1]), ft_strlen(&(command->str[i])) - 1) && envp[azerty][ft_strlen(&(command->str[i])) - 1] == '=')
 		{
 			size = ft_strlen(&(command->str[i]));
 			command->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/
@@ -58,7 +58,7 @@ void	err_code(t_list_command *command, char **envp)
 // 	return (0);
 // }
 
-int 	replace_dollar_and_tild(t_list_command *command, char **envp)
+int		replace_dollar_and_tild(t_list_command *command, char **envp)
 {
 	int		i;
 	char	*tmp;
@@ -94,7 +94,7 @@ void	delete_empty_elements(t_list_command *command)
 
 	while (command)
 	{
-		if(command->next)
+		if (command->next)
 		{
 			if (!ft_strlen(command->next->str) && !in_quotes(command->next))
 				c_lst_remove_next_one(command, c_lst_free_one);
@@ -109,9 +109,9 @@ void	delete_empty_elements(t_list_command *command)
 // 	int i;
 // 	tmp = ft_split_set(input, WHITESPACES);
 // 	i = 0;
-// 	if(tmp[i])
+// 	if (tmp[i])
 // 		*command = c_lst_new(tmp[i++], '?'); // create fisrt element of the list
-// 	while(tmp[i])
+// 	while (tmp[i])
 // 		c_lst_add_back(command, c_lst_new(tmp[i++], '?')); // fill the list
 // 	ft_free_tab(tmp);
 // }
@@ -123,9 +123,9 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 	init_par(&par);
 	while (input[par.i])
 	{
-		if(input[par.i] == '\'' && !par.in_double && !escaped(input, par.i))
+		if (input[par.i] == '\'' && !par.in_double && !escaped(input, par.i))
 			simple_quotes(input, command, &par);
-		else if(input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
+		else if (input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
 			double_quotes(input, command, &par);
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
