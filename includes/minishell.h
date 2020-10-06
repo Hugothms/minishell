@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:02:34 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:34:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int		search_command(t_list_command *command, char **envp);
 //utils
 int		escaped(char *str, int i);
 int		in_quotes(t_list_command *command);
+void	parse_error_exit(char *input);
 
 //linked_list
 t_list_command  *c_lst_new(char *str, char type);

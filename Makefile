@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/04 13:38:21 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/06 23:31:04 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ NAME = minishell
 --LDFLAGS += -g3 -fsanitize=address
 
 --SRCS =	srcs/commands.c			\
+			srcs/commands2.c		\
 			srcs/linked_list.c		\
 			srcs/linked_list2.c		\
 			srcs/main.c				\
