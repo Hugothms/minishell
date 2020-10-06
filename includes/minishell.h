@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/04 16:23:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 11:17:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char	*ft_export(t_list_command *args, char **envp);
 char	*ft_unset(t_list_command *args, char **envp);
 char	*ft_env(t_list_command *args, char **envp);
 char	*ft_exit(t_list_command *args);
+char	*find_var_env(char **envp, char *var);
+
 
 //parse
 int		parse_input(char *line, t_list_command **command, char **envp);

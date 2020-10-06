@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/05 11:28:07 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 11:38:51 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_var_env(t_list_command *command, char **envp, int i)
+void	replace_all_var_env(t_list_command *command, char **envp, int i)
 {
 	char	*tmp;
 
@@ -36,48 +36,56 @@ void	err_code(t_list_command *command, char **envp)
 	return ;
 }
 
-int 	replace_dollar(t_list_command *command, char **envp)
+int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 {
 	int	i;
+	char	*tmp;
 
 	while (command)
 	{
 		i = 0;
-		while (command->str && (command)->str[i])
+		while (command->str && command->str[i])
 		{
-			if ((command)->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii((command)->str[i + 1]))
+			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii(command->str[i + 1]))
 			{
-				if ((command)->str[i + 1] == '?')
+				if (command->str[i + 1] == '?')
 					err_code(command, envp);
 				else
-					replace_var_env(command, envp, i);
+					replace_all_var_env(command, envp, i);
+			}
+			else if (command->str[i] == '~' && !(command->flags & SIMPLE_QUOTES) && !(command->flags & DOUBLE_QUOTES) && (!command->str[i + 1] || command->str[i + 1] == '/'))
+			{
+				tmp = command->str;
+				command->str = ft_strdup(&find_var_env(envp, "HOME=")[5]);
+				free(tmp);
 			}
 			i++;
 		}
-		command = (command)->next;
+		command = command->next;
 	}
 	return (0);
 }
 
 int 	deal_backslash(t_list_command *command, char **envp)
 {
-	int	i;
+	int		i;
 
 	while (command)
 	{
 		i = 0;
-		while (command->str && (command)->str[i])
+		while (command->str && command->str[i])
 		{
-			if ((command)->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii((command)->str[i + 1]))
+			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii(command->str[i + 1]))
 			{
-				if ((command)->str[i + 1] == '?')
+				if (command->str[i + 1] == '?')
 					err_code(command, envp);
 				else
-					replace_var_env(command, envp, i);
+					replace_all_var_env(command, envp, i);
 			}
+
 			i++;
 		}
-		command = (command)->next;
+		command = command->next;
 	}
 	return (0);
 }
@@ -112,7 +120,8 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 		par.i++;
 	}
 	// deal_backslash(*command, envp);
-	replace_dollar(*command, envp);
+	//replace_tild(*command, envp);
+	replace_dollar_and_tild(*command, envp);
 	// ancien_parsing_a_supprimer(input, command);
 	return (par.in_simple || par.in_double);
 }
