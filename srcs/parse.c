@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 21:20:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 21:48:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	replace_all_var_env(t_list_command *command, char **envp, int i)
 		azerty++;
 	}
 	command->str[i] = '\0';
-	if (!ft_strlen(&command->str))
-		c_lstdelone(&command, c_free);
 }
 
 void	err_code(t_list_command *command, char **envp)
@@ -90,20 +88,20 @@ int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 	return (0);
 }
 
-// void	delete_empty_elements(command);
-// {
-// 	while (command)
-// 	{
-// 		if(!command->next)
-// 		{
-// 			c_lstdelone(command, c_free);
-// 			return ;
-// 		}
-// 		if (!ft_strlen(command->str))
-// 			c_lstdelone(command, c_free);
-// 		command = command->next;
-// 	}
-// }
+void	delete_empty_elements(t_list_command *command)
+{
+	while (command)
+	{
+		if(!command->next)
+		{
+			c_lstdelone(command, c_free);
+			return ;
+		}
+		if (!ft_strlen(command->str))
+			c_lstdelone(command, c_free);
+		command = command->next;
+	}
+}
 
 // void	ancien_parsing_a_supprimer(char *input, t_list_command **command)
 // {
@@ -137,6 +135,6 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 	// deal_backslash(*command, envp);
 	replace_dollar_and_tild(*command, envp);
 	// ancien_parsing_a_supprimer(input, command);
-	// delete_empty_elements(command);
+	delete_empty_elements(*command);
 	return (par.in_simple || par.in_double);
 }
