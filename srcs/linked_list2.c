@@ -6,11 +6,35 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/05 11:35:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 22:56:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+** Takes as a parameter an element and frees the memory of 
+** the element’s content.
+** @param lst	The adress of a pointer to an element.
+*/
+void	c_lst_free_one(void *lst)
+{
+	t_list_command	*tmp;
+
+	tmp = lst;
+	free(tmp->str);
+	free(tmp);
+}
+
+
+void	c_lst_remove_next_one(t_list_command *lst, void (*del)(void*))
+{
+	if (!lst || !lst->next)
+		return ;
+	t_list_command *tmp = lst->next->next;
+	del(lst->next);
+	lst->next = tmp;
+}
 
 /*
 ** Takes as a parameter an element and frees the memory of 
@@ -20,12 +44,11 @@
 ** @param del	The adress of the function used to delete the content of the 
 **				element.
 */
-void	c_lstdelone(t_list_command *lst, void (*del)(void*))
+void	c_lst_del_one(t_list_command *lst, void (*del)(void*))
 {
 	if (!lst)
 		return ;
-	del(lst->str);
-	free(lst);
+	del(lst);
 }
 
 /*
@@ -36,16 +59,16 @@ void	c_lstdelone(t_list_command *lst, void (*del)(void*))
 ** @param del	The adress of the function used to delete the content of the 
 ** element.
 */
-void	c_lstclear(t_list_command **alst, void (*del)(void*))
+void	c_lst_clear(t_list_command **alst, void (*del)(void*))
 {
 	if (!*alst)
 		return ;
 	if ((*alst)->next)
 	{
-		c_lstclear(&((*alst)->next), del);
+		c_lst_clear(&((*alst)->next), del);
 		free((*alst)->next);
 	}
-	c_lstdelone(*alst, del);
+	c_lst_del_one(*alst, del);
 	*alst = NULL;
 }
 
@@ -55,7 +78,7 @@ void	c_lstclear(t_list_command **alst, void (*del)(void*))
 ** @param lst	The adress of a pointer to an element.
 ** @param f		The adress of the function used to iterate on the list.
 */
-void	c_lstiter(t_list_command *lst, void (*f)(void *))
+void	c_lst_iter(t_list_command *lst, void (*f)(void *))
 {
 	t_list_command	*tmp;
 
@@ -81,7 +104,7 @@ void	c_lstiter(t_list_command *lst, void (*f)(void *))
 *** element if needed.
 ** @return		The new list. NULL if the allocation fails.
 */
-t_list_command	*c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(void *))
+t_list_command	*c_lst_map(t_list_command *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list_command	*tmp;
 	t_list_command	*new;
@@ -90,14 +113,14 @@ t_list_command	*c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(vo
 	if (!lst || !f || !del)
 		return (NULL);
 	tmp = lst;
-	if (!(mapedlst = c_lstnew(f(tmp->str), tmp->flags)))
-		c_lstclear(&mapedlst, del);
+	if (!(mapedlst = c_lst_new(f(tmp->str), tmp->flags)))
+		c_lst_clear(&mapedlst, del);
 	tmp = tmp->next;
 	while (tmp)
 	{
-		if (!(new = c_lstnew(f(tmp->str), tmp->flags)))
-			c_lstclear(&mapedlst, del);
-		c_lstadd_back(&mapedlst, new);
+		if (!(new = c_lst_new(f(tmp->str), tmp->flags)))
+			c_lst_clear(&mapedlst, del);
+		c_lst_add_back(&mapedlst, new);
 		tmp = tmp->next;
 	}
 	return (mapedlst);
