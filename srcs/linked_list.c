@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 15:26:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 22:29:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** @param type	The type to create the new element with
 ** @return			The new element
 */
-t_list_command	*c_lstnew(char *str, char type)
+t_list_command	*c_lst_new(char *str, char type)
 {
 	t_list_command	*new;
 
@@ -37,7 +37,7 @@ t_list_command	*c_lstnew(char *str, char type)
 ** @param alst	The address of a pointer to the first link of a list
 ** @param new	The address of a pointer to the element to be added to the list
 */
-void	c_lstadd_front(t_list_command **alst, t_list_command *new)
+void	c_lst_add_front(t_list_command **alst, t_list_command *new)
 {
 	t_list_command	*tmp;
 
@@ -51,7 +51,7 @@ void	c_lstadd_front(t_list_command **alst, t_list_command *new)
 ** @param lst	The beginning of the list
 ** @return		Length of the list
 */
-int	c_lstsize(t_list_command *lst)
+int	c_lst_size(t_list_command *lst)
 {
 	int		cpt;
 	t_list_command	*pt;
@@ -70,7 +70,7 @@ int	c_lstsize(t_list_command *lst)
 ** @param lst	The beginning of the list
 ** @return		Last element of the list
 */
-t_list_command	*c_lstlast(t_list_command *lst)
+t_list_command	*c_lst_last(t_list_command *lst)
 {
 	t_list_command	*tmp;
 
@@ -87,7 +87,7 @@ t_list_command	*c_lstlast(t_list_command *lst)
 ** @param alst	The address of a pointer to the first link of a list.
 ** @param new	The address of a pointer to the element to be added to the list.
 */
-void	c_lstadd_back(t_list_command **alst, t_list_command *new)
+void	c_lst_add_back(t_list_command **alst, t_list_command *new)
 {
 	t_list_command	*pt;
 

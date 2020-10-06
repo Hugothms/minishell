@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 21:46:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:02:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,20 @@ int		search_command(t_list_command *command, char **envp);
 
 //utils
 int		escaped(char *str, int i);
+int		in_quotes(t_list_command *command);
 
 //linked_list
-t_list_command  *c_lstnew(char *str, char type);
-void	          c_lstadd_front(t_list_command **alst, t_list_command *new);
-int	            c_lstsize(t_list_command *lst);
-t_list_command  *c_lstlast(t_list_command *lst);
-void	          c_lstadd_back(t_list_command **alst, t_list_command *new);
-void          	c_free(void *lst);
-void	          c_lstdelone(t_list_command *lst, void (*del)(void*));
-void	          c_lstclear(t_list_command **alst, void (*del)(void*));
-void	          c_lstiter(t_list_command *lst, void (*f)(void *));
-t_list_command  *c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(void *));
+t_list_command  *c_lst_new(char *str, char type);
+void	          c_lst_add_front(t_list_command **alst, t_list_command *new);
+int	            c_lst_size(t_list_command *lst);
+t_list_command  *c_lst_last(t_list_command *lst);
+void	          c_lst_add_back(t_list_command **alst, t_list_command *new);
+void          	c_lst_free_one(void *lst);
+void	          c_lst_remove_next_one(t_list_command *lst, void (*del)(void*));
+void	          c_lst_del_one(t_list_command *lst, void (*del)(void*));
+void	          c_lst_clear(t_list_command **alst, void (*del)(void*));
+void	          c_lst_iter(t_list_command *lst, void (*f)(void *));
+t_list_command  *c_lst_map(t_list_command *lst, void *(*f)(void *), void (*del)(void *));
 
 
 

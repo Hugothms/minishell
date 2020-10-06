@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 21:48:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 23:03:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 				else
 					replace_all_var_env(command, envp, i);
 			}
-			else if (command->str[i] == '~' && !(command->flags & SIMPLE_QUOTES) && !(command->flags & DOUBLE_QUOTES) && (!command->str[i + 1] || command->str[i + 1] == '/'))
+			else if (command->str[i] == '~' && !in_quotes(command) && (!command->str[i + 1] || command->str[i + 1] == '/'))
 			{
 				tmp = command->str;
 				command->str = ft_strdup(&find_var_env(envp, "HOME=")[5]);
@@ -90,15 +90,15 @@ int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 
 void	delete_empty_elements(t_list_command *command)
 {
+	t_list_command	*tmp;
+
 	while (command)
 	{
-		if(!command->next)
+		if(command->next)
 		{
-			c_lstdelone(command, c_free);
-			return ;
+			if (!ft_strlen(command->next->str) && !in_quotes(command->next))
+				c_lst_remove_next_one(command, c_lst_free_one);
 		}
-		if (!ft_strlen(command->str))
-			c_lstdelone(command, c_free);
 		command = command->next;
 	}
 }
@@ -110,9 +110,9 @@ void	delete_empty_elements(t_list_command *command)
 // 	tmp = ft_split_set(input, WHITESPACES);
 // 	i = 0;
 // 	if(tmp[i])
-// 		*command = c_lstnew(tmp[i++], '?'); // create fisrt element of the list
+// 		*command = c_lst_new(tmp[i++], '?'); // create fisrt element of the list
 // 	while(tmp[i])
-// 		c_lstadd_back(command, c_lstnew(tmp[i++], '?')); // fill the list
+// 		c_lst_add_back(command, c_lst_new(tmp[i++], '?')); // fill the list
 // 	ft_free_tab(tmp);
 // }
 

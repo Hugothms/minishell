@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 18:09:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 22:29:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	add_substr_to_cmd(char *input, t_list_command **command, int start, int siz
 	while(!(flags & SIMPLE_QUOTES) && !(flags & DOUBLE_QUOTES) && ft_in_charset(input[start], WHITESPACES))
 		start++;
 	char *str = ft_strndup(&input[start], size);
-	c_lstadd_back(command, c_lstnew(str, flags));
+	c_lst_add_back(command, c_lst_new(str, flags));
 	free(str);
 }
 

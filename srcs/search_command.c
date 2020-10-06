@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 00:13:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 22:29:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**lst_to_strs(t_list_command *command)
 	char	**argv;
 	int		i;
 
-	if(!(argv = malloc(sizeof(*argv) * (c_lstsize(command) + 1))))
+	if(!(argv = malloc(sizeof(*argv) * (c_lst_size(command) + 1))))
 		return (NULL);
 	i = 0;
 	while (command)
