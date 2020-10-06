@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 16:45:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 17:28:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*find_var_env(char **envp, char *var)
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], var, 5))
+		if (!ft_strncmp(envp[i], var, ft_strlen(var)))
 			return (envp[i]);
 		i++;
 	}
