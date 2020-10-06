@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 11:38:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 21:20:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 void	replace_all_var_env(t_list_command *command, char **envp, int i)
 {
-	char	*tmp;
+	int		azerty;
+	int		size;
 
-	while (envp[i])
+	azerty = 0;
+	while (envp[azerty])
 	{
-		if (!ft_strncmp(envp[i], &(command->str[1]), ft_strlen(command->str) - 1) && envp[i][ft_strlen(command->str) - 1] == '=')
+		if (!ft_strncmp(envp[azerty], &(command->str[i+1]), ft_strlen(&(command->str[i])) - 1) && envp[azerty][ft_strlen(&(command->str[i])) - 1] == '=')
 		{
-			tmp = command->str;
-			command->str = ft_strdup(&(envp[i][ft_strlen(command->str)]));
-			free(tmp);
+			size = ft_strlen(&(command->str[i]));
+			command->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/
+			command->str = ft_strjoin_free(command->str, &(envp[azerty][size]));
 			return ;
 		}
-		i++;
+		azerty++;
 	}
-	command->str = NULL;
+	command->str[i] = '\0';
+	if (!ft_strlen(&command->str))
+		c_lstdelone(&command, c_free);
 }
 
 void	err_code(t_list_command *command, char **envp)
@@ -36,9 +40,29 @@ void	err_code(t_list_command *command, char **envp)
 	return ;
 }
 
+// int 	deal_backslash(t_list_command *command, char **envp)
+// {
+// 	int		i;
+
+// 	while (command)
+// 	{
+// 		i = 0;
+// 		while (command->str && command->str[i])
+// 		{
+// 			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && command->str[i + 1] > 32)
+// 			{
+// 				continue ;
+// 			}
+// 			i++;
+// 		}
+// 		command = command->next;
+// 	}
+// 	return (0);
+// }
+
 int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	while (command)
@@ -46,7 +70,7 @@ int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 		i = 0;
 		while (command->str && command->str[i])
 		{
-			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii(command->str[i + 1]))
+			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && command->str[i + 1] > 32)
 			{
 				if (command->str[i + 1] == '?')
 					err_code(command, envp);
@@ -66,42 +90,33 @@ int 	replace_dollar_and_tild(t_list_command *command, char **envp)
 	return (0);
 }
 
-int 	deal_backslash(t_list_command *command, char **envp)
-{
-	int		i;
+// void	delete_empty_elements(command);
+// {
+// 	while (command)
+// 	{
+// 		if(!command->next)
+// 		{
+// 			c_lstdelone(command, c_free);
+// 			return ;
+// 		}
+// 		if (!ft_strlen(command->str))
+// 			c_lstdelone(command, c_free);
+// 		command = command->next;
+// 	}
+// }
 
-	while (command)
-	{
-		i = 0;
-		while (command->str && command->str[i])
-		{
-			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && ft_isascii(command->str[i + 1]))
-			{
-				if (command->str[i + 1] == '?')
-					err_code(command, envp);
-				else
-					replace_all_var_env(command, envp, i);
-			}
-
-			i++;
-		}
-		command = command->next;
-	}
-	return (0);
-}
-
-void	ancien_parsing_a_supprimer(char *input, t_list_command **command)
-{
-	char **tmp;
-	int i;
-	tmp = ft_split_set(input, WHITESPACES);
-	i = 0;
-	if(tmp[i])
-		*command = c_lstnew(tmp[i++], '?'); // create fisrt element of the list
-	while(tmp[i])
-		c_lstadd_back(command, c_lstnew(tmp[i++], '?')); // fill the list
-	ft_free_tab(tmp);
-}
+// void	ancien_parsing_a_supprimer(char *input, t_list_command **command)
+// {
+// 	char **tmp;
+// 	int i;
+// 	tmp = ft_split_set(input, WHITESPACES);
+// 	i = 0;
+// 	if(tmp[i])
+// 		*command = c_lstnew(tmp[i++], '?'); // create fisrt element of the list
+// 	while(tmp[i])
+// 		c_lstadd_back(command, c_lstnew(tmp[i++], '?')); // fill the list
+// 	ft_free_tab(tmp);
+// }
 
 int		parse_input(char *input, t_list_command **command, char **envp)
 {
@@ -120,8 +135,8 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 		par.i++;
 	}
 	// deal_backslash(*command, envp);
-	//replace_tild(*command, envp);
 	replace_dollar_and_tild(*command, envp);
 	// ancien_parsing_a_supprimer(input, command);
+	// delete_empty_elements(command);
 	return (par.in_simple || par.in_double);
 }

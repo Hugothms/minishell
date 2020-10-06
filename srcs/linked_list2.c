@@ -6,11 +6,23 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/05 11:35:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 21:28:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+** Takes as a parameter an element and frees the memory of 
+** the element’s content.
+** @param lst	The adress of a pointer to an element.
+*/
+void	c_free(void *lst)
+{
+	t_list_command	*tmp = lst;
+	free(tmp->str);
+	free(tmp);
+}
 
 /*
 ** Takes as a parameter an element and frees the memory of 
@@ -20,12 +32,13 @@
 ** @param del	The adress of the function used to delete the content of the 
 **				element.
 */
-void	c_lstdelone(t_list_command *lst, void (*del)(void*))
+void	c_lstdelone(t_list_command **alst, void (*del)(void*))
 {
-	if (!lst)
+	if (!(*alst)->next)
 		return ;
-	del(lst->str);
-	free(lst);
+	if ((*alst)->next->next)
+		(*alst)->next->next = (*alst)->next->next->next;
+	del((*alst)->next);
 }
 
 /*
@@ -45,7 +58,7 @@ void	c_lstclear(t_list_command **alst, void (*del)(void*))
 		c_lstclear(&((*alst)->next), del);
 		free((*alst)->next);
 	}
-	c_lstdelone(*alst, del);
+	c_lstdelone(alst, del);
 	*alst = NULL;
 }
 

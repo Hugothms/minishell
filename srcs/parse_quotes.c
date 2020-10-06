@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 13:00:08 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 18:09:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	end_word(char *input, t_list_command **command, t_parse *par)
 	// si je suis sur le dernier caractere du mot
 	if(!input[par->i + 1] || ft_in_charset(input[par->i + 1], WHITESPACES))
 	{
-		while(input[par->pos] && input[par->pos] < 32) //ft_in_charset(input[par->pos], WHITESPACES) but it was causing leaks when only arrows were pressed
+		while(input[par->pos] && input[par->pos] <= 32) //ft_in_charset(input[par->pos], WHITESPACES) but it was causing leaks when only arrows were pressed
 			par->pos++;
 		add_substr_to_cmd(input, command, par->pos, par->i - par->pos + 1, NOTHING);
 		par->pos = par->i + 1;

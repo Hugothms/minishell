@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 11:17:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/06 21:18:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void	          c_lstadd_front(t_list_command **alst, t_list_command *new);
 int	            c_lstsize(t_list_command *lst);
 t_list_command  *c_lstlast(t_list_command *lst);
 void	          c_lstadd_back(t_list_command **alst, t_list_command *new);
-void	          c_lstdelone(t_list_command *lst, void (*del)(void*));
+void          	c_free(void *lst);
+void	          c_lstdelone(t_list_command **alst, void (*del)(void*));
 void	          c_lstclear(t_list_command **alst, void (*del)(void*));
 void	          c_lstiter(t_list_command *lst, void (*f)(void *));
 t_list_command  *c_lstmap(t_list_command *lst, void *(*f)(void *), void (*del)(void *));

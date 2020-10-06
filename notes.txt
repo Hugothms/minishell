@@ -100,7 +100,8 @@ good test:
 	should echo "for"
 
 	echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
-	
+	echo$HOMER
+	echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
 
 
 
