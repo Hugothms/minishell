@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:26:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:35:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	delete_empty_elements(t_cmd *cmd)
 	}
 }
 
-// void	ancien_parsing_a_supprimer(char *input, t_list_command **cmd)
+// void	ancien_parsing_a_supprimer(char *input, t_list_command **p_cmd)
 // {
 // 	char **tmp;
 // 	int i;
@@ -118,7 +118,7 @@ void	delete_empty_elements(t_cmd *cmd)
 // 	ft_free_tab(tmp);
 // }
 
-int		input_quotes_to_command(char *input, t_cmd **cmd)
+int		input_quotes_to_command(char *input, t_cmd **p_cmd)
 {
 	t_parse		par;
 
@@ -126,23 +126,23 @@ int		input_quotes_to_command(char *input, t_cmd **cmd)
 	while (input[par.i])
 	{
 		if (input[par.i] == '\'' && !par.in_double && !escaped(input, par.i))
-			simple_quotes(input, cmd, &par);
+			simple_quotes(input, p_cmd, &par);
 		else if (input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
-			double_quotes(input, cmd, &par);
+			double_quotes(input, p_cmd, &par);
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
-			end_word(input, cmd, &par);
+			end_word(input, p_cmd, &par);
 		par.i++;
 	}
 	return (par.in_simple || par.in_double);
 }
 
-int		parse_input(char *input, t_cmd **cmd, char **envp)
+int		parse_input(char *input, t_cmd **p_cmd, char **envp)
 {
-	if (input_quotes_to_command(input, cmd))
+	if (input_quotes_to_command(input, p_cmd))
 		return (ERR);
-	// deal_backslash(*cmd, envp);
-	replace_dollar_and_tild(*cmd, envp);
-	// ancien_parsing_a_supprimer(input, cmd);
-	delete_empty_elements(*cmd);
+	// deal_backslash(*p_cmd, envp);
+	replace_dollar_and_tild(*p_cmd, envp);
+	// ancien_parsing_a_supprimer(input, p_cmd);
+	delete_empty_elements(*p_cmd);
 }

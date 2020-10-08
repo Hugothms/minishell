@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:28:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:33:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ char	*find_var_env(char **envp, char *var);
 
 
 //parse
-int		parse_input(char *line, t_cmd **cmd, char **envp);
+int		parse_input(char *line, t_cmd **p_cmd, char **envp);
 
 //parse_quotes
-void	simple_quotes(char *input, t_cmd **cmd, t_parse *par);
-void	double_quotes(char *input, t_cmd **cmd, t_parse *par);
-void	end_word(char *input, t_cmd **cmd, t_parse *par);
+void	simple_quotes(char *input, t_cmd **p_cmd, t_parse *par);
+void	double_quotes(char *input, t_cmd **p_cmd, t_parse *par);
+void	end_word(char *input, t_cmd **p_cmd, t_parse *par);
 void	init_par(t_parse *par);
 
 //search_command
@@ -89,15 +89,15 @@ void	parse_error_exit(char *input);
 
 //linked_list
 t_cmd		*c_lst_new(char *str, char type);
-void			c_lst_add_front(t_cmd **alst, t_cmd *new);
-int				c_lst_size(t_cmd *lst);
+void		c_lst_add_front(t_cmd **alst, t_cmd *new);
+int			c_lst_size(t_cmd *lst);
 t_cmd		*c_lst_last(t_cmd *lst);
-void			c_lst_add_back(t_cmd **alst, t_cmd *new);
-void			c_lst_free_one(void *lst);
-void			c_lst_remove_next_one(t_cmd *lst, void (*del)(void*));
-void			c_lst_del_one(t_cmd *lst, void (*del)(void*));
-void			c_lst_clear(t_cmd **alst, void (*del)(void*));
-void			c_lst_iter(t_cmd *lst, void (*f)(void *));
+void		c_lst_add_back(t_cmd **alst, t_cmd *new);
+void		c_lst_free_one(void *lst);
+void		c_lst_remove_next_one(t_cmd *lst, void (*del)(void*));
+void		c_lst_del_one(t_cmd *lst, void (*del)(void*));
+void		c_lst_clear(t_cmd **alst, void (*del)(void*));
+void		c_lst_iter(t_cmd *lst, void (*f)(void *));
 t_cmd		*c_lst_map(t_cmd *lst, void *(*f)(void *), void (*del)(void *));
 
 

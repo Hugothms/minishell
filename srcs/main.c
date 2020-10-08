@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:26:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:31:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	print_prompt(void)
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
-	t_cmd	*lst_cmd;
+	t_cmd	*cmd;
 	char		*ret;
 
 	ft_putstr(WELCOME_MSG);
@@ -72,18 +72,18 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
-		lst_cmd = NULL;
-		if (parse_input(input, &lst_cmd, envp))
+		cmd = NULL;
+		if (parse_input(input, &cmd, envp))
 			parse_error_exit(input);
-		if (lst_cmd)
+		if (cmd)
 		{
-			if (ret = exec_command(lst_cmd, envp))
+			if (ret = exec_command(cmd, envp))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
 		}
-		c_lst_clear(&lst_cmd, c_lst_free_one);
+		c_lst_clear(&cmd, c_lst_free_one);
 	}
 	free(input);
 	return (0);
