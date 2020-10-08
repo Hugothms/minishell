@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:26:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:28:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@
 # define DOUBLE_QUOTES	0b0010
 # define NO_SPACE_AFTER	0b0100
 # define idk				0b1000
+
+typedef struct			s_lst_cmd
+{
+	struct s_cmd		*cmd;
+	struct s_lst_cmd	*next;
+}						 t_lst_cmd;
 
 typedef struct			s_cmd
 {
