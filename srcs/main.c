@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:54:05 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:55:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	print_prompt(void)
 
 int		main(const int argc, char *argv[], char *envp[])
 {
-	char			*input;
-	t_list_cmd	**lst_cmd;
-	char			*ret;
+	char		*input;
+	t_list_cmd	*lst_cmd;
+	char		*ret;
 
 	ft_putstr(WELCOME_MSG);
 	input = malloc(1);
@@ -72,18 +72,18 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
-		*lst_cmd = NULL;
-		if (parse_input(input, lst_cmd, envp))
+		lst_cmd = NULL;
+		if (parse_input(input, &lst_cmd, envp))
 			parse_error_exit(input);
-		if (*lst_cmd)
+		if (lst_cmd)
 		{
-			if (ret = exec_command(*lst_cmd, envp))
+			if (ret = exec_command(lst_cmd, envp))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
 		}
-		c_lst_clear(lst_cmd, c_lst_free_one);
+		c_lst_clear(&lst_cmd, c_lst_free_one);
 	}
 	free(input);
 	return (0);
