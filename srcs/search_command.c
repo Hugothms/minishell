@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:53:56 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:26:19 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-char	**lst_to_strs(t_list_cmd *cmd)
+char	**lst_to_strs(t_cmd *cmd)
 {
 	char	**argv;
 	int		i;
@@ -41,7 +41,7 @@ char	**lst_to_strs(t_list_cmd *cmd)
 	return (argv);
 }
 
-void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)
+void	try_path2(t_cmd *cmd, char **envp, char *begin, int *cpt)
 {
 	char	*full_path;
 	char	**argv;
@@ -57,7 +57,7 @@ void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)
 	free(full_path);
 }
 
-int		try_path(t_list_cmd *cmd, char **envp)
+int		try_path(t_cmd *cmd, char **envp)
 {
 	int		i;
 	int		cpt;
@@ -79,7 +79,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	return (ret);
 }
 
-int		search_command(t_list_cmd *cmd, char **envp)
+int		search_command(t_cmd *cmd, char **envp)
 {
 	int		ret;
 	int		status;

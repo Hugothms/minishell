@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:50:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:26:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@
 
 void			c_lst_free_one(void *lst)
 {
-	t_list_cmd	*tmp;
+	t_cmd	*tmp;
 
 	tmp = lst;
 	free(tmp->str);
 	free(tmp);
 }
 
-void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*))
+void			c_lst_remove_next_one(t_cmd *lst, void (*del)(void*))
 {
-	t_list_cmd	*tmp;
+	t_cmd	*tmp;
 
 	if (!lst || !lst->next)
 		return ;
@@ -47,7 +47,7 @@ void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*))
 **	 			element.
 */
 
-void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*))
+void			c_lst_del_one(t_cmd *lst, void (*del)(void*))
 {
 	if (!lst)
 		return ;
@@ -63,7 +63,7 @@ void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*))
 **  element.
 */
 
-void			c_lst_clear(t_list_cmd **alst, void (*del)(void*))
+void			c_lst_clear(t_cmd **alst, void (*del)(void*))
 {
 	if (!*alst)
 		return ;
@@ -83,9 +83,9 @@ void			c_lst_clear(t_list_cmd **alst, void (*del)(void*))
 ** @param f		The adress of the function used to iterate on the list.
 */
 
-void			c_lst_iter(t_list_cmd *lst, void (*f)(void *))
+void			c_lst_iter(t_cmd *lst, void (*f)(void *))
 {
-	t_list_cmd	*tmp;
+	t_cmd	*tmp;
 
 	if (!lst)
 		return ;
@@ -110,12 +110,12 @@ void			c_lst_iter(t_list_cmd *lst, void (*f)(void *))
 ** @return		The new list. NULL if the allocation fails.
 */
 
-t_list_cmd	*c_lst_map(t_list_cmd *lst, void *(*f)(void *),\
+t_cmd	*c_lst_map(t_cmd *lst, void *(*f)(void *),\
 							void (*del)(void *))
 {
-	t_list_cmd	*tmp;
-	t_list_cmd	*new;
-	t_list_cmd	*mapedlst;
+	t_cmd	*tmp;
+	t_cmd	*new;
+	t_cmd	*mapedlst;
 
 	if (!lst || !f || !del)
 		return (NULL);

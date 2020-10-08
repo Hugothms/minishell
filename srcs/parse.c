@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:54:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:26:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
+void	replace_all_var_env(t_cmd *cmd, char **envp, int i)
 {
 	int		azerty;
 	int		size;
@@ -32,7 +32,7 @@ void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
 	cmd->str[i] = '\0';
 }
 
-void	err_code(t_list_cmd *cmd, char **envp)
+void	err_code(t_cmd *cmd, char **envp)
 {
 	ft_putstr("err_code\n");
 	//!to do
@@ -60,7 +60,7 @@ void	err_code(t_list_cmd *cmd, char **envp)
 // 	return (0);
 // }
 
-int		replace_dollar_and_tild(t_list_cmd *cmd, char **envp)
+int		replace_dollar_and_tild(t_cmd *cmd, char **envp)
 {
 	int		i;
 	char	*tmp;
@@ -90,9 +90,9 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, char **envp)
 	return (0);
 }
 
-void	delete_empty_elements(t_list_cmd *cmd)
+void	delete_empty_elements(t_cmd *cmd)
 {
-	t_list_cmd	*tmp;
+	t_cmd	*tmp;
 
 	while (cmd)
 	{
@@ -118,7 +118,7 @@ void	delete_empty_elements(t_list_cmd *cmd)
 // 	ft_free_tab(tmp);
 // }
 
-int		input_quotes_to_command(char *input, t_list_cmd **cmd)
+int		input_quotes_to_command(char *input, t_cmd **cmd)
 {
 	t_parse		par;
 
@@ -137,7 +137,7 @@ int		input_quotes_to_command(char *input, t_list_cmd **cmd)
 	return (par.in_simple || par.in_double);
 }
 
-int		parse_input(char *input, t_list_cmd **cmd, char **envp)
+int		parse_input(char *input, t_cmd **cmd, char **envp)
 {
 	if (input_quotes_to_command(input, cmd))
 		return (ERR);

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:53:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:26:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_par(t_parse *par)
 	par->pos = 0;
 }
 
-void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
+void	add_substr_to_cmd(char *input, t_cmd **cmd, int size, int flags)
 {
 	char *str;
 
@@ -31,7 +31,7 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 	free(str);
 }
 
-void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
+void	simple_quotes(char *input, t_cmd **cmd, t_parse *par)
 {
 	if (!par->in_simple && par->i && !ft_in_charset(input[par->i - 1], WHITESPACES))
 		// start quotes just after a word
@@ -49,7 +49,7 @@ void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	par->in_simple += (par->in_simple == 0 ? 1 : -1);
 }
 
-void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
+void	double_quotes(char *input, t_cmd **cmd, t_parse *par)
 {
 	if (!par->in_double && par->i && !ft_in_charset(input[par->i - 1], WHITESPACES))
 		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos - 1, NO_SPACE_AFTER);
@@ -64,7 +64,7 @@ void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	par->in_double += (par->in_double == 0 ? 1 : -1);
 }
 
-void	end_word(char *input, t_list_cmd **cmd, t_parse *par)
+void	end_word(char *input, t_cmd **cmd, t_parse *par)
 {
 	// si je suis sur le dernier caractere du mot
 	if (!input[par->i + 1] || ft_in_charset(input[par->i + 1], WHITESPACES))

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:55:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 15:26:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	not_found(char *cmd)
 	exit(0);
 }
 
-char	*exec_command(t_list_cmd *cmd, char **envp)
+char	*exec_command(t_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return (NULL);
@@ -62,7 +62,7 @@ void	print_prompt(void)
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
-	t_list_cmd	*lst_cmd;
+	t_cmd	*lst_cmd;
 	char		*ret;
 
 	ft_putstr(WELCOME_MSG);
