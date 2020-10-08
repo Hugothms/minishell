@@ -1,33 +1,3 @@
-chdir
-close
-closedir
-dup
-dup2
-errno
-execve
-exit
-fork
-free
-fstat
-getcwd
-kill
-lstat
-malloc
-open
-opendir
-pipe
-read
-readdir
-signal
-stat
-strerror
-wait
-wait3
-wait4
-waitpid
-write
-
-
 malloc
 free
 write
@@ -61,7 +31,7 @@ errno
 
 words:
 	-Reserved words		if while
-	-Operators			| > 
+	-Operators			| > < >> ;
 	-Ordinary words		echo azerty
 
 
@@ -96,9 +66,6 @@ There are three types of quoting, each of which is slightly different and permit
 
 
 good test:
-	for for in for; do for=for; done; echo $for
-	should echo "for"
-
 	echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
 	echo$HOMER
 	echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
@@ -108,5 +75,5 @@ good test:
 TO DO:
 export	without any options
 unset	without any options
-env		without any options and any arguments
 echo	$?
+symbols	| > < >> ;

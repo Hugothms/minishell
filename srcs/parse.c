@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:26:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:14:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	replace_all_var_env(t_list_command *command, char **envp, int i)
 void	err_code(t_list_command *command, char **envp)
 {
 	ft_putstr("err_code\n");
+	//!to do
 	return ;
 }
 
@@ -47,9 +48,10 @@ void	err_code(t_list_command *command, char **envp)
 // 		i = 0;
 // 		while (command->str && command->str[i])
 // 		{
-// 			if (command->str[i] == '$' && !(command->flags & SIMPLE_QUOTES) && command->str[i + 1] > 32)
+// 			if (command->str[i] == '\\' && ...)
 // 			{
-// 				continue ;
+// 				//? i++;
+// 				//! to do
 // 			}
 // 			i++;
 // 		}
@@ -116,7 +118,7 @@ void	delete_empty_elements(t_list_command *command)
 // 	ft_free_tab(tmp);
 // }
 
-int		parse_input(char *input, t_list_command **command, char **envp)
+int		input_quotes_to_command(char *input, t_list_command **command)
 {
 	t_parse		par;
 
@@ -132,9 +134,15 @@ int		parse_input(char *input, t_list_command **command, char **envp)
 			end_word(input, command, &par);
 		par.i++;
 	}
+	return (par.in_simple || par.in_double);
+}
+
+int		parse_input(char *input, t_list_command **command, char **envp)
+{
+	if (input_quotes_to_command(input, command))
+		return (-1);
 	// deal_backslash(*command, envp);
 	replace_dollar_and_tild(*command, envp);
 	// ancien_parsing_a_supprimer(input, command);
 	delete_empty_elements(*command);
-	return (par.in_simple || par.in_double);
 }

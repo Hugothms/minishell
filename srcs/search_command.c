@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:32:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:08:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ int		try_path(t_list_command *command, char **envp)
 	path = get_paths(envp);
 	i = 0;
 	cpt = 0;
-	ret = 1;
+	ret = ERR;
 	while (path[i])
 	{
 		try_path2(command, envp, path[i], &cpt);
 		if (i != cpt)
-			ret = 0;
+			ret = OK;
 		i++;
 	}
 	ft_free_tab(path);
@@ -85,7 +85,7 @@ int		search_command(t_list_command *command, char **envp)
 	int		status;
 	pid_t	pid;
 
-	ret = 1;
+	ret = ERR;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -94,7 +94,7 @@ int		search_command(t_list_command *command, char **envp)
 	}
 	else
 	{
-		ret = 0;
+		ret = OK;
 		wait(&status);
 	}
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/27 13:44:08 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 15:16:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:12:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <limits.h>
 
 # define ERR -1
-# define OK 1
+# define OK 0
 # define NB_CONV 10
 
 typedef struct		s_printf
