@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:23:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:53:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_pwd(void)
 	return (ret);
 }
 
-char	*ft_echo(t_list_command *args)
+char	*ft_echo(t_list_cmd *args)
 {
 	int		nflag;
 	char	*ret;
@@ -61,7 +61,7 @@ char	*find_var_env(char **envp, char *var)
 	return (NULL);
 }
 
-char	*ft_cd(t_list_command *args, char **envp)
+char	*ft_cd(t_list_cmd *args, char **envp)
 {
 	char		*ret;
 	struct stat	stats;
@@ -85,7 +85,7 @@ char	*ft_cd(t_list_command *args, char **envp)
 	return (ft_strdup(""));
 }
 
-char	*ft_exit(t_list_command *args)
+char	*ft_exit(t_list_cmd *args)
 {
 	int	err;
 

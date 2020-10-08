@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 12:08:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:53:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,31 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-char	**lst_to_strs(t_list_command *command)
+char	**lst_to_strs(t_list_cmd *cmd)
 {
 	char	**argv;
 	int		i;
 
-	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(command) + 1))))
+	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(cmd) + 1))))
 		return (NULL);
 	i = 0;
-	while (command)
+	while (cmd)
 	{
-		argv[i++] = ft_strdup(command->str);
-		command = command->next;
+		argv[i++] = ft_strdup(cmd->str);
+		cmd = cmd->next;
 	}
 	argv[i] = NULL;
 	return (argv);
 }
 
-void	try_path2(t_list_command *command, char **envp, char *begin, int *cpt)
+void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)
 {
 	char	*full_path;
 	char	**argv;
 
 	full_path = ft_strjoin(begin, "/");
-	full_path = ft_strjoin_free(full_path, command->str);
-	if (argv = lst_to_strs(command))
+	full_path = ft_strjoin_free(full_path, cmd->str);
+	if (argv = lst_to_strs(cmd))
 	{
 		if (execve(full_path, argv, envp))
 			*cpt++;
@@ -57,7 +57,7 @@ void	try_path2(t_list_command *command, char **envp, char *begin, int *cpt)
 	free(full_path);
 }
 
-int		try_path(t_list_command *command, char **envp)
+int		try_path(t_list_cmd *cmd, char **envp)
 {
 	int		i;
 	int		cpt;
@@ -70,7 +70,7 @@ int		try_path(t_list_command *command, char **envp)
 	ret = ERR;
 	while (path[i])
 	{
-		try_path2(command, envp, path[i], &cpt);
+		try_path2(cmd, envp, path[i], &cpt);
 		if (i != cpt)
 			ret = OK;
 		i++;
@@ -79,7 +79,7 @@ int		try_path(t_list_command *command, char **envp)
 	return (ret);
 }
 
-int		search_command(t_list_command *command, char **envp)
+int		search_command(t_list_cmd *cmd, char **envp)
 {
 	int		ret;
 	int		status;
@@ -89,7 +89,7 @@ int		search_command(t_list_command *command, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (try_path(command, envp))
+		if (try_path(cmd, envp))
 			exit(0);
 	}
 	else

@@ -6,18 +6,18 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:33:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:54:05 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	not_found(char *command)
+void	not_found(char *cmd)
 {
 	char *ret;
 	char *tmp;
 
-	ret = ft_strjoin("minishell: command not found: ", command);
+	ret = ft_strjoin("minishell: cmd not found: ", cmd);
 	tmp = ret;
 	ret = ft_strjoin(ret, "\n");
 	free(tmp);
@@ -26,26 +26,26 @@ void	not_found(char *command)
 	exit(0);
 }
 
-char	*exec_command(t_list_command *command, char **envp)
+char	*exec_command(t_list_cmd *cmd, char **envp)
 {
-	if (!command)
+	if (!cmd)
 		return (NULL);
-	else if (!ft_strcmp(command->str, "echo"))
-		return (ft_echo(command->next));
-	else if (!ft_strcmp(command->str, "cd"))
-		return (ft_cd(command->next, envp));
-	else if (!ft_strcmp(command->str, "pwd"))
+	else if (!ft_strcmp(cmd->str, "echo"))
+		return (ft_echo(cmd->next));
+	else if (!ft_strcmp(cmd->str, "cd"))
+		return (ft_cd(cmd->next, envp));
+	else if (!ft_strcmp(cmd->str, "pwd"))
 		return (ft_pwd());
-	else if (!ft_strcmp(command->str, "export"))
-		return (ft_export(command->next, envp));
-	else if (!ft_strcmp(command->str, "unset"))
-		return (ft_unset(command->next, envp));
-	else if (!ft_strcmp(command->str, "env"))
-		return (ft_env(command->next, envp));
-	else if (!ft_strcmp(command->str, "exit"))
-		return (ft_exit(command->next));
-	else if (search_command(command, envp))
-		not_found(command->str);
+	else if (!ft_strcmp(cmd->str, "export"))
+		return (ft_export(cmd->next, envp));
+	else if (!ft_strcmp(cmd->str, "unset"))
+		return (ft_unset(cmd->next, envp));
+	else if (!ft_strcmp(cmd->str, "env"))
+		return (ft_env(cmd->next, envp));
+	else if (!ft_strcmp(cmd->str, "exit"))
+		return (ft_exit(cmd->next));
+	else if (search_command(cmd, envp))
+		not_found(cmd->str);
 }
 
 void	print_prompt(void)
@@ -62,7 +62,7 @@ void	print_prompt(void)
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char			*input;
-	t_list_command	*command;
+	t_list_cmd	**lst_cmd;
 	char			*ret;
 
 	ft_putstr(WELCOME_MSG);
@@ -72,18 +72,18 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
-		command = NULL;
-		if (parse_input(input, &command, envp))
+		*lst_cmd = NULL;
+		if (parse_input(input, lst_cmd, envp))
 			parse_error_exit(input);
-		if (command)
+		if (*lst_cmd)
 		{
-			if (ret = exec_command(command, envp))
+			if (ret = exec_command(*lst_cmd, envp))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
 		}
-		c_lst_clear(&command, c_lst_free_one);
+		c_lst_clear(lst_cmd, c_lst_free_one);
 	}
 	free(input);
 	return (0);

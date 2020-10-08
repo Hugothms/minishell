@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:25:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:54:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 ** @return			The new element
 */
 
-t_list_command	*c_lst_new(char *str, char type)
+t_list_cmd	*c_lst_new(char *str, char type)
 {
-	t_list_command	*new;
+	t_list_cmd	*new;
 
-	if (!(new = malloc(sizeof(t_list_command))))
+	if (!(new = malloc(sizeof(t_list_cmd))))
 		return (NULL);
 	new->str = ft_strdup(str);
 	new->flags = type;
@@ -39,9 +39,9 @@ t_list_command	*c_lst_new(char *str, char type)
 ** @param new	The address of a pointer to the element to be added to the list
 */
 
-void			c_lst_add_front(t_list_command **alst, t_list_command *new)
+void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new)
 {
-	t_list_command	*tmp;
+	t_list_cmd	*tmp;
 
 	tmp = *alst;
 	*alst = new;
@@ -54,10 +54,10 @@ void			c_lst_add_front(t_list_command **alst, t_list_command *new)
 ** @return		Length of the list
 */
 
-int				c_lst_size(t_list_command *lst)
+int				c_lst_size(t_list_cmd *lst)
 {
 	int				cpt;
-	t_list_command	*pt;
+	t_list_cmd	*pt;
 
 	if (!lst)
 		return (0);
@@ -74,9 +74,9 @@ int				c_lst_size(t_list_command *lst)
 ** @return		Last element of the list
 */
 
-t_list_command	*c_lst_last(t_list_command *lst)
+t_list_cmd	*c_lst_last(t_list_cmd *lst)
 {
-	t_list_command	*tmp;
+	t_list_cmd	*tmp;
 
 	if (!lst)
 		return (NULL);
@@ -92,9 +92,9 @@ t_list_command	*c_lst_last(t_list_command *lst)
 ** @param new	The address of a pointer to the element to be added to the list.
 */
 
-void			c_lst_add_back(t_list_command **alst, t_list_command *new)
+void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new)
 {
-	t_list_command	*pt;
+	t_list_cmd	*pt;
 
 	if (!*alst)
 	{

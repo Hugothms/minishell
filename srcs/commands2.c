@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 23:09:57 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:10:00 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 14:53:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_env(t_list_command *args, char **envp)
+char	*ft_env(t_list_cmd *args, char **envp)
 {
 	char	*ret;
 	int		i;
@@ -27,7 +27,7 @@ char	*ft_env(t_list_command *args, char **envp)
 	return (ret);
 }
 
-char	*ft_export(t_list_command *args, char **envp)
+char	*ft_export(t_list_cmd *args, char **envp)
 {
 	char	*key;
 	char	*value;
@@ -62,7 +62,7 @@ char	*ft_export(t_list_command *args, char **envp)
 	return (ft_strdup(""));
 }
 
-char	*ft_unset(t_list_command *args, char **envp)
+char	*ft_unset(t_list_cmd *args, char **envp)
 {
 	char	*var;
 	char	**tmp;

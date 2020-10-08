@@ -46,7 +46,7 @@ relative or absolute path) like in bash
 ◦ unset without any options
 ◦ env without any options and any arguments
 ◦ exit without any options
-• ; in the command should separate commands like in bash
+• ; in the cmd should separate commands like in bash
 • ’ and " should work like in bash except for multiline commands
 • Redirections < > “>>” should work like in bash except for file descriptor aggregation
 4Minishell
