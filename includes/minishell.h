@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/06 23:34:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:07:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # include "../libft/includes/libft.h"
 
 # define WHITESPACES    " \t"
+
+
+# define ERR -1
+# define OK 0
 
 # define NOTHING        0
 # define SIMPLE_QUOTES  0b0001
