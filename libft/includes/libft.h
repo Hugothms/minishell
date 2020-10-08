@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 12:10:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:27:58 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <limits.h>
 
 # include "ft_printf.h"
+# include "get_next_line.h"
 
 typedef struct		s_list
 {
