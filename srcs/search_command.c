@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:26:19 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/09 11:22:40 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,30 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-char	**lst_to_strs(t_cmd *cmd)
+char	**lst_to_strs(t_list *cmd)
 {
 	char	**argv;
 	int		i;
 
-	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(cmd) + 1))))
+	if (!(argv = malloc(sizeof(*argv) * (ft_lstsize(cmd) + 1))))
 		return (NULL);
 	i = 0;
 	while (cmd)
 	{
-		argv[i++] = ft_strdup(cmd->str);
+		argv[i++] = ft_strdup(((t_word*)cmd->content)->str);
 		cmd = cmd->next;
 	}
 	argv[i] = NULL;
 	return (argv);
 }
 
-void	try_path2(t_cmd *cmd, char **envp, char *begin, int *cpt)
+void	try_path2(t_list *cmd, char **envp, char *begin, int *cpt)
 {
 	char	*full_path;
 	char	**argv;
 
 	full_path = ft_strjoin(begin, "/");
-	full_path = ft_strjoin_free(full_path, cmd->str);
+	full_path = ft_strjoin_free(full_path, ((t_word*)cmd->content)->str);
 	if (argv = lst_to_strs(cmd))
 	{
 		if (execve(full_path, argv, envp))
@@ -57,7 +57,7 @@ void	try_path2(t_cmd *cmd, char **envp, char *begin, int *cpt)
 	free(full_path);
 }
 
-int		try_path(t_cmd *cmd, char **envp)
+int		try_path(t_list *cmd, char **envp)
 {
 	int		i;
 	int		cpt;
@@ -79,7 +79,7 @@ int		try_path(t_cmd *cmd, char **envp)
 	return (ret);
 }
 
-int		search_command(t_cmd *cmd, char **envp)
+int		search_command(t_list *cmd, char **envp)
 {
 	int		ret;
 	int		status;

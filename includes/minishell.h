@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 15:33:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/09 11:22:48 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,19 @@
 # define SIMPLE_QUOTES	0b0001
 # define DOUBLE_QUOTES	0b0010
 # define NO_SPACE_AFTER	0b0100
-# define idk				0b1000
-
-typedef struct			s_lst_cmd
-{
-	struct s_cmd		*cmd;
-	struct s_lst_cmd	*next;
-}						 t_lst_cmd;
+# define idk			0b1000
 
 typedef struct			s_cmd
 {
 	char				*str;
 	int					flags;
-	struct s_cmd		*next;
-}						 t_cmd;
+}						t_word;
+
+typedef struct			s_lst_cmd
+{
+	t_list				*cmd;
+	char				sep;
+}						t_list_cmd;
 
 typedef struct			s_parse
 {
@@ -57,48 +56,38 @@ typedef struct			s_parse
 	int					i;
 }						t_parse;
 
+void			free_cmd(void *lst);
+void			ft_lstremove_next_one(t_list *lst, void (*del)(void*));
+
 
 
 //commands
-char	*ft_echo(t_cmd *args);
-char	*ft_cd(t_cmd *args, char **envp);
+char	*ft_echo(t_list *args);
+char	*ft_cd(t_list *args, char **envp);
 char	*ft_pwd(void);
-char	*ft_export(t_cmd *args, char **envp);
-char	*ft_unset(t_cmd *args, char **envp);
-char	*ft_env(t_cmd *args, char **envp);
-char	*ft_exit(t_cmd *args);
+char	*ft_export(t_list *args, char **envp);
+char	*ft_unset(t_list *args, char **envp);
+char	*ft_env(t_list *args, char **envp);
+char	*ft_exit(t_list *args);
 char	*find_var_env(char **envp, char *var);
 
 
 //parse
-int		parse_input(char *line, t_cmd **p_cmd, char **envp);
+int		parse_input(char *line, t_list *lst_cmd, char **envp);
 
 //parse_quotes
-void	simple_quotes(char *input, t_cmd **p_cmd, t_parse *par);
-void	double_quotes(char *input, t_cmd **p_cmd, t_parse *par);
-void	end_word(char *input, t_cmd **p_cmd, t_parse *par);
-void	init_par(t_parse *par);
+void	simple_quotes(char *input, t_list **p_cmd, t_parse *par);
+void	double_quotes(char *input, t_list **p_cmd, t_parse *par);
+void	end_word(char *input, t_list **p_cmd, t_parse *par);
+// void	init_par(t_parse *par);
 
 //search_command
-int		search_command(t_cmd *cmd, char **envp);
+int		search_command(t_list *cmd, char **envp);
 
 //utils
 int		escaped(char *str, int i);
-int		in_quotes(t_cmd *cmd);
+int		in_quotes(t_list *cmd);
 void	parse_error_exit(char *input);
-
-//linked_list
-t_cmd		*c_lst_new(char *str, char type);
-void		c_lst_add_front(t_cmd **alst, t_cmd *new);
-int			c_lst_size(t_cmd *lst);
-t_cmd		*c_lst_last(t_cmd *lst);
-void		c_lst_add_back(t_cmd **alst, t_cmd *new);
-void		c_lst_free_one(void *lst);
-void		c_lst_remove_next_one(t_cmd *lst, void (*del)(void*));
-void		c_lst_del_one(t_cmd *lst, void (*del)(void*));
-void		c_lst_clear(t_cmd **alst, void (*del)(void*));
-void		c_lst_iter(t_cmd *lst, void (*f)(void *));
-t_cmd		*c_lst_map(t_cmd *lst, void *(*f)(void *), void (*del)(void *));
 
 
 

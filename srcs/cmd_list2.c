@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linked_list2.c                                     :+:      :+:    :+:   */
+/*   cmd_list2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 17:34:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/08 17:46:40 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 ** @param lst	The adress of a pointer to an element.
 */
 
-void			ft_list_free_one(void *lst)
-{
-	t_list	*tmp;
+// void			ft_list_free_one(void *lst)
+// {
+// 	t_list	*tmp;
 
-	tmp = lst;
-	free(tmp->str);
-	free(tmp);
-}
+// 	tmp = lst;
+// 	free(tmp->str);
+// 	free(tmp);
+// }
 
 void			ft_list_remove_next_one(t_list *lst, void (*del)(void*))
 {
@@ -83,20 +83,20 @@ void			ft_list_clear(t_list **alst, void (*del)(void*))
 ** @param f		The adress of the function used to iterate on the list.
 */
 
-void			ft_list_iter(t_list *lst, void (*f)(void *))
-{
-	t_list	*tmp;
+// void			ft_list_iter(t_list *lst, void (*f)(void *))
+// {
+// 	t_list	*tmp;
 
-	if (!lst)
-		return ;
-	tmp = lst;
-	while (tmp->next)
-	{
-		f(tmp->str);
-		tmp = tmp->next;
-	}
-	f(tmp->str);
-}
+// 	if (!lst)
+// 		return ;
+// 	tmp = lst;
+// 	while (tmp->next)
+// 	{
+// 		f(tmp->str);
+// 		tmp = tmp->next;
+// 	}
+// 	f(tmp->str);
+// }
 
 /*
 ** Iterates the list ’lst’ and applies the function ’f’ to the content of each
@@ -110,25 +110,25 @@ void			ft_list_iter(t_list *lst, void (*f)(void *))
 ** @return		The new list. NULL if the allocation fails.
 */
 
-t_list	*ft_list_map(t_list *lst, void *(*f)(void *),\
-							void (*del)(void *))
-{
-	t_list	*tmp;
-	t_list	*new;
-	t_list	*mapedlst;
+// t_list	*ft_list_map(t_list *lst, void *(*f)(void *),\
+// 							void (*del)(void *))
+// {
+// 	t_list	*tmp;
+// 	t_list	*new;
+// 	t_list	*mapedlst;
 
-	if (!lst || !f || !del)
-		return (NULL);
-	tmp = lst;
-	if (!(mapedlst = ft_list_new(f(tmp->str), tmp->flags)))
-		ft_list_clear(&mapedlst, del);
-	tmp = tmp->next;
-	while (tmp)
-	{
-		if (!(new = ft_list_new(f(tmp->str), tmp->flags)))
-			ft_list_clear(&mapedlst, del);
-		ft_list_add_back(&mapedlst, new);
-		tmp = tmp->next;
-	}
-	return (mapedlst);
-}
+// 	if (!lst || !f || !del)
+// 		return (NULL);
+// 	tmp = lst;
+// 	if (!(mapedlst = ft_list_new(f(tmp->str), tmp->flags)))
+// 		ft_list_clear(&mapedlst, del);
+// 	tmp = tmp->next;
+// 	while (tmp)
+// 	{
+// 		if (!(new = ft_list_new(f(tmp->str), tmp->flags)))
+// 			ft_list_clear(&mapedlst, del);
+// 		ft_list_add_back(&mapedlst, new);
+// 		tmp = tmp->next;
+// 	}
+// 	return (mapedlst);
+// }
