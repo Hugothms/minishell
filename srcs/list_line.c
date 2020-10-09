@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_list.c                                         :+:      :+:    :+:   */
+/*   list_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 17:44:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/09 12:12:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 ** @return			The new element
 */
 
-// t_list	*ft_list_new(char *str, char type)
-// {
-// 	t_list	*new;
+t_list_line		*l_lst_new(t_list_cmd *cmd, char separator)
+{
+	t_list_line	*new;
 
-// 	if (!(new = malloc(sizeof(t_list))))
-// 		return (NULL);
-// 	new->str = ft_strdup(str);
-// 	new->flags = type;
-// 	new->next = NULL;
-// 	return (new);
-// }
+	if (!(new = malloc(sizeof(t_list_line))))
+		return (NULL);
+	new->cmd = cmd;
+	new->separator = separator;
+	new->next = NULL;
+	return (new);
+}
 
 /*
 ** Adds the element ’new’ at the beginning of the list
@@ -39,9 +39,9 @@
 ** @param new	The address of a pointer to the element to be added to the list
 */
 
-void			ft_list_add_front(t_list **alst, t_list *new)
+void			l_lst_add_front(t_list_line **alst, t_list_line *new)
 {
-	t_list	*tmp;
+	t_list_line	*tmp;
 
 	tmp = *alst;
 	*alst = new;
@@ -54,10 +54,10 @@ void			ft_list_add_front(t_list **alst, t_list *new)
 ** @return		Length of the list
 */
 
-int				ft_list_size(t_list *lst)
+int				l_lst_size(t_list_line *lst)
 {
 	int				cpt;
-	t_list	*pt;
+	t_list_line	*pt;
 
 	if (!lst)
 		return (0);
@@ -74,9 +74,9 @@ int				ft_list_size(t_list *lst)
 ** @return		Last element of the list
 */
 
-t_list	*ft_list_last(t_list *lst)
+t_list_line		*l_lst_last(t_list_line *lst)
 {
-	t_list	*tmp;
+	t_list_line	*tmp;
 
 	if (!lst)
 		return (NULL);
@@ -92,9 +92,9 @@ t_list	*ft_list_last(t_list *lst)
 ** @param new	The address of a pointer to the element to be added to the list.
 */
 
-void			ft_list_add_back(t_list **alst, t_list *new)
+void			l_lst_add_back(t_list_line **alst, t_list_line *new)
 {
-	t_list	*pt;
+	t_list_line	*pt;
 
 	if (!*alst)
 	{
