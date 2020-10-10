@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 18:24:21 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 22:21:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		escaped(char *str, int i)
 
 int	is_separator(char *str)
 {
-	return (ft_in_charset(*str, SEPARATORS) || ft_strncmp(str, ">>", 2));
+	return (ft_in_charset(*str, SEPARATORS) || !ft_strncmp(str, ">>", 2));
 }
 
 int		in_quotes(t_list_cmd *cmd)

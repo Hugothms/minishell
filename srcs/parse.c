@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 20:21:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 23:01:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,11 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 			simple_quotes(input, cmd, &par);
 		else if (input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
 			double_quotes(input, cmd, &par);
+		else if (is_separator(&input[par.i]) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
+			separator(input, cmd, &par);
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
 			end_word(input, cmd, &par);
-		else if (is_separator(&input[par.i]) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
-			separator(input, cmd, &par);
 		par.i++;
 	}
 	return (par.in_simple || par.in_double);
@@ -150,21 +150,36 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	replace_dollar_and_tild(cmd, envp);
 	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
-	t_list_cmd	*start = cmd->next;
-	while (cmd->next)
+	l_lst_add_back(lst_line, l_lst_new(cmd, separator));
+	while (cmd)
 	{
-		if (is_separator(cmd->next->str))
+		ft_putstr("\nnew while: ");
+		ft_putstr(cmd->str);
+		ft_putstr("\n");
+		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
 		{
-			t_list_cmd	*tmp = cmd->next;
+			ft_putstr("add new cmd sep\n");
+			char separator = cmd->str[0];
+			if (cmd->str[1])
+				separator--; // if separator is ">>" we save char '='
+			l_lst_add_back(lst_line, l_lst_new(cmd->next, separator));
 			cmd->next = NULL;
-			char separator = tmp->str[0];
-			if (tmp->str[1])
-				separator++; // si le separaeur est ">>" le marqueur sera '='
-			l_lst_add_back(lst_line, l_lst_new(start, separator));
-			cmd = tmp;
-			start = cmd;
 		}
 		cmd = cmd->next;
+	}
+	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	t_list_line *copy = *lst_line;
+	while(copy)
+	{
+		cmd = copy->cmd;
+		while (cmd)
+		{
+			ft_putstr(cmd->str);
+			ft_putstr("\n");
+			cmd = cmd->next;
+		}
+		ft_putstr("________________\n");
+		copy = copy->next;
 	}
 	return (OK);
 }

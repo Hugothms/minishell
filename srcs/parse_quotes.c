@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 17:39:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 22:50:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 {
 	char *str;
 
+	if (size <= 0)
+		return ;
 	while (!(flags & F_SIMPLE_QUOTES) && !(flags & F_DOUBLE_QUOTES) && ft_in_charset(*input, WHITESPACES))
 		input++;
 	str = ft_strndup(input, size);
@@ -64,6 +66,25 @@ void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	par->in_double += (par->in_double == 0 ? 1 : -1);
 }
 
+void	separator(char *input, t_list_cmd **cmd, t_parse *par)
+{
+		int end;
+		
+		while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
+			par->pos++;
+		end = par->pos;
+		if (!ft_in_charset(input[par->pos], SEPARATORS))
+		{
+			while (!ft_in_charset(input[end], SEPARATORS))
+				end++;
+			add_substr_to_cmd(&input[par->pos], cmd, end - par->pos, F_NOTHING);
+		}
+		add_substr_to_cmd(&input[end], cmd, par->i - end + 1, F_SEPARATOR);
+		par->pos = end + 1;
+		if (!ft_strncmp(&input[end], ">>", 2))
+			par->pos++;
+}
+
 void	end_word(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	// si je suis sur le dernier caractere du mot
@@ -72,18 +93,6 @@ void	end_word(char *input, t_list_cmd **cmd, t_parse *par)
 		while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
 			par->pos++;
 		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos + 1, F_NOTHING);
-		par->pos = par->i + 1;
-	}
-}
-
-void	separator(char *input, t_list_cmd **cmd, t_parse *par)
-{
-	// si je suis sur le dernier caractere du mot
-	if (!input[par->i + 1] || ft_in_charset(input[par->i + 1], WHITESPACES))
-	{
-		while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
-			par->pos++;
-		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos + 1, F_SEPARATOR);
 		par->pos = par->i + 1;
 	}
 }
