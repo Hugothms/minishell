@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 18:24:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 23:30:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int		escaped(char *str, int i);
 int		in_quotes(t_list_cmd *cmd);
 void	parse_error_exit(char *input);
 int		is_separator(char *str);
+char	get_separator(char* str);
+
 
 //list_cmd.c
 t_list_cmd		*c_lst_new(char *str, char type);
@@ -121,6 +123,7 @@ void			l_lst_del_one(t_list_line *lst);
 void			l_lst_clear(t_list_line *lst);
 void			l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *));
+t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator);
 
 
 

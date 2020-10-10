@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 23:01:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 23:44:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,18 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	replace_dollar_and_tild(cmd, envp);
 	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
-	l_lst_add_back(lst_line, l_lst_new(cmd, separator));
+
+
+
+
+
+
+
+
+
+
+	if (cmd)
+		l_lst_add_back(lst_line, l_lst_copy_all(cmd, get_separator(cmd->str)));
 	while (cmd)
 	{
 		ft_putstr("\nnew while: ");
@@ -158,19 +169,39 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 		ft_putstr("\n");
 		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
 		{
+			ft_putstr("blocked?\n");
 			ft_putstr("add new cmd sep\n");
-			char separator = cmd->str[0];
-			if (cmd->str[1])
-				separator--; // if separator is ">>" we save char '='
-			l_lst_add_back(lst_line, l_lst_new(cmd->next, separator));
-			cmd->next = NULL;
+			l_lst_add_back(lst_line, l_lst_copy_all(cmd->next, get_separator(cmd->str)));
+			ft_putstr("not\n");
+			// c_lst_clear(tmp);
+			// cmd->next = NULL;
 		}
+		t_list_cmd	*tmp = cmd;
 		cmd = cmd->next;
+		c_lst_del_one(tmp);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 	t_list_line *copy = *lst_line;
 	while(copy)
 	{
+		ft_putstr("--------------\n");
 		cmd = copy->cmd;
 		while (cmd)
 		{
@@ -178,7 +209,6 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 			ft_putstr("\n");
 			cmd = cmd->next;
 		}
-		ft_putstr("________________\n");
 		copy = copy->next;
 	}
 	return (OK);

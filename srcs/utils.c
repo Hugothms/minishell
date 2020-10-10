@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 22:21:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 23:30:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,14 @@ void	parse_error_exit(char *input)
 	ft_putstr("minishell: parse error\n");
 	free(input);
 	exit(1);
+}
+
+char get_separator(char* str)
+{
+	char	separator;
+
+	separator = str[0];
+		if (str[1])
+			separator--; // if separator is ">>" we save char '='
+	return (separator);
 }
