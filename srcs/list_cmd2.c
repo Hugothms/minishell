@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 11:28:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 16:35:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void			c_lst_free_one(void *lst)
 	free(tmp);
 }
 
-void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*))
+void			c_lst_remove_next_one(t_list_cmd *lst)
 {
 	t_list_cmd	*tmp;
 
 	if (!lst || !lst->next)
 		return ;
 	tmp = lst->next->next;
-	del(lst->next);
+	c_lst_free_one(lst->next);
 	lst->next = tmp;
 }
 
@@ -48,11 +48,11 @@ void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*))
 **	 			element.
 */
 
-void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*))
+void			c_lst_del_one(t_list_cmd *lst)
 {
 	if (!lst)
 		return ;
-	del(lst);
+	c_lst_free_one(lst);
 }
 
 /*
@@ -64,16 +64,16 @@ void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*))
 **  element.
 */
 
-void			c_lst_clear(t_list_cmd *lst, void (*del)(void*))
+void			c_lst_clear(t_list_cmd *lst)
 {
 	if (!lst)
 		return ;
 	if ((lst)->next)
 	{
-		c_lst_clear((lst)->next, del);
+		c_lst_clear((lst)->next);
 		free((lst)->next);
 	}
-	c_lst_del_one(lst, del);
+	c_lst_del_one(lst);
 	lst = NULL;
 }
 
@@ -111,23 +111,22 @@ void			c_lst_iter(t_list_cmd *lst, void (*f)(void *))
 ** @return		The new list. NULL if the allocation fails.
 */
 
-t_list_cmd	*c_lst_map(t_list_cmd *lst, void *(*f)(void *),\
-							void (*del)(void *))
+t_list_cmd	*c_lst_map(t_list_cmd *lst, void *(*f)(void *))
 {
 	t_list_cmd	*tmp;
 	t_list_cmd	*new;
 	t_list_cmd	*mapedlst;
 
-	if (!lst || !f || !del)
+	if (!lst || !f)
 		return (NULL);
 	tmp = lst;
 	if (!(mapedlst = c_lst_new(f(tmp->str), tmp->flags)))
-		c_lst_clear(mapedlst, del);
+		c_lst_clear(mapedlst);
 	tmp = tmp->next;
 	while (tmp)
 	{
 		if (!(new = c_lst_new(f(tmp->str), tmp->flags)))
-			c_lst_clear(mapedlst, del);
+			c_lst_clear(mapedlst);
 		c_lst_add_back(&mapedlst, new);
 		tmp = tmp->next;
 	}

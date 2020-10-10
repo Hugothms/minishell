@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 11:29:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 16:40:51 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		main(const int argc, char *argv[], char *envp[])
 			}
 			lst_line = lst_line->next; 
 		}
-		l_lst_clear(start, l_lst_free_one);
+		l_lst_clear(start);
 	}
 	free(input);
 	return (0);

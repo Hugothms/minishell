@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 11:14:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 16:40:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new);
 int				c_lst_size(t_list_cmd *lst);
 t_list_cmd		*c_lst_last(t_list_cmd *lst);
 void			c_lst_free_one(void *lst);
-void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*));
-void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*));
-void			c_lst_clear(t_list_cmd *lst, void (*del)(void*));
+void			c_lst_remove_next_one(t_list_cmd *lst);
+void			c_lst_del_one(t_list_cmd *lst);
+void			c_lst_clear(t_list_cmd *lst);
 void			c_lst_iter(t_list_cmd *lst, void (*f)(void *));
-t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *), void (*del)(void *));
+t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *));
 
 
 //line_list
@@ -109,11 +109,11 @@ void			l_lst_add_back(t_list_line **alst, t_list_line *new);
 int				l_lst_size(t_list_line *lst);
 t_list_line		*l_lst_last(t_list_line *lst);
 void			l_lst_free_one(void *lst);
-void			l_lst_remove_next_one(t_list_line *lst, void (*del)(void*));
-void			l_lst_del_one(t_list_line *lst, void (*del)(void*));
-void			l_lst_clear(t_list_line *lst, void (*del)(void*));
+void			l_lst_remove_next_one(t_list_line *lst);
+void			l_lst_del_one(t_list_line *lst);
+void			l_lst_clear(t_list_line *lst);
 void			l_lst_iter(t_list_line *lst, void (*f)(void *));
-t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *), void (*del)(void *));
+t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *));
 
 
 

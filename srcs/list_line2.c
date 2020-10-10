@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 11:28:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 16:40:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ void			l_lst_free_one(void *lst)
 
 	tmp = lst;
 	if (tmp->cmd)
-		c_lst_free_one(tmp->cmd);
+		c_lst_clear(tmp->cmd);
 	free(tmp);
 }
 
-void			l_lst_remove_next_one(t_list_line *lst, void (*del)(void*))
+void			l_lst_remove_next_one(t_list_line *lst)
 {
 	t_list_line	*tmp;
 
 	if (!lst || !lst->next)
 		return ;
 	tmp = lst->next->next;
-	del(lst->next);
+	l_lst_free_one(lst->next);
 	lst->next = tmp;
 }
 
@@ -48,11 +48,11 @@ void			l_lst_remove_next_one(t_list_line *lst, void (*del)(void*))
 **	 			element.
 */
 
-void			l_lst_del_one(t_list_line *lst, void (*del)(void*))
+void			l_lst_del_one(t_list_line *lst)
 {
 	if (!lst)
 		return ;
-	del(lst);
+	l_lst_free_one(lst);
 }
 
 /*
@@ -64,16 +64,16 @@ void			l_lst_del_one(t_list_line *lst, void (*del)(void*))
 **  element.
 */
 
-void			l_lst_clear(t_list_line *lst, void (*del)(void*))
+void			l_lst_clear(t_list_line *lst)
 {
 	if (!lst)
 		return ;
 	if (lst->next)
 	{
-		l_lst_clear(lst->next, del);
+		l_lst_clear(lst->next);
 		free((lst)->next);
 	}
-	l_lst_del_one(lst, del);
+	l_lst_del_one(lst);
 	lst = NULL;
 }
 
@@ -112,22 +112,22 @@ void			l_lst_clear(t_list_line *lst, void (*del)(void*))
 */
 
 // t_list_line	*l_lst_map(t_list_line *lst, void *(*f)(void *),\
-// 							void (*del)(void *))
+// 							void (*l_lst_free_one)(void *))
 // {
 // 	t_list_line	*tmp;
 // 	t_list_line	*new;
 // 	t_list_line	*mapedlst;
 
-// 	if (!lst || !f || !del)
+// 	if (!lst || !f || !l_lst_free_one)
 // 		return (NULL);
 // 	tmp = lst;
 // 	if (!(mapedlst = l_lst_new(f(tmp->str), tmp->flags)))
-// 		l_lst_clear(&mapedlst, del);
+// 		l_lst_clear(&mapedlst, l_lst_free_one);
 // 	tmp = tmp->next;
 // 	while (tmp)
 // 	{
 // 		if (!(new = l_lst_new(f(tmp->str), tmp->flags)))
-// 			l_lst_clear(&mapedlst, del);
+// 			l_lst_clear(&mapedlst, l_lst_free_one);
 // 		l_lst_add_back(&mapedlst, new);
 // 		tmp = tmp->next;
 // 	}
