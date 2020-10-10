@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 16:35:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 20:21:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, char **envp)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && !(cmd->flags & SIMPLE_QUOTES) && cmd->str[i + 1] > 32)
+			if (cmd->str[i] == '$' && !(cmd->flags & F_SIMPLE_QUOTES) && cmd->str[i + 1] > 32)
 			{
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, envp);
@@ -118,7 +118,7 @@ void	delete_empty_elements(t_list_cmd *cmd)
 // 	ft_free_tab(tmp);
 // }
 
-int		input_quotes_to_command(char *input, t_list_cmd **cmd)
+int		input_to_command(char *input, t_list_cmd **cmd)
 {
 	t_parse		par;
 
@@ -132,6 +132,8 @@ int		input_quotes_to_command(char *input, t_list_cmd **cmd)
 		// si je suis sur un mot et hors de quotes
 		else if (!ft_in_charset(input[par.i], WHITESPACES) && !par.in_simple && !par.in_double)
 			end_word(input, cmd, &par);
+		else if (is_separator(&input[par.i]) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
+			separator(input, cmd, &par);
 		par.i++;
 	}
 	return (par.in_simple || par.in_double);
@@ -139,20 +141,30 @@ int		input_quotes_to_command(char *input, t_list_cmd **cmd)
 
 int		parse_input(char *input, t_list_line **lst_line, char **envp)
 {
-	
 	t_list_cmd	*cmd;
-	int i = 1;
 
-	while (i--)
+	cmd = NULL;
+	if (input_to_command(input, &cmd))
+		return (ERR);
+	// deal_backslash((**lst_line)->cmd, envp);
+	replace_dollar_and_tild(cmd, envp);
+	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
+	delete_empty_elements(cmd);
+	t_list_cmd	*start = cmd->next;
+	while (cmd->next)
 	{
-		cmd = NULL;
-		if (input_quotes_to_command(input, &cmd))
-			return (ERR);
-		// deal_backslash((**lst_line)->cmd, envp);
-		replace_dollar_and_tild(cmd, envp);
-		// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
-		delete_empty_elements(cmd);
-		l_lst_add_back(lst_line, l_lst_new(cmd, ';'));
+		if (is_separator(cmd->next->str))
+		{
+			t_list_cmd	*tmp = cmd->next;
+			cmd->next = NULL;
+			char separator = tmp->str[0];
+			if (tmp->str[1])
+				separator++; // si le separaeur est ">>" le marqueur sera '='
+			l_lst_add_back(lst_line, l_lst_new(start, separator));
+			cmd = tmp;
+			start = cmd;
+		}
+		cmd = cmd->next;
 	}
 	return (OK);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   commands1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:53:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 17:37:53 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_echo(t_list_cmd *args)
 	while (args)
 	{
 		ret = ft_strjoin_free(ret, args->str);
-		if (args->next && !(args->flags & NO_SPACE_AFTER))
+		if (args->next && !(args->flags & F_NO_SPACE_AFTER))
 			ret = ft_strjoin_free(ret, " ");
 		args = args->next;
 	}

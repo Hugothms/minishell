@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/09 12:18:31 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/10 17:37:29 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,11 @@ NAME = minishell
 --CFLAGS += -Wall -Werror -Wextra
 --LDFLAGS += -g3 -fsanitize=address
 
---SRCS =	srcs/commands.c			\
+--SRCS =	srcs/commands1.c			\
 			srcs/commands2.c		\
-			srcs/list_cmd.c			\
+			srcs/list_cmd1.c			\
 			srcs/list_cmd2.c		\
-			srcs/list_line.c		\
+			srcs/list_line1.c		\
 			srcs/list_line2.c		\
 			srcs/main.c				\
 			srcs/parse.c			\
