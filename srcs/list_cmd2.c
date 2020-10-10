@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linked_list2.c                                     :+:      :+:    :+:   */
+/*   list_cmd2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:50:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:28:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void			c_lst_free_one(void *lst)
 	t_list_cmd	*tmp;
 
 	tmp = lst;
-	free(tmp->str);
+	if (tmp->str)
+		free(tmp->str);
 	free(tmp);
 }
 
@@ -63,17 +64,17 @@ void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*))
 **  element.
 */
 
-void			c_lst_clear(t_list_cmd **alst, void (*del)(void*))
+void			c_lst_clear(t_list_cmd *lst, void (*del)(void*))
 {
-	if (!*alst)
+	if (!lst)
 		return ;
-	if ((*alst)->next)
+	if ((lst)->next)
 	{
-		c_lst_clear(&((*alst)->next), del);
-		free((*alst)->next);
+		c_lst_clear((lst)->next, del);
+		free((lst)->next);
 	}
-	c_lst_del_one(*alst, del);
-	*alst = NULL;
+	c_lst_del_one(lst, del);
+	lst = NULL;
 }
 
 /*
@@ -121,12 +122,12 @@ t_list_cmd	*c_lst_map(t_list_cmd *lst, void *(*f)(void *),\
 		return (NULL);
 	tmp = lst;
 	if (!(mapedlst = c_lst_new(f(tmp->str), tmp->flags)))
-		c_lst_clear(&mapedlst, del);
+		c_lst_clear(mapedlst, del);
 	tmp = tmp->next;
 	while (tmp)
 	{
 		if (!(new = c_lst_new(f(tmp->str), tmp->flags)))
-			c_lst_clear(&mapedlst, del);
+			c_lst_clear(mapedlst, del);
 		c_lst_add_back(&mapedlst, new);
 		tmp = tmp->next;
 	}

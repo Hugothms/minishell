@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/09 12:12:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:28:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void			l_lst_free_one(void *lst)
 	t_list_line	*tmp;
 
 	tmp = lst;
-	c_lst_free_one(tmp->cmd);
+	if (tmp->cmd)
+		c_lst_free_one(tmp->cmd);
 	free(tmp);
 }
 
@@ -63,17 +64,17 @@ void			l_lst_del_one(t_list_line *lst, void (*del)(void*))
 **  element.
 */
 
-void			l_lst_clear(t_list_line **alst, void (*del)(void*))
+void			l_lst_clear(t_list_line *lst, void (*del)(void*))
 {
-	if (!*alst)
+	if (!lst)
 		return ;
-	if ((*alst)->next)
+	if (lst->next)
 	{
-		l_lst_clear(&((*alst)->next), del);
-		free((*alst)->next);
+		l_lst_clear(lst->next, del);
+		free((lst)->next);
 	}
-	l_lst_del_one(*alst, del);
-	*alst = NULL;
+	l_lst_del_one(lst, del);
+	lst = NULL;
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/09 12:12:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:14:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*find_var_env(char **envp, char *var);
 
 
 //parse
-int		parse_input(char *line, t_list_cmd **cmd, char **envp);
+int		parse_input(char *line, t_list_line **cmd, char **envp);
 
 //parse_quotes
 void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par);
@@ -97,7 +97,7 @@ t_list_cmd		*c_lst_last(t_list_cmd *lst);
 void			c_lst_free_one(void *lst);
 void			c_lst_remove_next_one(t_list_cmd *lst, void (*del)(void*));
 void			c_lst_del_one(t_list_cmd *lst, void (*del)(void*));
-void			c_lst_clear(t_list_cmd **alst, void (*del)(void*));
+void			c_lst_clear(t_list_cmd *lst, void (*del)(void*));
 void			c_lst_iter(t_list_cmd *lst, void (*f)(void *));
 t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *), void (*del)(void *));
 
@@ -111,7 +111,7 @@ t_list_line		*l_lst_last(t_list_line *lst);
 void			l_lst_free_one(void *lst);
 void			l_lst_remove_next_one(t_list_line *lst, void (*del)(void*));
 void			l_lst_del_one(t_list_line *lst, void (*del)(void*));
-void			l_lst_clear(t_list_line **alst, void (*del)(void*));
+void			l_lst_clear(t_list_line *lst, void (*del)(void*));
 void			l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *), void (*del)(void *));
 

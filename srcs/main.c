@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:55:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:29:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	not_found(char *cmd)
 	char *ret;
 	char *tmp;
 
-	ret = ft_strjoin("minishell: cmd not found: ", cmd);
+	ret = ft_strjoin("minishell: command not found: ", cmd);
 	tmp = ret;
 	ret = ft_strjoin(ret, "\n");
 	free(tmp);
@@ -62,7 +62,8 @@ void	print_prompt(void)
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
-	t_list_cmd	*lst_cmd;
+	t_list_line	*lst_line;
+	// t_list_cmd	*lst_cmd;
 	char		*ret;
 
 	ft_putstr(WELCOME_MSG);
@@ -72,18 +73,20 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
-		lst_cmd = NULL;
-		if (parse_input(input, &lst_cmd, envp))
+		lst_line = NULL;
+		if (parse_input(input, &lst_line, envp))
 			parse_error_exit(input);
-		if (lst_cmd)
+		t_list_line	*start = lst_line;
+		while (lst_line)
 		{
-			if (ret = exec_command(lst_cmd, envp))
+			if (ret = exec_command(lst_line->cmd, envp))
 			{
 				ft_putstr(ret);
 				free(ret);
 			}
+			lst_line = lst_line->next; 
 		}
-		c_lst_clear(&lst_cmd, c_lst_free_one);
+		l_lst_clear(start, l_lst_free_one);
 	}
 	free(input);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:54:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 10:53:07 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,22 @@ int		input_quotes_to_command(char *input, t_list_cmd **cmd)
 	return (par.in_simple || par.in_double);
 }
 
-int		parse_input(char *input, t_list_cmd **cmd, char **envp)
+int		parse_input(char *input, t_list_line **lst_line, char **envp)
 {
-	if (input_quotes_to_command(input, cmd))
-		return (ERR);
-	// deal_backslash(*cmd, envp);
-	replace_dollar_and_tild(*cmd, envp);
-	// ancien_parsing_a_supprimer(input, cmd);
-	delete_empty_elements(*cmd);
+	
+	t_list_cmd	*cmd;
+	int i = 1;
+
+	while (i--)
+	{
+		cmd = NULL;
+		if (input_quotes_to_command(input, &cmd))
+			return (ERR);
+		// deal_backslash((**lst_line)->cmd, envp);
+		replace_dollar_and_tild(cmd, envp);
+		// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
+		delete_empty_elements(cmd);
+		l_lst_add_back(lst_line, l_lst_new(cmd, ';'));
+	}
+	return (OK);
 }

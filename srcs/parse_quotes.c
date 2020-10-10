@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:53:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:20:26 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 		input++;
 	str = ft_strndup(input, size);
 	c_lst_add_back(cmd, c_lst_new(str, flags));
-	free(str);
+	free(str); //! todo
 }
 
 void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)

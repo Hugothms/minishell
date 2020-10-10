@@ -2,7 +2,7 @@
 
 void			free_cmd(void *lst)
 {
-	t_word	*tmp;
+	t_list_cmd	*tmp;
 
 	tmp = lst;
 	free(tmp->str);
