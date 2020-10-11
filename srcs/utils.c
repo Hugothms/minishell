@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 23:30:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 16:04:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,13 @@ char get_separator(char* str)
 		if (str[1])
 			separator--; // if separator is ">>" we save char '='
 	return (separator);
+}
+
+void	cmd_plusplus_free(t_list_cmd **cmd)
+{	
+	t_list_cmd	*tmp;
+
+	tmp = *cmd;
+	*cmd = (*cmd)->next;
+	c_lst_del_one(tmp);
 }

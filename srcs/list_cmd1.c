@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linked_list.c                                      :+:      :+:    :+:   */
+/*   list_cmd1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:54:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 14:19:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 ** @return			The new element
 */
 
-t_list_cmd	*c_lst_new(char *str, char type)
+t_list_cmd	*c_lst_new(char *str, char flags)
 {
 	t_list_cmd	*new;
 
 	if (!(new = malloc(sizeof(t_list_cmd))))
 		return (NULL);
 	new->str = ft_strdup(str);
-	new->flags = type;
+	new->flags = flags;
 	new->next = NULL;
 	return (new);
 }

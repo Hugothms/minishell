@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 23:13:42 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 13:31:48 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,11 @@
 ** @param lst	The adress of a pointer to an element.
 */
 
-void			c_lst_free_one(void *lst)
+void			c_lst_free_one(t_list_cmd *lst)
 {
-	t_list_cmd	*tmp;
-
-	tmp = lst;
-	if (tmp->str)
-		free(tmp->str);
-	free(tmp);
+	if (lst->str)
+		free(lst->str);
+	free(lst);
 }
 
 void			c_lst_remove_next_one(t_list_cmd *lst)

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 23:30:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 16:04:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define ERR				-1
 # define OK					0
 
-// Flags
+// Flags cmd
 # define F_NOTHING			0b0000
 # define F_SIMPLE_QUOTES	0b0001
 # define F_DOUBLE_QUOTES	0b0010
@@ -44,14 +44,14 @@
 typedef struct			s_list_cmd
 {
 	char				*str;
-	int					flags;
+	char				flags;
 	struct s_list_cmd	*next;
 }						 t_list_cmd;
 
 typedef struct			s_list_line
 {
 	t_list_cmd			*cmd;
-	int					separator;
+	char				separator;
 	struct s_list_line	*next;
 }						 t_list_line;
 
@@ -95,15 +95,16 @@ int		in_quotes(t_list_cmd *cmd);
 void	parse_error_exit(char *input);
 int		is_separator(char *str);
 char	get_separator(char* str);
+void	cmd_plusplus_free(t_list_cmd **cmd);
 
 
 //list_cmd.c
-t_list_cmd		*c_lst_new(char *str, char type);
+t_list_cmd		*c_lst_new(char *str, char flags);
 void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new);
 void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new);
 int				c_lst_size(t_list_cmd *lst);
 t_list_cmd		*c_lst_last(t_list_cmd *lst);
-void			c_lst_free_one(void *lst);
+void			c_lst_free_one(t_list_cmd *lst);
 void			c_lst_remove_next_one(t_list_cmd *lst);
 void			c_lst_del_one(t_list_cmd *lst);
 void			c_lst_clear(t_list_cmd *lst);
@@ -117,7 +118,7 @@ void			l_lst_add_front(t_list_line **alst, t_list_line *new);
 void			l_lst_add_back(t_list_line **alst, t_list_line *new);
 int				l_lst_size(t_list_line *lst);
 t_list_line		*l_lst_last(t_list_line *lst);
-void			l_lst_free_one(void *lst);
+void			l_lst_free_one(t_list_line *lst);
 void			l_lst_remove_next_one(t_list_line *lst);
 void			l_lst_del_one(t_list_line *lst);
 void			l_lst_clear(t_list_line *lst);

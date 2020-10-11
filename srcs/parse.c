@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/11 11:29:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 16:41:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,72 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 	return (par.in_simple || par.in_double);
 }
 
+void		cut_at_separators(t_list_line **lst_line, t_list_cmd *cmd)
+{
+	t_list_cmd *end;
+
+	end = (*lst_line)->cmd;
+	while (cmd)
+	{
+		// ft_putstr("\nnew while: ");
+		// ft_putstr(cmd->str);
+		// ft_putstr("\n");
+		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
+		{
+			l_lst_add_back(lst_line, l_lst_copy_all(cmd->next, get_separator(cmd->str)));
+			// c_lst_clear(end);
+			// end = (*lst_line)->next->cmd;
+		}
+		t_list_cmd	*tmp = cmd;
+		// end = end->next;
+		cmd = cmd->next;
+		// c_lst_del_one(tmp);
+	}
+}
+
+void	function(t_list_line **lst_line, t_list_cmd *cmd)
+{
+	t_list_cmd	*next_start;
+	t_list_cmd	*current_start;
+
+	ft_putstr("\n\nfunction");
+	if (cmd && (cmd->flags & F_SEPARATOR))
+	{
+		l_lst_add_back(lst_line, l_lst_new(c_lst_new("", F_NOTHING), '\0'));
+		ft_putstr("\nfree: ");
+		ft_putstr(cmd->str);
+		ft_putstr("\n");
+		ft_putstr("next: ");
+		ft_putstr(cmd->next->str);
+		ft_putstr("\n");
+		// cmd_plusplus_free(&cmd);
+		cmd = (cmd)->next;
+	}
+	while (cmd)
+	{
+		ft_putstr("\nnew while: ");
+		ft_putstr(cmd->str);
+		ft_putstr("\n");
+		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
+		{
+			ft_putstr("sep\n");
+			(*lst_line)->separator = get_separator(cmd->next->str);
+			if (!(next_start = cmd->next->next))
+			{
+				ft_putstr("endingf\n");
+				cmd = NULL;
+				return ;
+			}
+			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
+			cmd = NULL;
+			cmd = next_start;
+			function(lst_line, cmd);
+			return ;
+		}
+		cmd = cmd->next;
+	}
+}
+
 int		parse_input(char *input, t_list_line **lst_line, char **envp)
 {
 	t_list_cmd	*cmd;
@@ -150,54 +216,33 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	replace_dollar_and_tild(cmd, envp);
 	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
-
-
-
-
-
-
-
-
-
-
-	if (cmd)
-		l_lst_add_back(lst_line, l_lst_copy_all(cmd, get_separator(cmd->str)));
-	while (cmd)
+	while (cmd && (cmd->flags & F_SEPARATOR))
 	{
-		// ft_putstr("\nnew while: ");
-		// ft_putstr(cmd->str);
-		// ft_putstr("\n");
-		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
-		{
-			// ft_putstr("blocked?\n");
-			// ft_putstr("add new cmd sep\n");
-			l_lst_add_back(lst_line, l_lst_copy_all(cmd->next, get_separator(cmd->str)));
-			// ft_putstr("not\n");
-			// c_lst_clear(tmp);
-			cmd->next = NULL;
-		}
-		t_list_cmd	*tmp = cmd;
-		cmd = cmd->next;
-		// c_lst_del_one(tmp);
+		l_lst_add_back(lst_line, l_lst_new(c_lst_new("", F_NOTHING), '\0'));
+		ft_putstr("\nfree: ");
+		ft_putstr(cmd->str);
+		ft_putstr("\n");
+		ft_putstr("next: ");
+		ft_putstr(cmd->next->str);
+		ft_putstr("\n");
+		// cmd_plusplus_free(&cmd);
+		cmd = (cmd)->next;
 	}
+	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
+	function(lst_line, cmd);
+	
 
 
-
-
-
-
-
-
-
-
-
-
-
+	// if (cmd)
+	// {
+	// 	l_lst_add_back(lst_line, l_lst_copy_all(cmd, get_separator(cmd->str)));
+	// 	cut_at_separators(lst_line, cmd);
+	// }
 
 
 
 	
-	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 	t_list_line **copy = lst_line;
 	while(*copy)
 	{
@@ -211,6 +256,8 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 		}
 		*copy = (*copy)->next;
 	}
-	// c_lst_clear(cmd);
+	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+	// // c_lst_clear(cmd);
 	return (OK);
 }
