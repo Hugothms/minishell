@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 23:44:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/11 11:29:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,21 +164,21 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 		l_lst_add_back(lst_line, l_lst_copy_all(cmd, get_separator(cmd->str)));
 	while (cmd)
 	{
-		ft_putstr("\nnew while: ");
-		ft_putstr(cmd->str);
-		ft_putstr("\n");
+		// ft_putstr("\nnew while: ");
+		// ft_putstr(cmd->str);
+		// ft_putstr("\n");
 		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
 		{
-			ft_putstr("blocked?\n");
-			ft_putstr("add new cmd sep\n");
+			// ft_putstr("blocked?\n");
+			// ft_putstr("add new cmd sep\n");
 			l_lst_add_back(lst_line, l_lst_copy_all(cmd->next, get_separator(cmd->str)));
-			ft_putstr("not\n");
+			// ft_putstr("not\n");
 			// c_lst_clear(tmp);
-			// cmd->next = NULL;
+			cmd->next = NULL;
 		}
 		t_list_cmd	*tmp = cmd;
 		cmd = cmd->next;
-		c_lst_del_one(tmp);
+		// c_lst_del_one(tmp);
 	}
 
 
@@ -198,18 +198,19 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 
 	
 	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-	t_list_line *copy = *lst_line;
-	while(copy)
+	t_list_line **copy = lst_line;
+	while(*copy)
 	{
 		ft_putstr("--------------\n");
-		cmd = copy->cmd;
+		cmd = (*copy)->cmd;
 		while (cmd)
 		{
 			ft_putstr(cmd->str);
 			ft_putstr("\n");
 			cmd = cmd->next;
 		}
-		copy = copy->next;
+		*copy = (*copy)->next;
 	}
+	// c_lst_clear(cmd);
 	return (OK);
 }
