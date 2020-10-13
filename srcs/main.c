@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:39:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/13 16:43:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,30 @@ void	print_prompt(void)
 	ft_putstr(": ");
 }
 
+void	commands(t_list_line *lst_line, char **envp)
+{
+	char		*ret;
+	t_list_line	*start;
+
+	start = lst_line;
+	while (lst_line)
+	{
+		if (ret = exec_command(lst_line->cmd, envp))
+		{
+			ft_putstr(ret);
+			free(ret);
+		}
+		lst_line = lst_line->next; 
+	}
+	l_lst_clear(start);
+}
+
+
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_list_line	*lst_line;
 	// t_list_cmd	*lst_cmd;
-	char		*ret;
 
 	ft_putstr(WELCOME_MSG);
 	input = malloc(1);
@@ -77,19 +95,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, envp))
 			parse_error(input, lst_line);
 		else
-		{
-			t_list_line	*start = lst_line;
-			while (lst_line)
-			{
-				if (ret = exec_command(lst_line->cmd, envp))
-				{
-					ft_putstr(ret);
-					free(ret);
-				}
-				lst_line = lst_line->next; 
-			}
-			l_lst_clear(start);
-		}
+			commands(lst_line, envp);
 	}
 	free(input);
 	return (0);
