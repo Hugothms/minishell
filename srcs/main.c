@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 16:40:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/13 16:39:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,21 @@ int		main(const int argc, char *argv[], char *envp[])
 		get_next_line(&input, 0);
 		lst_line = NULL;
 		if (parse_input(input, &lst_line, envp))
-			parse_error_exit(input);
-		t_list_line	*start = lst_line;
-		while (lst_line)
+			parse_error(input, lst_line);
+		else
 		{
-			if (ret = exec_command(lst_line->cmd, envp))
+			t_list_line	*start = lst_line;
+			while (lst_line)
 			{
-				ft_putstr(ret);
-				free(ret);
+				if (ret = exec_command(lst_line->cmd, envp))
+				{
+					ft_putstr(ret);
+					free(ret);
+				}
+				lst_line = lst_line->next; 
 			}
-			lst_line = lst_line->next; 
+			l_lst_clear(start);
 		}
-		l_lst_clear(start);
 	}
 	free(input);
 	return (0);
