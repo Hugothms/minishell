@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/11 16:41:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/13 16:30:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,47 +162,33 @@ void		cut_at_separators(t_list_line **lst_line, t_list_cmd *cmd)
 	}
 }
 
-void	function(t_list_line **lst_line, t_list_cmd *cmd)
+int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
 	t_list_cmd	*current_start;
 
-	ft_putstr("\n\nfunction");
 	if (cmd && (cmd->flags & F_SEPARATOR))
-	{
-		l_lst_add_back(lst_line, l_lst_new(c_lst_new("", F_NOTHING), '\0'));
-		ft_putstr("\nfree: ");
-		ft_putstr(cmd->str);
-		ft_putstr("\n");
-		ft_putstr("next: ");
-		ft_putstr(cmd->next->str);
-		ft_putstr("\n");
-		// cmd_plusplus_free(&cmd);
-		cmd = (cmd)->next;
-	}
+		return (ERR);
 	while (cmd)
 	{
-		ft_putstr("\nnew while: ");
-		ft_putstr(cmd->str);
-		ft_putstr("\n");
 		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
 		{
-			ft_putstr("sep\n");
 			(*lst_line)->separator = get_separator(cmd->next->str);
 			if (!(next_start = cmd->next->next))
-			{
-				ft_putstr("endingf\n");
-				cmd = NULL;
-				return ;
-			}
+				return (ERR);
 			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
-			cmd = NULL;
+			t_list_cmd *tmp = (*lst_line)->cmd;
+			while (i--)
+				tmp = tmp->next;
+			c_lst_free_one(tmp->next);
+			tmp->next = NULL;
 			cmd = next_start;
-			function(lst_line, cmd);
-			return ;
+			return (function(lst_line, cmd, i));
 		}
 		cmd = cmd->next;
+		i++;
 	}
+	return (OK);
 }
 
 int		parse_input(char *input, t_list_line **lst_line, char **envp)
@@ -216,48 +202,28 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	replace_dollar_and_tild(cmd, envp);
 	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
-	while (cmd && (cmd->flags & F_SEPARATOR))
-	{
-		l_lst_add_back(lst_line, l_lst_new(c_lst_new("", F_NOTHING), '\0'));
-		ft_putstr("\nfree: ");
-		ft_putstr(cmd->str);
-		ft_putstr("\n");
-		ft_putstr("next: ");
-		ft_putstr(cmd->next->str);
-		ft_putstr("\n");
-		// cmd_plusplus_free(&cmd);
-		cmd = (cmd)->next;
-	}
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
-	function(lst_line, cmd);
-	
+	if (function(lst_line, cmd, 0))
+		return (ERR);
 
 
-	// if (cmd)
+
+	// ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	// t_list_line *copy = *lst_line;
+	// while(copy)
 	// {
-	// 	l_lst_add_back(lst_line, l_lst_copy_all(cmd, get_separator(cmd->str)));
-	// 	cut_at_separators(lst_line, cmd);
+	// 	ft_putstr("--------------\n");
+	// 	cmd = (copy)->cmd;
+	// 	while (cmd)
+	// 	{
+	// 		ft_putstr(cmd->str);
+	// 		ft_putstr("\n");
+	// 		cmd = cmd->next;
+	// 	}
+	// 	copy = (copy)->next;
 	// }
+	// ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
-
-
-	
-	ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-	t_list_line **copy = lst_line;
-	while(*copy)
-	{
-		ft_putstr("--------------\n");
-		cmd = (*copy)->cmd;
-		while (cmd)
-		{
-			ft_putstr(cmd->str);
-			ft_putstr("\n");
-			cmd = cmd->next;
-		}
-		*copy = (*copy)->next;
-	}
-	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-
-	// // c_lst_clear(cmd);
+	//c_lst_clear(cmd);
 	return (OK);
 }
