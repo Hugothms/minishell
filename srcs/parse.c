@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:30:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/13 16:59:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,15 +178,16 @@ int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				return (ERR);
 			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
 			t_list_cmd *tmp = (*lst_line)->cmd;
+			ft_putstr(tmp->str);
 			while (i--)
 				tmp = tmp->next;
 			c_lst_free_one(tmp->next);
 			tmp->next = NULL;
 			cmd = next_start;
-			return (function(lst_line, cmd, i));
+			i++;
+			return (function(&((*lst_line)->next), cmd, i));
 		}
 		cmd = cmd->next;
-		i++;
 	}
 	return (OK);
 }
