@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:43:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/13 17:28:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,10 @@ void	commands(t_list_line *lst_line, char **envp)
 	l_lst_clear(start);
 }
 
-
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_list_line	*lst_line;
-	// t_list_cmd	*lst_cmd;
 
 	ft_putstr(WELCOME_MSG);
 	input = malloc(1);
