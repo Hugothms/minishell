@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 17:55:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/14 15:41:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)
 
 }
 
+void	binary_not_found(char *path, int *ret)
+{
+	struct stat	buf;
+	int			dir;
+	
+	ft_putstr("minishell: ");
+	ft_putstr(path);
+	dir = lstat(path, &buf);
+	if (dir == 0)
+		ft_putstr(": Is a directory\n");
+	else
+		ft_putstr(": No such file or directory\n");
+	*ret = ERR;
+}
+
 int		try_path(t_list_cmd *cmd, char **envp)
 {
 	int		i;
@@ -63,7 +78,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	if (*cmd->str == '/')
 	{
 		if (execve(cmd->str, argv, envp))
-			ret = OK;
+			binary_not_found(cmd->str, &ret);
 	}
 	else
 	{
