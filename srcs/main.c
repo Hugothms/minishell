@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 17:28:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/14 17:03:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	not_found(char *cmd)
 	exit(0);
 }
 
-char	*exec_command(t_list_cmd *cmd, char **envp)
+char	*exec_cmd(t_list_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return (NULL);
@@ -59,7 +59,7 @@ void	print_prompt(void)
 	ft_putstr(": ");
 }
 
-void	commands(t_list_line *lst_line, char **envp)
+void	exec_line(t_list_line *lst_line, char **envp)
 {
 	char		*ret;
 	t_list_line	*start;
@@ -67,7 +67,7 @@ void	commands(t_list_line *lst_line, char **envp)
 	start = lst_line;
 	while (lst_line)
 	{
-		if (ret = exec_command(lst_line->cmd, envp))
+		if (ret = exec_cmd(lst_line->cmd, envp))
 		{
 			ft_putstr(ret);
 			free(ret);
@@ -93,7 +93,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, envp))
 			parse_error(input, lst_line);
 		else
-			commands(lst_line, envp);
+			exec_line(lst_line, envp);
 	}
 	free(input);
 	return (0);

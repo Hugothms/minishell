@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 15:45:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/14 17:16:53 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	binary_not_found(char *path, int *ret)
 		ft_putstr(": Is a directory\n");
 	else
 		ft_putstr(": No such file or directory\n");
-	*ret = ERR;
+	*ret = FAILURE;
 }
 
 int		try_path(t_list_cmd *cmd, char **envp)
@@ -72,9 +72,9 @@ int		try_path(t_list_cmd *cmd, char **envp)
 
 	i = 0;
 	cpt = 0;
-	ret = ERR;
+	ret = FAILURE;
 	if (!(argv = lst_to_strs(cmd)))
-		return (ERR);
+		return (FAILURE);
 	if (*cmd->str == '/')
 	{
 		if (execve(cmd->str, argv, envp))
@@ -91,7 +91,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 				cpt++;
 			free(full_path);
 			if (i != cpt)
-				ret = OK;
+				ret = SUCCESS;
 			i++;
 		}
 		ft_free_tab(path);
@@ -106,7 +106,7 @@ int		search_command(t_list_cmd *cmd, char **envp)
 	int		status;
 	pid_t	pid;
 
-	ret = ERR;
+	ret = FAILURE;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -115,7 +115,7 @@ int		search_command(t_list_cmd *cmd, char **envp)
 	}
 	else
 	{
-		ret = OK;
+		ret = SUCCESS;
 		wait(&status);
 	}
 	return (ret);

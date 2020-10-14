@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:59:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/14 17:16:53 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,14 +168,14 @@ int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	t_list_cmd	*current_start;
 
 	if (cmd && (cmd->flags & F_SEPARATOR))
-		return (ERR);
+		return (FAILURE);
 	while (cmd)
 	{
 		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
 		{
 			(*lst_line)->separator = get_separator(cmd->next->str);
 			if (!(next_start = cmd->next->next))
-				return (ERR);
+				return (FAILURE);
 			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
 			t_list_cmd *tmp = (*lst_line)->cmd;
 			ft_putstr(tmp->str);
@@ -189,7 +189,7 @@ int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		}
 		cmd = cmd->next;
 	}
-	return (OK);
+	return (SUCCESS);
 }
 
 int		parse_input(char *input, t_list_line **lst_line, char **envp)
@@ -198,14 +198,14 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
-		return (ERR);
+		return (FAILURE);
 	// deal_backslash((**lst_line)->cmd, envp);
 	replace_dollar_and_tild(cmd, envp);
 	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
 	if (function(lst_line, cmd, 0))
-		return (ERR);
+		return (FAILURE);
 
 
 
@@ -226,5 +226,5 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	// ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
 	//c_lst_clear(cmd);
-	return (OK);
+	return (SUCCESS);
 }
