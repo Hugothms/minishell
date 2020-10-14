@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 15:41:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/14 15:45:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int		try_path(t_list_cmd *cmd, char **envp)
 		path = get_paths(envp);
 		while (path[i])
 		{
-			// try_path2(cmd, envp, path[i], &cpt);
 			full_path = ft_strjoin(path[i], "/");
 			full_path = ft_strjoin_free(full_path, cmd->str);
 			if (execve(full_path, argv, envp))
