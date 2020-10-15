@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 11:44:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 21:31:21 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,21 +169,21 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	if (split_cmd(lst_line, cmd, 0))
 		return (FAILURE);
 
-	// ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-	// t_list_line *copy = *lst_line;
-	// while(copy)
-	// {
-	// 	ft_putstr("--------------\n");
-	// 	cmd = (copy)->cmd;
-	// 	while (cmd)
-	// 	{
-	// 		ft_putstr(cmd->str);
-	// 		ft_putstr("\n");
-	// 		cmd = cmd->next;
-	// 	}
-	// 	copy = (copy)->next;
-	// }
-	// ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	t_list_line *copy = *lst_line;
+	while(copy)
+	{
+		ft_putstr("--------------\n");
+		cmd = (copy)->cmd;
+		while (cmd)
+		{
+			ft_putstr(cmd->str);
+			ft_putstr("\n");
+			cmd = cmd->next;
+		}
+		copy = (copy)->next;
+	}
+	ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
 	//c_lst_clear(cmd);
 	return (SUCCESS);
