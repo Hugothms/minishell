@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/16 01:00:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 01:02:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 			if(!input[end])
 				end--;
 		}
-		ft_putstr("input-end:");
-		ft_putstr(&input[end]);
-		ft_putstr("\n");
+		// ft_putstr("input-end:");
+		// ft_putstr(&input[end]);
+		// ft_putstr("\n");
 		if (input[par->pos + 1] == '>')
 			par->i++;
 		add_substr_to_cmd(&input[end], cmd, par->i - end + 1, F_SEPARATOR);
