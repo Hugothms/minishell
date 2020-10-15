@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 21:32:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 01:00:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,44 +70,53 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 {
 		int end;
 		
-		ft_putstr("\nstr:");
-		ft_putstr(input);
+		// ft_putstr("\nstr:");
+		// ft_putstr(input);
 
-		ft_putstr("\ni:");
-		ft_putnbr(par->i);
-		ft_putchar(input[par->i]);
+		// ft_putstr("\ni:");
+		// ft_putnbr(par->i);
+		// ft_putchar(input[par->i]);
 		
-		ft_putstr("\npos:");
-		ft_putnbr(par->pos);
-		ft_putchar(input[par->pos]);
-		ft_putstr("\n---------------------------\n");
+		// ft_putstr("\npos:");
+		// ft_putnbr(par->pos);
+		// ft_putchar(input[par->pos]);
+		// ft_putstr("\n---------------------------\n");
 		while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing segfaults/leaks when only arrows are pressed
-			{par->pos++;
-			ft_putstr("firstloop\n");}
+		{
+			par->pos++;
+			// ft_putstr("firstloop\n");
+		}
 		end = par->pos;
 		if (!ft_in_charset(input[par->pos], SEPARATORS))
 		{
-			ft_putstr("\nend:");
-			ft_putchar(input[end]);
-			ft_putstr("\n");
+			// ft_putstr("\nend:");
+			// ft_putchar(input[end]);
+			// ft_putstr("\n");
 			while (input[end] && !ft_in_charset(input[end], SEPARATORS))
-				{end++;
-				ft_putstr("secondloop\n");}
+			{
+				end++;
+				// ft_putstr("secondloop\n");
+			}
 			add_substr_to_cmd(&input[par->pos], cmd, end - par->pos, F_NOTHING);
 			if(!input[end])
 				end--;
 		}
+		ft_putstr("input-end:");
+		ft_putstr(&input[end]);
+		ft_putstr("\n");
+		if (input[par->pos + 1] == '>')
+			par->i++;
 		add_substr_to_cmd(&input[end], cmd, par->i - end + 1, F_SEPARATOR);
 		par->pos = end + 1;
-		ft_putstr("\nfin pos:");
-		ft_putnbr(par->pos);
-		ft_putchar(input[par->pos]);
+		// ft_putstr("\nfin pos:");
+		// ft_putnbr(par->pos);
+		// ft_putchar(input[par->pos]);
 		
 		if (!ft_strncmp(&input[end], ">>", 2))
 			par->pos++;
-		ft_putstr("\nfinn pos:");
-		ft_putnbr(par->pos);
-		ft_putchar(input[par->pos]);
+		// ft_putstr("\nfinn pos:");
+		// ft_putnbr(par->pos);
+		// ft_putchar(input[par->pos]);
 }
 
 void	end_word(char *input, t_list_cmd **cmd, t_parse *par)

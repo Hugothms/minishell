@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 21:55:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 00:35:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,12 @@ void	exec_line(t_list_line *lst_line, char **envp)
 			if (!filename)
 				ft_putstr("pas de filename\n");
 			if (lst_line->separator == '>')
-				fd = open(filename, O_WRONLY | O_CREAT, 777);
+				fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else if (lst_line->separator == '=')
+			{
+				ft_putstr("================\n");
 				fd = open(filename, O_APPEND | O_CREAT);
+			}
 			if (fd < 0)
 				ft_putstr("error open\n");
 			t_list_cmd *tmp = lst_line->next->cmd->next;
