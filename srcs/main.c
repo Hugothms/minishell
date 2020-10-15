@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 13:00:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 13:30:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	ft_free_tab(tab);
 	while (lst_line)
 	{
-		fd = 0;
+		fd = 1;
 		if (lst_line->separator == '>' || lst_line->separator == '=')
 		{
 			char *filename = lst_line->next->cmd->str;
@@ -83,7 +83,7 @@ void	exec_line(t_list_line *lst_line, char **envp)
 			else if (lst_line->separator == '=')
 				fd = open(filename, O_APPEND | O_CREAT);
 			if (fd < 0)
-				ft_putstr("fd < 0\n");
+				ft_putstr("error open\n");
 			t_list_cmd *tmp = lst_line->next->cmd->next;
 			lst_line->next->cmd = tmp;
 			c_lst_del_one(tmp);
@@ -93,6 +93,8 @@ void	exec_line(t_list_line *lst_line, char **envp)
 			ft_putstr_fd(ret, fd);
 			free(ret);
 		}
+		if (fd > 2 && close(fd) < 0)
+			ft_putstr("error close\n");
 		lst_line = lst_line->next; 
 	}
 	l_lst_clear(start);
