@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/11 16:32:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 12:25:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
 			// end quotes without space after
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTES + F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTES | F_NO_SPACE_AFTER);
 		else
 			// end quotes with space after
 			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTES);
@@ -58,7 +58,7 @@ void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	else if (par->in_double)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTES + F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTES | F_NO_SPACE_AFTER);
 		else
 			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTES);
 	}

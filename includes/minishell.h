@@ -6,13 +6,15 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 09:58:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 11:53:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef minishell_H
 # define minishell_H
 
+
+# include <fcntl.h> 
 # include <unistd.h>
 # include <sys/types.h>
 # include <dirent.h>

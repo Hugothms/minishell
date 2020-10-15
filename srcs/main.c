@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 11:45:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 13:00:30 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,27 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	int			fd;
 
 	start = lst_line;
-	// char ** tab = lst_to_strs(lst_line->cmd);
-	// ft_print_tabstr(tab);
-	// ft_putstr("===================\n");
-	// ft_free_tab(tab);
+	char ** tab = lst_to_strs(lst_line->cmd);
+	ft_print_tabstr(tab);
+	ft_putstr("===================\n");
+	ft_free_tab(tab);
 	while (lst_line)
 	{
 		fd = 0;
-		if (lst_line->separator == '>')
+		if (lst_line->separator == '>' || lst_line->separator == '=')
 		{
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr("pas de filename\n");
-			fd = open(filename);
+			if (lst_line->separator == '>')
+				fd = open(filename, O_WRONLY | O_CREAT);
+			else if (lst_line->separator == '=')
+				fd = open(filename, O_APPEND | O_CREAT);
 			if (fd < 0)
 				ft_putstr("fd < 0\n");
+			t_list_cmd *tmp = lst_line->next->cmd->next;
+			lst_line->next->cmd = tmp;
+			c_lst_del_one(tmp);
 		}
 		if (ret = exec_cmd(lst_line->cmd, envp))
 		{
