@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 17:16:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 09:57:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,6 @@ char	**get_paths(char **envp)
 		i++;
 	path = ft_split(&envp[i][5], ':');
 	return (path);
-}
-
-char	**lst_to_strs(t_list_cmd *cmd)
-{
-	char	**argv;
-	int		i;
-
-	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(cmd) + 1))))
-		return (NULL);
-	i = 0;
-	while (cmd)
-	{
-		argv[i++] = ft_strdup(cmd->str);
-		cmd = cmd->next;
-	}
-	argv[i] = NULL;
-	return (argv);
 }
 
 void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)

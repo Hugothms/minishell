@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:39:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 11:27:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char get_separator(char* str)
 
 	separator = str[0];
 		if (str[1])
-			separator--; // if separator is ">>" we save char '='
+			separator = '='; // if separator is ">>" we save char '='
 	return (separator);
 }
 
@@ -55,4 +55,21 @@ void	cmd_plusplus_free(t_list_cmd **cmd)
 	tmp = *cmd;
 	*cmd = (*cmd)->next;
 	c_lst_del_one(tmp);
+}
+
+char	**lst_to_strs(t_list_cmd *cmd)
+{
+	char	**argv;
+	int		i;
+
+	if (!(argv = malloc(sizeof(*argv) * (c_lst_size(cmd) + 1))))
+		return (NULL);
+	i = 0;
+	while (cmd)
+	{
+		argv[i++] = ft_strdup(cmd->str);
+		cmd = cmd->next;
+	}
+	argv[i] = NULL;
+	return (argv);
 }

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 17:16:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 11:44:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,6 @@ void	delete_empty_elements(t_list_cmd *cmd)
 	}
 }
 
-// void	ancien_parsing_a_supprimer(char *input, t_list_command **cmd)
-// {
-// 	char **tmp;
-// 	int i;
-// 	tmp = ft_split_set(input, WHITESPACES);
-// 	i = 0;
-// 	if (tmp[i])
-// 		*cmd = c_lst_new(tmp[i++], '?'); // create fisrt element of the list
-// 	while (tmp[i])
-// 		c_lst_add_back(cmd, c_lst_new(tmp[i++], '?')); // fill the list
-// 	ft_free_tab(tmp);
-// }
-
 int		input_to_command(char *input, t_list_cmd **cmd)
 {
 	t_parse		par;
@@ -139,30 +126,7 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 	return (par.in_simple || par.in_double);
 }
 
-void		cut_at_separators(t_list_line **lst_line, t_list_cmd *cmd)
-{
-	t_list_cmd *end;
-
-	end = (*lst_line)->cmd;
-	while (cmd)
-	{
-		// ft_putstr("\nnew while: ");
-		// ft_putstr(cmd->str);
-		// ft_putstr("\n");
-		if (cmd->flags & F_SEPARATOR/*is_separator((cmd)->str)*/)
-		{
-			l_lst_add_back(lst_line, l_lst_copy_all(cmd->next, get_separator(cmd->str)));
-			// c_lst_clear(end);
-			// end = (*lst_line)->next->cmd;
-		}
-		t_list_cmd	*tmp = cmd;
-		// end = end->next;
-		cmd = cmd->next;
-		// c_lst_del_one(tmp);
-	}
-}
-
-int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
+int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
 	t_list_cmd	*current_start;
@@ -178,15 +142,14 @@ int		function(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				return (FAILURE);
 			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
 			t_list_cmd *tmp = (*lst_line)->cmd;
-			ft_putstr(tmp->str);
 			while (i--)
 				tmp = tmp->next;
 			c_lst_free_one(tmp->next);
 			tmp->next = NULL;
 			cmd = next_start;
-			i++;
-			return (function(&((*lst_line)->next), cmd, i));
+			return (split_cmd(&((*lst_line)->next), cmd, 0));
 		}
+		i++;
 		cmd = cmd->next;
 	}
 	return (SUCCESS);
@@ -201,13 +164,10 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 		return (FAILURE);
 	// deal_backslash((**lst_line)->cmd, envp);
 	replace_dollar_and_tild(cmd, envp);
-	// ancien_parsing_a_supprimer(input,( *lst_line)->cmd);
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
-	if (function(lst_line, cmd, 0))
+	if (split_cmd(lst_line, cmd, 0))
 		return (FAILURE);
-
-
 
 	// ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 	// t_list_line *copy = *lst_line;

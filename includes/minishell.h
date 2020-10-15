@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 17:17:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 09:58:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	parse_error(char *input, t_list_line *lst_line);
 int		is_separator(char *str);
 char	get_separator(char* str);
 void	cmd_plusplus_free(t_list_cmd **cmd);
-
+char	**lst_to_strs(t_list_cmd *cmd);
 
 //list_cmd.c
 t_list_cmd		*c_lst_new(char *str, char flags);

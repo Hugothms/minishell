@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 17:03:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/15 11:45:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,28 @@ void	exec_line(t_list_line *lst_line, char **envp)
 {
 	char		*ret;
 	t_list_line	*start;
+	int			fd;
 
 	start = lst_line;
+	// char ** tab = lst_to_strs(lst_line->cmd);
+	// ft_print_tabstr(tab);
+	// ft_putstr("===================\n");
+	// ft_free_tab(tab);
 	while (lst_line)
 	{
+		fd = 0;
+		if (lst_line->separator == '>')
+		{
+			char *filename = lst_line->next->cmd->str;
+			if (!filename)
+				ft_putstr("pas de filename\n");
+			fd = open(filename);
+			if (fd < 0)
+				ft_putstr("fd < 0\n");
+		}
 		if (ret = exec_cmd(lst_line->cmd, envp))
 		{
-			ft_putstr(ret);
+			ft_putstr_fd(ret, fd);
 			free(ret);
 		}
 		lst_line = lst_line->next; 
