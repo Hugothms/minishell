@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/16 12:06:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 14:37:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,96 @@ void	exec_line(t_list_line *lst_line, char **envp)
 		fd = 1;
 		if (lst_line->separator == '>' || lst_line->separator == '=')
 		{
+			char *filename = lst_line->next->cmd->str;
+			if (!filename)
+				ft_putstr("pas de filename\n");
+			if (lst_line->separator == '<')
+				fd = open(filename, O_RDONLY);
+			else if (lst_line->separator == '>')
+				fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else if (lst_line->separator == '=')
+				fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd < 0)
+				ft_putstr("error open\n");
+			t_list_cmd *tmp = lst_line->next->cmd->next;
+			lst_line->next->cmd = tmp;
+			c_lst_del_one(tmp);
+		}
+		if (ret = exec_cmd(lst_line->cmd, envp))
+		{
+			ft_putstr_fd(ret, fd);
+			free(ret);
+		}
+		if (fd > 2 && close(fd) < 0)
+			ft_putstr("error close\n");
+		lst_line = lst_line->next; 
+	}
+	l_lst_clear(start);
+}
+
+void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
+{
+	char		*ret;
+	t_list_line	*start;
+	int			fd;
+
+	start = lst_line;
+	// char ** tab = lst_to_strs(lst_line->cmd);
+	// ft_print_tabstr(tab);
+	// ft_putstr("===================\n");
+	// ft_free_tab(tab);
+	while (lst_line)
+	{
+		fd = 1;
+		if (lst_line->separator == '>' || lst_line->separator == '=')
+		{
+			int tab[2];
+			pipe(tab);
+			pid_t pid = fork();
+			if (pid < 0)
+			{
+
+			}
+			else
+			{
+				
+			}
+			
+
+
+
+
+
+
+			int tab[2];  // Used to store two ends of first pipe 
+			pid_t p; 
+		
+			if (pipe(tab)==-1) 
+			{ 
+				ft_putstr("Pipe Failed"); 
+				return 1; 
+			}
+		
+			//do smthg
+			p = fork(); 
+		
+			if (p < 0) 
+			{ 
+				ft_putstr("fork Failed"); 
+				return 1; 
+			} 
+		
+			// Parent process 
+			else if (p > 0) 
+			{ 
+
+			}
+			// child process 
+			else
+			{
+				 
+			}
+
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr("pas de filename\n");
