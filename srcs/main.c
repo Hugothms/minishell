@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/16 01:07:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 12:06:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*exec_cmd(t_list_cmd *cmd, char **envp)
 	else if (!ft_strcmp(cmd->str, "unset"))
 		return (ft_unset(cmd->next, envp));
 	else if (!ft_strcmp(cmd->str, "env"))
-		return (ft_env(cmd->next, envp));
+		return (ft_env(envp));
 	else if (!ft_strcmp(cmd->str, "exit"))
 		return (ft_exit(cmd->next));
 	else if (search_command(cmd, envp))
@@ -78,7 +78,9 @@ void	exec_line(t_list_line *lst_line, char **envp)
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr("pas de filename\n");
-			if (lst_line->separator == '>')
+			if (lst_line->separator == '<')
+				fd = open(filename, O_RDONLY);
+			else if (lst_line->separator == '>')
 				fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else if (lst_line->separator == '=')
 				fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);

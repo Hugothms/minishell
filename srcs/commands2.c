@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 23:09:57 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 14:53:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/16 12:06:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_env(t_list_cmd *args, char **envp)
+char	*ft_env(char **envp)
 {
 	char	*ret;
 	int		i;
@@ -35,7 +35,7 @@ char	*ft_export(t_list_cmd *args, char **envp)
 	int		i;
 
 	if (!args || !args->str)
-		return (ft_env(args, envp));
+		return (ft_env(envp));
 	equal_pos = 0;
 	while (args->str[equal_pos] && args->str[equal_pos] != '=')
 		equal_pos++;
