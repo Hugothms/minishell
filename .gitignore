@@ -6,5 +6,4 @@
 .fuse*
 libft.a
 libft/libft.a
-*.pdf
 minishell
