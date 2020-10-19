@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 11:27:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 11:52:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		in_quotes(t_list_cmd *cmd)
 
 void	parse_error(char *input, t_list_line *lst_line)
 {
-	ft_putstr("minishell: syntax error\n");
+	ft_putstr_fd("minishell: syntax error\n", STDERR);
 	l_lst_clear(lst_line);
 	// free(input);
 	// exit(1);
@@ -49,7 +49,7 @@ char get_separator(char* str)
 }
 
 void	cmd_plusplus_free(t_list_cmd **cmd)
-{	
+{
 	t_list_cmd	*tmp;
 
 	tmp = *cmd;

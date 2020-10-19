@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 10:24:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 11:52:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
 
 void	err_code(t_list_cmd *cmd, char **envp)
 {
-	ft_putstr("err_code\n");
+	ft_putstr_fd("err_code\n", STDERR);
 	//!to do
 	return ;
 }

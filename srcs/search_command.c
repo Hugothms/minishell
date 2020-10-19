@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/15 09:57:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 11:49:07 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ void	binary_not_found(char *path, int *ret)
 {
 	struct stat	buf;
 	int			dir;
-	
-	ft_putstr("minishell: ");
-	ft_putstr(path);
+
+	ft_putstr_fd("minishell: ", STDERR);
+	ft_putstr_fd(path, STDERR);
 	dir = lstat(path, &buf);
 	if (dir == 0)
-		ft_putstr(": Is a directory\n");
+		ft_putstr_fd(": Is a directory\n", STDERR);
 	else
-		ft_putstr(": No such file or directory\n");
+		ft_putstr_fd(": No such file or directory\n", STDERR);
 	*ret = FAILURE;
 }
 
