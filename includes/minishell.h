@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 11:28:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 15:57:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@
 
 
 /* STRUCTURES */
-typedef struct			s_list_cmd
+typedef struct		  	s_list_cmd
 {
-	char				*str;
-	char				flags;
-	struct s_list_cmd	*next;
-}						 t_list_cmd;
+	char				        *str;
+	char				        flags;
+	struct s_list_cmd	  *next;
+}						          t_list_cmd;
 
-typedef struct			s_list_line
+typedef struct		  	s_list_line
 {
-	t_list_cmd			*cmd;
-	char				separator;
+	t_list_cmd			    *cmd;
+	char				        separator;
 	struct s_list_line	*next;
-}						 t_list_line;
+}						           t_list_line;
 
 typedef struct			s_parse
 {
@@ -68,7 +68,7 @@ typedef struct			s_parse
 	int					in_double;
 	int					pos;
 	int					i;
-}						t_parse;
+}					  	t_parse;
 
 
 
@@ -180,7 +180,7 @@ t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator);
     ██ ██   ██  █  ██  █  ██   ██ ██    \n\
     ██  ███  ██ ██ ██ ██ ██  ███  ██    \n\
     ██    ██  ██ █ ██ █ ██  ██    ██    \n\
-    ████▄   ██ █  █  █  █  █   ▄████    \n\
+    ████▄   ██ █  █  █  █ ██   ▄████    \n\
        ████   █          █   ████       \n\
           ██                ██          \n\
           ████████▄  ▄████████          \n\

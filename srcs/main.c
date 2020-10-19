@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 11:53:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 15:10:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*exec_cmd(t_list_cmd *cmd, char **envp)
 		return (ft_exit(cmd->next));
 	else if (search_command(cmd, envp))
 		not_found(cmd->str);
-		return (NULL);
+	return (NULL);
 }
 
 void	print_prompt(void)
@@ -51,7 +51,7 @@ void	print_prompt(void)
 	pwd = getcwd(NULL, 0);
 	ft_putstr_fd(pwd, STDOUT);
 	free(pwd);
-	ft_putstr_fd(": ", STDOUT);
+	ft_putstr_fd("$ ", STDOUT);
 }
 
 void	exec_line(t_list_line *lst_line, char **envp)
@@ -140,14 +140,14 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 			// Child process
 			else
 			{
-
+				dup2(fd_out, STDOUT);
 			}
 
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
 			if (lst_line->separator == '<')
-				fd_out = open(filename, O_RDONLY);
+				fd_in = open(filename, O_RDONLY);
 			else if (lst_line->separator == '>')
 				fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else if (lst_line->separator == '=')
@@ -176,10 +176,8 @@ int		main(const int argc, char *argv[], char *envp[])
 	t_list_line	*lst_line;
 
 	ft_putstr(WELCOME_MSG);
-	input = malloc(1);
 	while (1)
 	{
-		free(input);
 		print_prompt();
 		get_next_line(&input, 0);
 		lst_line = NULL;
@@ -187,7 +185,7 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 		else
 			exec_line(lst_line, envp);
+		free(input);
 	}
-	free(input);
 	return (0);
 }
