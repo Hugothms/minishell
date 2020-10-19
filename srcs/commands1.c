@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/10 17:37:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 10:20:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_exit(t_list_cmd *args)
 
 	if (args)
 	{
-		if (err = ft_atoi(args->str))
+		if ((err = ft_atoi(args->str)))
 			exit(err);
 	}
 	exit(0);
