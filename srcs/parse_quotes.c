@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 16:35:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 18:09:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,12 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 
 void	end_word(char *input, t_list_cmd **cmd, t_parse *par)
 {
-	// ft_printf("end_word: %d#%s\n", par->i, &input[par->i]);
+	// ft_printf("end_word:%d %d %s|\n", par->pos, par->i, &input[par->i]);
 	// si je suis sur le dernier caractere du mot
-	if (!input[par->i + 1] || ft_in_charset(input[par->i + 1], WHITESPACES))
+	if (!input[par->i + 1] || (ft_in_charset(input[par->i + 1], WHITESPACES) && !escaped(input, par->i + 1)) || (ft_in_charset(input[par->i + 1], "\'\"")))
 	{
 		// ft_printf("in\n");
-		while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
+		while (input[par->pos] && ((ft_in_charset(input[par->pos], WHITESPACES)))) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
 			par->pos++;
 		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos + 1, F_NOTHING);
 		par->pos = par->i + 1;

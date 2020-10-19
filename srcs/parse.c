@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 16:35:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 18:10:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 		{
 			if (cmd->str[i] == '\\')
 			{
-				ft_printf("backslash: %c\n", cmd->str[i]);
+				// ft_printf("backslash:\t%c%c|\n", cmd->str[i], cmd->str[i + 1]);
 				if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
 				{
-					// ft_putstr(cmd->str);
+					// ft_printf("error input:\t%s|\n", cmd->str);
 					return (FAILURE);
 				}
 			}
@@ -122,10 +122,10 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 			simple_quotes(input, cmd, &par);
 		else if (input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
 			double_quotes(input, cmd, &par);
-		else if (is_separator(&input[par.i]) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
+		else if (is_separator(input, par.i) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
 			separator(input, cmd, &par);
 		// si je suis sur un mot et hors de quotes
-		else if ((!ft_in_charset(input[par.i], WHITESPACES) || escaped(input, par.i)) && !par.in_simple && !par.in_double)
+		else if (((!ft_in_charset(input[par.i], WHITESPACES) || escaped(input, par.i)) || (!ft_in_charset(input[par.i], "\'\"") || escaped(input, par.i))) && !par.in_simple && !par.in_double)
 			end_word(input, cmd, &par);
 		par.i++;
 	}
@@ -175,20 +175,19 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
 
-	// ft_putstr("-----------------CMD:\n");
-	// t_list_cmd	*copy = cmd;
-	// 	while (copy)
-	// 	{
-	// 		ft_putstr(copy->str);
-	// 		ft_putstr("\n");
-	// 		copy = copy->next;
-	// 	}
+	// ft_printf("\n-----------------CMD:\n");
+	t_list_cmd	*copy = cmd;
+		while (copy)
+		{
+			// ft_printf("%s\n", copy->str);
+			copy = copy->next;
+		}
 
 
 	replace_dollar_and_tild(cmd, envp);
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);
-	// ft_putstr("Ready for execution.................\n");
+	// ft_printf("Ready for execution.................\n");
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
 	if (split_cmd(lst_line, cmd, 0))

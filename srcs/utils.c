@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 14:38:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 17:22:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int		escaped(char *str, int i)
 	return (str[i - 1] == '\\' && !escaped(str, i - 1));
 }
 
-int		is_separator(char *str)
+int		is_separator(char *str, int i)
 {
-	return (ft_in_charset(*str, SEPARATORS) || !ft_strncmp(str, ">>", 2));
+	return (ft_in_charset(str[i], SEPARATORS) || !ft_strncmp(&str[i], ">>", 2));
 }
 
 int		in_quotes(t_list_cmd *cmd)
