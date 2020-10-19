@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 16:33:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 16:35:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
 				{
-					ft_putstr(cmd->str);
+					// ft_putstr(cmd->str);
 					return (FAILURE);
 				}
 			}
@@ -175,20 +175,20 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
 
-	ft_putstr("-----------------CMD:\n");
-	t_list_cmd	*copy = cmd;
-		while (copy)
-		{
-			ft_putstr(copy->str);
-			ft_putstr("\n");
-			copy = copy->next;
-		}
+	// ft_putstr("-----------------CMD:\n");
+	// t_list_cmd	*copy = cmd;
+	// 	while (copy)
+	// 	{
+	// 		ft_putstr(copy->str);
+	// 		ft_putstr("\n");
+	// 		copy = copy->next;
+	// 	}
 
 
 	replace_dollar_and_tild(cmd, envp);
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);
-	ft_putstr("Ready for execution.................\n");
+	// ft_putstr("Ready for execution.................\n");
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
 	if (split_cmd(lst_line, cmd, 0))
