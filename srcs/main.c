@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 10:28:07 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 11:30:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 void	not_found(char *cmd)
 {
-	char *ret;
-	char *tmp;
-
-	ret = ft_strjoin("minishell: command not found: ", cmd);
-	tmp = ret;
-	ret = ft_strjoin(ret, "\n");
-	free(tmp);
-	ft_putstr(ret);
-	free(ret);
+	ft_putstr_fd("minishell: command not found: ", STDERR);
+	ft_putstr_fd(cmd, STDERR);
+	ft_putstr_fd("\n", STDERR);
 	exit(0);
 }
 
@@ -53,18 +47,18 @@ void	print_prompt(void)
 {
 	char	*pwd;
 
-	ft_putstr("\xE2\x9E\xA1 ");
+	ft_putstr_fd("\xE2\x9E\xA1 ", STDOUT);
 	pwd = getcwd(NULL, 0);
-	ft_putstr(pwd);
+	ft_putstr_fd(pwd, STDOUT);
 	free(pwd);
-	ft_putstr(": ");
+	ft_putstr_fd(": ", STDOUT);
 }
 
 void	exec_line(t_list_line *lst_line, char **envp)
 {
 	char		*ret;
 	t_list_line	*start;
-	int			fd;
+	int			fd_out;
 
 	start = lst_line;
 	// char ** tab = lst_to_strs(lst_line->cmd);
@@ -73,19 +67,19 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	// ft_free_tab(tab);
 	while (lst_line)
 	{
-		fd = 1;
+		fd_out = STDOUT;
 		if (lst_line->separator == '>' || lst_line->separator == '=')
 		{
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr("pas de filename\n");
 			if (lst_line->separator == '<')
-				fd = open(filename, O_RDONLY);
+				fd_out = open(filename, O_RDONLY);
 			else if (lst_line->separator == '>')
-				fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else if (lst_line->separator == '=')
-				fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd < 0)
+				fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd_out < 0)
 				ft_putstr("error open\n");
 			t_list_cmd *tmp = lst_line->next->cmd->next;
 			lst_line->next->cmd = tmp;
@@ -93,105 +87,88 @@ void	exec_line(t_list_line *lst_line, char **envp)
 		}
 		if ((ret = exec_cmd(lst_line->cmd, envp)))
 		{
-			ft_putstr_fd(ret, fd);
+			ft_putstr_fd(ret, fd_out);
 			free(ret);
 		}
-		if (fd > 2 && close(fd) < 0)
+		if (fd_out > 2 && close(fd_out) < 0)
 			ft_putstr("error close\n");
 		lst_line = lst_line->next;
 	}
 	l_lst_clear(start);
 }
 
-// void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
-// {
-// 	char		*ret;
-// 	t_list_line	*start;
-// 	int			fd;
+void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
+{
+	char		*ret;
+	t_list_line	*start;
+	int			fd_out;
+	int			fd_in;
 
-// 	start = lst_line;
-// 	// char ** tab = lst_to_strs(lst_line->cmd);
-// 	// ft_print_tabstr(tab);
-// 	// ft_putstr("===================\n");
-// 	// ft_free_tab(tab);
-// 	while (lst_line)
-// 	{
-// 		fd = 1;
-// 		if (lst_line->separator == '>' || lst_line->separator == '=')
-// 		{
-// 			int tab[2];
-// 			pipe(tab);
-// 			pid_t pid = fork();
-// 			if (pid < 0)
-// 			{
+	start = lst_line;
+	// char ** tab = lst_to_strs(lst_line->cmd);
+	// ft_print_tabstr(tab);
+	// ft_putstr("===================\n");
+	// ft_free_tab(tab);
+	while (lst_line)
+	{
+		fd_out = STDOUT;
+		if (lst_line->separator == '<' || lst_line->separator == '>' || lst_line->separator == '=')
+		{
+			int		tab[2];	// Used to store two ends of first pipe
+			pid_t	p;
 
-// 			}
-// 			else
-// 			{
+			if (pipe(tab) == -1)
+			{
+				ft_putstr("Pipe Failed");
+				return ;
+			}
+			//do something
+			p = fork();
 
-// 			}
+			if (p < 0)
+			{
+				ft_putstr("fork Failed");
+				return ;
+			}
 
 
+			// Parent process
+			else if (p > 0)
+			{
 
+			}
+			// Child process
+			else
+			{
 
+			}
 
-
-
-// 			int tab[2];  // Used to store two ends of first pipe
-// 			pid_t p;
-
-// 			if (pipe(tab)==-1)
-// 			{
-// 				ft_putstr("Pipe Failed");
-// 				return 1;
-// 			}
-
-// 			//do smthg
-// 			p = fork();
-
-// 			if (p < 0)
-// 			{
-// 				ft_putstr("fork Failed");
-// 				return 1;
-// 			}
-
-// 			// Parent process
-// 			else if (p > 0)
-// 			{
-
-// 			}
-// 			// child process
-// 			else
-// 			{
-
-// 			}
-
-// 			char *filename = lst_line->next->cmd->str;
-// 			if (!filename)
-// 				ft_putstr("pas de filename\n");
-// 			if (lst_line->separator == '<')
-// 				fd = open(filename, O_RDONLY);
-// 			else if (lst_line->separator == '>')
-// 				fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 			else if (lst_line->separator == '=')
-// 				fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-// 			if (fd < 0)
-// 				ft_putstr("error open\n");
-// 			t_list_cmd *tmp = lst_line->next->cmd->next;
-// 			lst_line->next->cmd = tmp;
-// 			c_lst_del_one(tmp);
-// 		}
-// 		if (ret = exec_cmd(lst_line->cmd, envp))
-// 		{
-// 			ft_putstr_fd(ret, fd);
-// 			free(ret);
-// 		}
-// 		if (fd > 2 && close(fd) < 0)
-// 			ft_putstr("error close\n");
-// 		lst_line = lst_line->next;
-// 	}
-// 	l_lst_clear(start);
-// }
+			char *filename = lst_line->next->cmd->str;
+			if (!filename)
+				ft_putstr("pas de filename\n");
+			if (lst_line->separator == '<')
+				fd_out = open(filename, O_RDONLY);
+			else if (lst_line->separator == '>')
+				fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else if (lst_line->separator == '=')
+				fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd_out < 0)
+				ft_putstr("error open\n");
+			t_list_cmd *tmp = lst_line->next->cmd->next;
+			lst_line->next->cmd = tmp;
+			c_lst_del_one(tmp);
+		}
+		if ((ret = exec_cmd(lst_line->cmd, envp)))
+		{
+			ft_putstr_fd(ret, fd_out);
+			free(ret);
+		}
+		if (fd_out > 2 && close(fd_out) < 0)
+			ft_putstr("error close\n");
+		lst_line = lst_line->next;
+	}
+	l_lst_clear(start);
+}
 
 int		main(const int argc, char *argv[], char *envp[])
 {

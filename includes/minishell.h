@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/16 12:05:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/19 11:28:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define minishell_H
 
 
-# include <fcntl.h> 
+# include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <dirent.h>
@@ -26,15 +26,20 @@
 # include <errno.h>
 # include "../libft/includes/libft.h"
 
-// Charsets
+/* Charsets */
 # define WHITESPACES		" \t"
 # define SEPARATORS			"|><;"
 
-// Error codes
-# define FAILURE			-1
+/* Error codes */
 # define SUCCESS			0
+# define FAILURE			-1
 
-// Flags cmd
+/* STD IN/OUT */
+# define STDIN			0
+# define STDOUT			1
+# define STDERR			2
+
+/* Flags cmd */
 # define F_NOTHING			0b0000
 # define F_SIMPLE_QUOTES	0b0001
 # define F_DOUBLE_QUOTES	0b0010
@@ -42,7 +47,7 @@
 # define F_SEPARATOR		0b1000
 
 
-// STRUCTURES
+/* STRUCTURES */
 typedef struct			s_list_cmd
 {
 	char				*str;
@@ -67,7 +72,7 @@ typedef struct			s_parse
 
 
 
-//commands.c
+/* commands.c */
 char	*ft_echo(t_list_cmd *args);
 char	*ft_cd(t_list_cmd *args, char **envp);
 char	*ft_pwd(void);
@@ -77,21 +82,20 @@ char	*ft_env(char **envp);
 char	*ft_exit(t_list_cmd *args);
 char	*find_var_env(char **envp, char *var);
 
-
-//parse.c
+/* parse.c */
 int		parse_input(char *line, t_list_line **cmd, char **envp);
 
-//parse_quotes.c
+/* parse_quotes.c */
 void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par);
 void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par);
 void	end_word(char *input, t_list_cmd **cmd, t_parse *par);
 void	init_par(t_parse *par);
 void	separator(char *input, t_list_cmd **cmd, t_parse *par);
 
-//search_command.c
+/* search_command.c */
 int		search_command(t_list_cmd *cmd, char **envp);
 
-//utils.c
+/* utils.c */
 int		escaped(char *str, int i);
 int		in_quotes(t_list_cmd *cmd);
 void	parse_error(char *input, t_list_line *lst_line);
@@ -100,7 +104,7 @@ char	get_separator(char* str);
 void	cmd_plusplus_free(t_list_cmd **cmd);
 char	**lst_to_strs(t_list_cmd *cmd);
 
-//list_cmd.c
+/* list_cmd.c */
 t_list_cmd		*c_lst_new(char *str, char flags);
 void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new);
 void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new);
@@ -113,8 +117,7 @@ void			c_lst_clear(t_list_cmd *lst);
 void			c_lst_iter(t_list_cmd *lst, void (*f)(void *));
 t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *));
 
-
-//list_line.c
+/* list_line.c */
 t_list_line		*l_lst_new(t_list_cmd *cmd, char separator);
 void			l_lst_add_front(t_list_line **alst, t_list_line *new);
 void			l_lst_add_back(t_list_line **alst, t_list_line *new);
