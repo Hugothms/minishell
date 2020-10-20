@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 17:22:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:15:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,14 @@ char	*find_var_env(char **envp, char *var);
 int		parse_input(char *line, t_list_line **cmd, char **envp);
 
 /* parse_quotes.c */
-void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par);
-void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par);
-void	end_word(char *input, t_list_cmd **cmd, t_parse *par);
-void	init_par(t_parse *par);
-void	separator(char *input, t_list_cmd **cmd, t_parse *par);
+int		input_to_command(char *input, t_list_cmd **cmd);
 
 /* search_command.c */
 int		search_command(t_list_cmd *cmd, char **envp);
 
 /* utils.c */
+void	init_par(t_parse *par);
+void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags);
 int		escaped(char *str, int i);
 int		in_quotes(t_list_cmd *cmd);
 void	parse_error(char *input, t_list_line *lst_line);

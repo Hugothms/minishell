@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 11:49:07 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:48:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-void	try_path2(t_list_cmd *cmd, char **envp, char *begin, int *cpt)
-{
-
-}
-
 void	binary_not_found(char *path, int *ret)
 {
 	struct stat	buf;
@@ -44,17 +39,35 @@ void	binary_not_found(char *path, int *ret)
 	*ret = FAILURE;
 }
 
-int		try_path(t_list_cmd *cmd, char **envp)
+void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 {
 	int		i;
 	int		cpt;
-	int		ret;
 	char	**path;
 	char	*full_path;
-	char	**argv;
 
 	i = 0;
 	cpt = 0;
+	path = get_paths(envp);
+	while (path[i])
+	{
+		full_path = ft_strjoin(path[i], "/");
+		full_path = ft_strjoin_free(full_path, cmd->str);
+		if (execve(full_path, argv, envp))
+			cpt++;
+		free(full_path);
+		if (i != cpt)
+			*ret = SUCCESS;
+		i++;
+	}
+	ft_free_tab(path);
+}
+
+int		try_path(t_list_cmd *cmd, char **envp)
+{
+	int		ret;
+	char	**argv;
+
 	ret = FAILURE;
 	if (!(argv = lst_to_strs(cmd)))
 		return (FAILURE);
@@ -64,21 +77,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 			binary_not_found(cmd->str, &ret);
 	}
 	else
-	{
-		path = get_paths(envp);
-		while (path[i])
-		{
-			full_path = ft_strjoin(path[i], "/");
-			full_path = ft_strjoin_free(full_path, cmd->str);
-			if (execve(full_path, argv, envp))
-				cpt++;
-			free(full_path);
-			if (i != cpt)
-				ret = SUCCESS;
-			i++;
-		}
-		ft_free_tab(path);
-	}
+		try_path2(cmd, envp, argv, &ret);
 	ft_free_tab(argv);
 	return (ret);
 }
@@ -89,17 +88,17 @@ int		search_command(t_list_cmd *cmd, char **envp)
 	int		status;
 	pid_t	pid;
 
-	ret = FAILURE;
 	pid = fork();
 	if (pid == 0)
 	{
 		if (try_path(cmd, envp))
 			exit(0);
+		ret = FAILURE;
 	}
 	else
 	{
-		ret = SUCCESS;
 		wait(&status);
+		ret = SUCCESS;
 	}
 	return (ret);
 }
