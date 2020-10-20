@@ -3,75 +3,98 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/20 08:56:22 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/20 13:07:37 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
---MAKE = make
---CC = gcc
---CFLAGS += -Wall -Werror -Wextra
---LDFLAGS += -g3 -fsanitize=address
+CC = gcc
+CFLAGS += -Wall -Werror -Wextra
+LDFLAGS += -g3 -fsanitize=address
 
---SRCS =	srcs/commands1.c		\
-			srcs/commands2.c		\
-			srcs/list_cmd1.c		\
-			srcs/list_cmd2.c		\
-			srcs/list_line1.c		\
-			srcs/list_line2.c		\
-			srcs/main.c				\
-			srcs/parse.c			\
-			srcs/parse_quotes.c		\
-			srcs/search_command.c	\
-			srcs/utils.c
+SRCS =	srcs/commands1.c		\
+		srcs/commands2.c		\
+		srcs/list_cmd1.c		\
+		srcs/list_cmd2.c		\
+		srcs/list_line1.c		\
+		srcs/list_line2.c		\
+		srcs/main.c				\
+		srcs/parse.c			\
+		srcs/parse_quotes.c		\
+		srcs/search_command.c	\
+		srcs/utils.c
 
---OBJS = $(--SRCS:.c=.o)
---INCL = includes/
---HEADER = $(--INCL)minishell.h
+OBJS = $(SRCS:.c=.o)
+INCL = includes/
+HEADER = $(INCL)minishell.h
 
---LIBFT = libft.a
---LIBFTDIR = libft
---LIBFTLINK = -L $(--LIBFTDIR) -lft
+LIBFT = libft.a
+LIBFTDIR = libft/
+LIBFTLINK = -L $(LIBFTDIR) -lft
 
 
 ###########################ALL
 all:		$(NAME)
 
-$(NAME):	$(--LIBFTDIR)/$(--LIBFT) $(--HEADER) $(--OBJS)
-	$(--CC) $(--LDFLAGS) -o $@ $(--OBJS) $(--LIBFTLINK)
+$(NAME):	complib echoCL $(OBJS) echoOK echoCS
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBFTLINK)
 
 
 ###########################LIBS
-$(--LIBFTDIR)/$(--LIBFT):
-	$(--MAKE) -C libft
+complib:
+	$(MAKE) -C libft/
 
 
 ###########################OBJECTS
-%.o:		%.c $(--HEADER)
-	$(--CC) -c $(--LDFLAGS) -I $(--INCL) -o $@ $<
+%.o:		%.c $(HEADER)
+	$(CC) -c $(LDFLAGS) -I $(INCL) -o $@ $<
+	printf "$(GREEN)██"
 
 
 ###########################CLEAN
-clean:
-	@#echo "$(REDL_FG)Deleting .o$(CLEAR_COLOR)"
-	cd $(--LIBFTDIR) && $(--MAKE) clean
-	rm -f $(--OBJS)
+clean: echoCLEAN 
+	$(MAKE) -C $(LIBFTDIR) clean
+	rm -f $(OBJS)
 
-fclean:
-	@#echo "$(RED_FG)Deleting exe$(CLEAR_COLOR)"
-	cd $(--LIBFTDIR) && $(--MAKE) fclean
-	rm -f $(--OBJS)
+fclean: clean echoFCLEAN
+	$(MAKE) -C $(LIBFTDIR) fclean
+	rm -f $(OBJS)
 	rm -f $(NAME) a.out
 
 re:			fclean all
 
 .PHONY:		clean fclean
-#.SILENT:
+.SILENT:
 
+###########################COLOR
+#----------------reset----------------#
+NC = \033[0m
+
+#-----------Regular Colors------------#
+BLACK = \033[0;30m
+RED = \033[0;31m
+GREEN = \033[32m
+YELLOW = \033[33;33m
+BLUE = \033[0;34m
+PURPLE = \033[1;35m
+CYAN = \033[1;36m
+WHITE = \033[0;37m
+
+###########################ECHO
+echoCL:
+	echo "$(YELLOW)===> Compiling $(RED)Minishell$(NC)\n"
+echoOK:
+	echo "$(GREEN) OK$(NC)\n"
+echoCS :
+	echo "$(GREEN)===> Compilation Success$(NC)\n"
+echoCLEAN :
+	echo "\n$(PURPLE)===> Cleanning OBJS$(NC)"
+echoFCLEAN :
+	echo "$(PURPLE)===> Cleanning Exec & Lib$(NC)\n"
 
 ###########################TEST
 test:		$(NAME)
