@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 14:58:42 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 15:59:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,24 +111,42 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
 
-	if (cmd && (cmd->flags & F_SEPARATOR))
-		return (FAILURE);
+	// if (cmd && (cmd->flags & F_SEPARATOR))
+	// 	return (FAILURE);
 	while (cmd)
 	{
 		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
 		{
 			(*lst_line)->separator = get_separator(cmd->next->str);
-			if (!(next_start = cmd->next->next))
-				return (FAILURE);
+			ft_printf("\nsplit:%s\n", cmd->next->str);
+			if ((*lst_line)->separator == ';' || (*lst_line)->separator == '|')
+			{
+				if (!(next_start = cmd->next->next))
+					return (FAILURE);
 				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
-				c_lst_free_one(tmp->next);
 				tmp->next = NULL;
 				cmd = next_start;
 				return (split_cmd(&((*lst_line)->next), cmd, 0));
 			}
+			else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
+			{
+				ft_printf("inside\n");
+				if (!(next_start = cmd->next))
+					return (FAILURE);
+				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
+				t_list_cmd *tmp = (*lst_line)->cmd;
+				while (i--)
+					tmp = tmp->next;
+				tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
+				cmd = next_start->next->next;	// on comtinue a spliter apres le chevron et son argument
+				ft_printf("ici:%s\n", cmd->str);
+				return (split_cmd(lst_line, cmd, 3));	// on ne change pas de lst_line
+				next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
+			}
+		}
 		i++;
 		cmd = cmd->next;
 	}

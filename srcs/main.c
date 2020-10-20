@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 14:04:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 15:58:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,20 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	int			fd_out;
 
 	start = lst_line;
-	// char ** tab = lst_to_strs(lst_line->cmd);
-	// ft_print_tabstr(tab);
-	// ft_putstr("===================\n");
-	// ft_free_tab(tab);
+	char **tab = lst_to_strs(lst_line->cmd);
+	ft_putstr("***********************************\n");
+	ft_print_tabstr(tab);
+	ft_putstr("***********************************\n");
+	ft_free_tab(tab);
+	tab = lst_to_strs(lst_line->next->cmd);
+	ft_putstr("***********************************\n");
+	ft_print_tabstr(tab);
+	ft_putstr("***********************************\n");
+	ft_free_tab(tab);
 	while (lst_line)
 	{
 		fd_out = STDOUT;
-		if (lst_line->separator == '>' || lst_line->separator == '=')
+		if (lst_line->separator == '>' || lst_line->separator == '=' || lst_line->separator == '<')
 		{
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
@@ -104,10 +110,7 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 	t_list_line	*start;
 
 	start = lst_line;
-	// char ** tab = lst_to_strs(lst_line->cmd);
-	// ft_print_tabstr(tab);
-	// ft_putstr("===================\n");
-	// ft_free_tab(tab);
+
 	while (lst_line)
 	{
 		int	fd_out;

@@ -78,3 +78,23 @@ export	without any options
 unset	without any options
 echo	$?
 symbols	| > < >> ;
+
+
+
+echo blabla > toto qwerty >> tata azerty
+***********************************
+echo
+blabla
+qwerty
+>>
+tata
+azerty
+***********************************
+***********************************
+>
+toto
+qwerty
+>>
+tata
+azerty
+***********************************
