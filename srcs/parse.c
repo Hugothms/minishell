@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 18:10:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:05:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,9 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 	init_par(&par);
 	while (input[par.i])
 	{
-		if (input[par.i] == '\'' && !par.in_double)
+		if (input[par.i] == '\'' && !escaped(input, par.i) && !par.in_double)
 			simple_quotes(input, cmd, &par);
-		else if (input[par.i] == '\"' && !par.in_simple && !escaped(input, par.i))
+		else if (input[par.i] == '\"' && !escaped(input, par.i) && !par.in_simple)
 			double_quotes(input, cmd, &par);
 		else if (is_separator(input, par.i) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
 			separator(input, cmd, &par);
