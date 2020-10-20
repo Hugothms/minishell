@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 10:59:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 11:46:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,36 +110,37 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 	while (lst_line)
 	{
 		int	fd_out;
+		int	fd_outold;
 		int	fd_in;
-		int	oldfd;
+		int	fd_inold;
 		fd_out = STDOUT;
+		fd_in = STDIN;
+		fd_outold = STDOUT;
+		fd_inold = STDIN;
 		if (lst_line->separator == '<' || lst_line->separator == '>' || lst_line->separator == '=')
 		{
-
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
 			if (lst_line->separator == '<')
 			{
 				fd_in = open(filename, O_RDONLY);
-				oldfd = dup(STDIN);
+				fd_inold = dup(STDIN);
 				dup2(fd_in, STDIN);
-
 			}
-			else if (lst_line->separator == '>')
+			else if (lst_line->separator == '>' || lst_line->separator == '=')
 			{
-				fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				oldfd = dup(STDOUT);
+				if (lst_line->separator == '>')
+					fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				else if (lst_line->separator == '>')
+					fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				fd_outold = dup(STDOUT);
 				dup2(fd_out, STDOUT);
 			}
-			else if (lst_line->separator == '=')
-			{
-				fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				oldfd = dup(STDOUT);
-				dup2(fd_out, STDOUT);
-			}
-			if (fd_out < 0)
-				ft_putstr_fd("error open\n", STDERR);
+			if (fd_out < 0 )
+				ft_putstr_fd("error open out\n", STDERR);
+			if (fd_in < 0)
+				ft_putstr_fd("error open in\n", STDERR);
 			t_list_cmd *tmp = lst_line->next->cmd->next;
 			lst_line->next->cmd = tmp;
 			c_lst_del_one(tmp);
@@ -149,9 +150,12 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 			ft_putstr_fd(ret, STDOUT);
 			free(ret);
 		}
-		dup2(oldfd, STDOUT);
 		if (fd_out > 2 && close(fd_out) < 0)
-			ft_putstr_fd("error close\n", STDERR);
+			ft_putstr_fd("error close out\n", STDERR);
+		if (fd_in > 2 && close(fd_in) < 0)
+			ft_putstr_fd("error close in\n", STDERR);
+		dup2(fd_outold, STDOUT);
+		dup2(fd_inold, STDIN);
 		lst_line = lst_line->next;
 	}
 	l_lst_clear(start);
