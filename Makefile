@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/10 17:37:29 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/20 08:56:22 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,9 @@ NAME = minishell
 --CFLAGS += -Wall -Werror -Wextra
 --LDFLAGS += -g3 -fsanitize=address
 
---SRCS =	srcs/commands1.c			\
+--SRCS =	srcs/commands1.c		\
 			srcs/commands2.c		\
-			srcs/list_cmd1.c			\
+			srcs/list_cmd1.c		\
 			srcs/list_cmd2.c		\
 			srcs/list_line1.c		\
 			srcs/list_line2.c		\
@@ -27,7 +27,7 @@ NAME = minishell
 			srcs/parse.c			\
 			srcs/parse_quotes.c		\
 			srcs/search_command.c	\
-			srcs/utils.c			
+			srcs/utils.c
 
 --OBJS = $(--SRCS:.c=.o)
 --INCL = includes/
@@ -39,37 +39,40 @@ NAME = minishell
 
 
 ###########################ALL
-all: $(NAME)
+all:		$(NAME)
 
-$(NAME) : $(--OBJS) $(--HEADER) $(--LIBFTDIR)/$(--LIBFT)
+$(NAME):	$(--LIBFTDIR)/$(--LIBFT) $(--HEADER) $(--OBJS)
 	$(--CC) $(--LDFLAGS) -o $@ $(--OBJS) $(--LIBFTLINK)
 
 
 ###########################LIBS
-$(--LIBFTDIR)/$(--LIBFT) :
+$(--LIBFTDIR)/$(--LIBFT):
 	$(--MAKE) -C libft
 
-%.o: %.c $(--HEADER)
+
+###########################OBJECTS
+%.o:		%.c $(--HEADER)
 	$(--CC) -c $(--LDFLAGS) -I $(--INCL) -o $@ $<
+
 
 ###########################CLEAN
 clean:
-	#echo "$(REDL_FG)Deleting .o$(CLEAR_COLOR)"
+	@#echo "$(REDL_FG)Deleting .o$(CLEAR_COLOR)"
 	cd $(--LIBFTDIR) && $(--MAKE) clean
+	rm -f $(--OBJS)
 
-fclean:		clean
-	#echo "$(RED_FG)Deleting exe$(CLEAR_COLOR)"
+fclean:
+	@#echo "$(RED_FG)Deleting exe$(CLEAR_COLOR)"
 	cd $(--LIBFTDIR) && $(--MAKE) fclean
 	rm -f $(--OBJS)
 	rm -f $(NAME) a.out
 
-re:		fclean all
+re:			fclean all
 
-.PHONY: clean fclean
-
+.PHONY:		clean fclean
 #.SILENT:
 
-###########################TEST
-test: $(NAME)
-	./$<
 
+###########################TEST
+test:		$(NAME)
+	./$<
