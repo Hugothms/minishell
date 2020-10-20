@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:15:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 14:58:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@
 
 
 /* STRUCTURES */
+// typedef struct		  	s_list_sep
+// {
+// 	char				        *arg;
+// 	char				        separator;
+// 	struct s_list_sep	  *next;
+// }						          t_list_sep;
+
 typedef struct		  	s_list_cmd
 {
 	char				        *str;
@@ -58,6 +65,7 @@ typedef struct		  	s_list_cmd
 typedef struct		  	s_list_line
 {
 	t_list_cmd			    *cmd;
+	t_list_sep			    *sep;
 	char				        separator;
 	struct s_list_line	*next;
 }						           t_list_line;

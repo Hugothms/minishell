@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:14:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 14:58:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void	delete_empty_elements(t_list_cmd *cmd)
 int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
-	t_list_cmd	*current_start;
 
 	if (cmd && (cmd->flags & F_SEPARATOR))
 		return (FAILURE);
@@ -121,15 +120,15 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 			(*lst_line)->separator = get_separator(cmd->next->str);
 			if (!(next_start = cmd->next->next))
 				return (FAILURE);
-			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
-			t_list_cmd *tmp = (*lst_line)->cmd;
-			while (i--)
-				tmp = tmp->next;
-			c_lst_free_one(tmp->next);
-			tmp->next = NULL;
-			cmd = next_start;
-			return (split_cmd(&((*lst_line)->next), cmd, 0));
-		}
+				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
+				t_list_cmd *tmp = (*lst_line)->cmd;
+				while (i--)
+					tmp = tmp->next;
+				c_lst_free_one(tmp->next);
+				tmp->next = NULL;
+				cmd = next_start;
+				return (split_cmd(&((*lst_line)->next), cmd, 0));
+			}
 		i++;
 		cmd = cmd->next;
 	}
@@ -143,6 +142,17 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
+
+	ft_printf("CMD:\n-----------------\n");
+	t_list_cmd	*copy = cmd;
+	while (copy)
+	{
+		ft_printf("%s\n", copy->str);
+		copy = copy->next;
+	}
+	ft_printf("-----------------\n\n");
+
+
 	replace_dollar_and_tild(cmd, envp);
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);

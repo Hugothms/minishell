@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 11:46:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 14:04:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	not_found(char *cmd)
 
 char	*exec_cmd(t_list_cmd *cmd, char **envp)
 {
+	ft_printf("q");
 	if (!cmd)
 		return (NULL);
 	else if (!ft_strcmp(cmd->str, "echo"))
@@ -117,7 +118,7 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 		fd_in = STDIN;
 		fd_outold = STDOUT;
 		fd_inold = STDIN;
-		if (lst_line->separator == '<' || lst_line->separator == '>' || lst_line->separator == '=')
+		if (lst_line->separator)
 		{
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
@@ -137,6 +138,90 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 				fd_outold = dup(STDOUT);
 				dup2(fd_out, STDOUT);
 			}
+			else if (lst_line->separator == '|')
+			{
+				int		tab[2];	// Used to store two ends of first pipe
+				pid_t	p;
+
+				if (pipe(tab) == -1)	//error
+				{
+					ft_putstr_fd("pipe failed\n", STDERR);
+					return ;
+				}
+				// do something ?
+				p = fork();
+				if (p < 0)		//error
+				{
+					ft_putstr_fd("fork failed\n", STDERR);
+					return ;
+				}
+				 // Parent process
+
+
+
+    // else if (p > 0)
+    // {
+    //     char concat_str[100];
+
+    //     close(tab[0]);  // Close reading end of first pipe
+
+    //     // Write input string and close writing end of first pipe.
+    //     write(tab[1], input_str, strlen(input_str)+1);
+    //     close(tab[1]);
+
+    //     // Wait for child to send a string
+    //     wait(NULL);
+    //     printf("Concatenated string %s\n", concat_str);
+    // }
+
+    // // child process
+    // else
+    // {
+    //     close(tab[1]);  // Close writing end of first pipe
+
+    //     // Read a string using first pipe
+    //     char concat_str[100];
+    //     read(tab[0], concat_str, 100);
+
+    //     // Concatenate a fixed string with it
+    //     int k = strlen(concat_str);
+    //     int i;
+    //     for (i=0; i<strlen(fixed_str); i++)
+    //         concat_str[k++] = fixed_str[i];
+
+    //     concat_str[k] = '\0';   // string ends with '\0'
+
+    //     // Close both reading ends
+    //     close(tab[0]);
+    //     exit(0);
+    // }
+
+
+
+
+				else if (p > 0)	// Parent process
+				{
+					if ((ret = exec_cmd(lst_line->cmd, envp)))
+					{
+						ft_putstr_fd(ret, STDOUT);
+						free(ret);
+					}
+				}
+				else			// Child process
+				{
+					wait(NULL);
+					if ((ret = exec_cmd(lst_line->next->cmd, envp)))
+					{
+						ft_putstr_fd(ret, STDOUT);
+						free(ret);
+					}
+				}
+				fd_inold = dup(STDIN);
+				dup2(STDOUT, STDIN);
+
+				lst_line = lst_line->next;
+				break ;
+			}
 			if (fd_out < 0 )
 				ft_putstr_fd("error open out\n", STDERR);
 			if (fd_in < 0)
@@ -145,11 +230,13 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 			lst_line->next->cmd = tmp;
 			c_lst_del_one(tmp);
 		}
+		///////////////////////////////////////////////////////////////////////////
 		if ((ret = exec_cmd(lst_line->cmd, envp)))
 		{
 			ft_putstr_fd(ret, STDOUT);
 			free(ret);
 		}
+		///////////////////////////////////////////////////////////////////////////
 		if (fd_out > 2 && close(fd_out) < 0)
 			ft_putstr_fd("error close out\n", STDERR);
 		if (fd_in > 2 && close(fd_in) < 0)
@@ -159,34 +246,6 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 		lst_line = lst_line->next;
 	}
 	l_lst_clear(start);
-			// int		tab[2];	// Used to store two ends of first pipe
-			// pid_t	p;
-
-			// if (pipe(tab) == -1)
-			// {
-			// 	ft_putstr_fd("Pipe Failed", STDERR);
-			// 	return ;
-			// }
-			// //do something
-			// p = fork();
-
-			// if (p < 0)
-			// {
-			// 	ft_putstr_fd("fork Failed", STDERR);
-			// 	return ;
-			// }
-
-
-			// // Parent process
-			// else if (p > 0)
-			// {
-
-			// }
-			// // Child process
-			// else
-			// {
-			// 	dup2(fd_out, STDOUT);
-			// }
 }
 
 int		main(const int argc, char *argv[], char *envp[])
@@ -203,7 +262,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, envp))
 			parse_error(input, lst_line);
 		else
-			in_developement_by_hugo(lst_line, envp);
+			exec_line(lst_line, envp);
 		free(input);
 	}
 	return (0);
