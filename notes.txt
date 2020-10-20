@@ -69,7 +69,7 @@ good test:
 	echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
 	echo$HOMER
 	echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
-	ls ; echo hugo 'is happy\" \" yeyez\y  f'
+	ls ; echo hugo 'is happy\" \" yeyez\y  f' > test.txt
 
 
 

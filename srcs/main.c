@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 15:10:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 10:59:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 {
 	char		*ret;
 	t_list_line	*start;
-	int			fd_out;
-	int			fd_in;
 
 	start = lst_line;
 	// char ** tab = lst_to_strs(lst_line->cmd);
@@ -111,47 +109,35 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 	// ft_free_tab(tab);
 	while (lst_line)
 	{
+		int	fd_out;
+		int	fd_in;
+		int	oldfd;
 		fd_out = STDOUT;
 		if (lst_line->separator == '<' || lst_line->separator == '>' || lst_line->separator == '=')
 		{
-			int		tab[2];	// Used to store two ends of first pipe
-			pid_t	p;
-
-			if (pipe(tab) == -1)
-			{
-				ft_putstr_fd("Pipe Failed", STDERR);
-				return ;
-			}
-			//do something
-			p = fork();
-
-			if (p < 0)
-			{
-				ft_putstr_fd("fork Failed", STDERR);
-				return ;
-			}
-
-
-			// Parent process
-			else if (p > 0)
-			{
-
-			}
-			// Child process
-			else
-			{
-				dup2(fd_out, STDOUT);
-			}
 
 			char *filename = lst_line->next->cmd->str;
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
 			if (lst_line->separator == '<')
+			{
 				fd_in = open(filename, O_RDONLY);
+				oldfd = dup(STDIN);
+				dup2(fd_in, STDIN);
+
+			}
 			else if (lst_line->separator == '>')
+			{
 				fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				oldfd = dup(STDOUT);
+				dup2(fd_out, STDOUT);
+			}
 			else if (lst_line->separator == '=')
+			{
 				fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				oldfd = dup(STDOUT);
+				dup2(fd_out, STDOUT);
+			}
 			if (fd_out < 0)
 				ft_putstr_fd("error open\n", STDERR);
 			t_list_cmd *tmp = lst_line->next->cmd->next;
@@ -160,14 +146,43 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 		}
 		if ((ret = exec_cmd(lst_line->cmd, envp)))
 		{
-			ft_putstr_fd(ret, fd_out);
+			ft_putstr_fd(ret, STDOUT);
 			free(ret);
 		}
+		dup2(oldfd, STDOUT);
 		if (fd_out > 2 && close(fd_out) < 0)
 			ft_putstr_fd("error close\n", STDERR);
 		lst_line = lst_line->next;
 	}
 	l_lst_clear(start);
+			// int		tab[2];	// Used to store two ends of first pipe
+			// pid_t	p;
+
+			// if (pipe(tab) == -1)
+			// {
+			// 	ft_putstr_fd("Pipe Failed", STDERR);
+			// 	return ;
+			// }
+			// //do something
+			// p = fork();
+
+			// if (p < 0)
+			// {
+			// 	ft_putstr_fd("fork Failed", STDERR);
+			// 	return ;
+			// }
+
+
+			// // Parent process
+			// else if (p > 0)
+			// {
+
+			// }
+			// // Child process
+			// else
+			// {
+			// 	dup2(fd_out, STDOUT);
+			// }
 }
 
 int		main(const int argc, char *argv[], char *envp[])
@@ -184,7 +199,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, envp))
 			parse_error(input, lst_line);
 		else
-			exec_line(lst_line, envp);
+			in_developement_by_hugo(lst_line, envp);
 		free(input);
 	}
 	return (0);
