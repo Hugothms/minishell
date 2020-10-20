@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/13 16:18:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:46:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void			c_lst_iter(t_list_cmd *lst, void (*f)(void *))
 ** @return		The new list. NULL if the allocation fails.
 */
 
-t_list_cmd	*c_lst_map(t_list_cmd *lst, void *(*f)(void *))
+t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *))
 {
 	t_list_cmd	*tmp;
 	t_list_cmd	*new;

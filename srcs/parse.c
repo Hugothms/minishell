@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:05:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:14:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
 		if (!ft_strncmp(envp[azerty], &(cmd->str[i + 1]), ft_strlen(&(cmd->str[i])) - 1) && envp[azerty][ft_strlen(&(cmd->str[i])) - 1] == '=')
 		{
 			size = ft_strlen(&(cmd->str[i]));
-			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/
+			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
 			cmd->str = ft_strjoin_free(cmd->str, &(envp[azerty][size]));
 			return ;
 		}
@@ -50,14 +50,10 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 		{
 			if (cmd->str[i] == '\\')
 			{
-				// ft_printf("backslash:\t%c%c|\n", cmd->str[i], cmd->str[i + 1]);
 				if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
-				{
-					// ft_printf("error input:\t%s|\n", cmd->str);
 					return (FAILURE);
-				}
 			}
 			i++;
 		}
@@ -111,27 +107,6 @@ void	delete_empty_elements(t_list_cmd *cmd)
 	}
 }
 
-int		input_to_command(char *input, t_list_cmd **cmd)
-{
-	t_parse		par;
-
-	init_par(&par);
-	while (input[par.i])
-	{
-		if (input[par.i] == '\'' && !escaped(input, par.i) && !par.in_double)
-			simple_quotes(input, cmd, &par);
-		else if (input[par.i] == '\"' && !escaped(input, par.i) && !par.in_simple)
-			double_quotes(input, cmd, &par);
-		else if (is_separator(input, par.i) && !escaped(input, par.i) && !par.in_simple && !par.in_double)
-			separator(input, cmd, &par);
-		// si je suis sur un mot et hors de quotes
-		else if (((!ft_in_charset(input[par.i], WHITESPACES) || escaped(input, par.i)) || (!ft_in_charset(input[par.i], "\'\"") || escaped(input, par.i))) && !par.in_simple && !par.in_double)
-			end_word(input, cmd, &par);
-		par.i++;
-	}
-	return (par.in_simple || par.in_double);
-}
-
 int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
@@ -144,12 +119,6 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
 		{
 			(*lst_line)->separator = get_separator(cmd->next->str);
-			// ft_putstr("\n");
-			// ft_putstr(cmd->next->str);
-			// ft_putstr("\n");
-			// ft_putstr("SEPARATORRRRRRR:");
-			// ft_putchar((*lst_line)->separator);
-			// ft_putstr("\n");
 			if (!(next_start = cmd->next->next))
 				return (FAILURE);
 			l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
@@ -174,39 +143,12 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
-
-	// ft_printf("\n-----------------CMD:\n");
-	t_list_cmd	*copy = cmd;
-		while (copy)
-		{
-			// ft_printf("%s\n", copy->str);
-			copy = copy->next;
-		}
-
-
 	replace_dollar_and_tild(cmd, envp);
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);
-	// ft_printf("Ready for execution.................\n");
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
 	if (split_cmd(lst_line, cmd, 0))
 		return (FAILURE);
-
-	// ft_putstr("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-	// t_list_line *copy = *lst_line;
-	// while(copy)
-	// {
-	// 	ft_putstr("--------------\n");
-	// 	cmd = (copy)->cmd;
-	// 	while (cmd)
-	// 	{
-	// 		ft_putstr(cmd->str);
-	// 		ft_putstr("\n");
-	// 		cmd = cmd->next;
-	// 	}
-	// 	copy = (copy)->next;
-	// }
-	// ft_putstr("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 	return (SUCCESS);
 }

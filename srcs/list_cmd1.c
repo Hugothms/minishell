@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/11 14:19:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/20 09:45:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_list_cmd	*c_lst_new(char *str, char flags)
 ** @param new	The address of a pointer to the element to be added to the list
 */
 
-void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new)
+void		c_lst_add_front(t_list_cmd **alst, t_list_cmd *new)
 {
 	t_list_cmd	*tmp;
 
@@ -54,7 +54,7 @@ void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new)
 ** @return		Length of the list
 */
 
-int				c_lst_size(t_list_cmd *lst)
+int			c_lst_size(t_list_cmd *lst)
 {
 	int				cpt;
 	t_list_cmd	*pt;
@@ -92,7 +92,7 @@ t_list_cmd	*c_lst_last(t_list_cmd *lst)
 ** @param new	The address of a pointer to the element to be added to the list.
 */
 
-void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new)
+void		c_lst_add_back(t_list_cmd **alst, t_list_cmd *new)
 {
 	t_list_cmd	*pt;
 
