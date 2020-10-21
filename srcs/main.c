@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:45:43 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 19:58:21 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,27 +66,27 @@ void	redirections(t_list_line *lst_line)
 
 	start = lst_line;
 	start->output = STDOUT;
-	while (lst_line)
+	while (lst_line->next)
 	{
-		if (ft_in_charset(*lst_line->cmd->str, "<>"))
+		if (ft_in_charset(*lst_line->next->cmd->str, "<>"))
 		{
-			char *filename = lst_line->cmd->next->str;
+			char *filename = lst_line->next->cmd->next->str;
 			ft_printf("filename:%s\n", filename);			
 			ft_printf("before:%d\n", start->output);
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
-			if (lst_line->separator == '<')
+			if (lst_line->next->separator == '<')
 				start->output = open(filename, O_RDONLY);
-			else if (lst_line->separator == '>')
+			else if (lst_line->next->separator == '>')
 				start->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else if (lst_line->separator == '=')
+			else if (lst_line->next->separator == '=')
 				start->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			ft_printf("open:%d\n", start->output);
 			if (start->output < 0)
 				ft_putstr_fd("error open\n", STDERR);
-			// t_list_line *tmp = lst_line->next;
-			// lst_line->next = tmp->next;
-			// l_lst_del_one(tmp);
+			
+			ft_printf("lst_line->next:%s\n", lst_line->next->cmd->str);
+			// l_lst_remove_next_one(lst_line);
 		}
 		lst_line = lst_line->next;
 	}
@@ -255,7 +255,7 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 				ft_putstr_fd("error open in\n", STDERR);
 			t_list_cmd *tmp = lst_line->next->cmd->next;
 			lst_line->next->cmd = tmp;
-			c_lst_del_one(tmp);
+			c_lst_free_one(tmp);
 		}
 		///////////////////////////////////////////////////////////////////////////
 		if ((ret = exec_cmd(lst_line->cmd, envp)))

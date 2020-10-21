@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:46:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 19:57:12 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 void			c_lst_free_one(t_list_cmd *lst)
 {
+	if (!lst)
+		return ;
 	if (lst->str)
 		free(lst->str);
 	free(lst);
@@ -37,22 +39,6 @@ void			c_lst_remove_next_one(t_list_cmd *lst)
 }
 
 /*
-** Takes as a parameter an element and frees the memory of
-**  the element’s content using the function ’del’ given as a parameter
-**  and free the element. The memory of ’next’ must not be freed
-** @param lst	The adress of a pointer to an element.
-** @param del	The adress of the function used to delete the content of the
-**	 			element.
-*/
-
-void			c_lst_del_one(t_list_cmd *lst)
-{
-	if (!lst)
-		return ;
-	c_lst_free_one(lst);
-}
-
-/*
 ** Deletes and frees the given element and every successor of that element,
 **  using the function ’del’ and free(3).
 ** Finally, the pointer to the list must be set to NULL.
@@ -67,7 +53,7 @@ void			c_lst_clear(t_list_cmd *lst)
 		return ;
 	if ((lst)->next)
 		c_lst_clear((lst)->next);
-	c_lst_del_one(lst);
+	c_lst_free_one(lst);
 	lst = NULL;
 }
 

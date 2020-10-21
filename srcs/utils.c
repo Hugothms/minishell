@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 18:24:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 19:56:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	cmd_plusplus_free(t_list_cmd **cmd)
 
 	tmp = *cmd;
 	*cmd = (*cmd)->next;
-	c_lst_del_one(tmp);
+	c_lst_free_one(tmp);
 }
 
 char	**lst_to_strs(t_list_cmd *cmd)
