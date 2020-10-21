@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 15:59:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 12:22:53 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,18 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
+				ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n\n", tmp->str, tmp->next->str);
 				tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
-				cmd = next_start->next->next;	// on comtinue a spliter apres le chevron et son argument
-				ft_printf("ici:%s\n", cmd->str);
-				return (split_cmd(lst_line, cmd, 3));	// on ne change pas de lst_line
+				ft_printf("next_start->next->str:%s\n", next_start->next->str);
+				if (!(cmd = next_start->next->next))	// on comtinue a spliter apres le chevron et son argument
+					return (SUCCESS);
+				ft_printf("ok\n");
+				ft_printf("cmd->str:\t%s\n", cmd->str);
+				ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\ntmp->str:\t%s\n", cmd->next->str, next_start->str, tmp->str);
+				if (split_cmd(lst_line, cmd, 3)) // on ne change pas de lst_line
+					return (FAILURE);
 				next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
+				ft_printf("poi\n");
 			}
 		}
 		i++;
