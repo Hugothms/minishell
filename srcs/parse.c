@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 13:10:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 13:27:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		{
 			(*lst_line)->separator = get_separator(cmd->next->str);
 			// ft_printf("\nsplit:%s\n", cmd->next->str);
-			ft_printf("\nseparator:%c\n", (*lst_line)->separator);
+			ft_printf("separator:%c\n", (*lst_line)->separator);
 			if ((*lst_line)->separator == ';' || (*lst_line)->separator == '|')
 			{
 				if (!(next_start = cmd->next->next))

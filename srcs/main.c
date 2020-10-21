@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 13:18:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 13:21:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_line(t_list_line *lst_line, char **envp)
 		fd_out = STDOUT;
 		if (lst_line->separator == '>' || lst_line->separator == '=' || lst_line->separator == '<')
 		{
-			char *filename = lst_line->next->cmd->str;
+			char *filename = lst_line->next->cmd->next->str;
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
 			if (lst_line->separator == '<')
