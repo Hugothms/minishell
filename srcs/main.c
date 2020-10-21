@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:41:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 19:45:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	redirections(t_list_line *lst_line)
 			ft_printf("open:%d\n", start->output);
 			if (start->output < 0)
 				ft_putstr_fd("error open\n", STDERR);
-			// t_list_line *tmp = lst_line->next->next;
-			// lst_line->next = tmp;
+			// t_list_line *tmp = lst_line->next;
+			// lst_line->next = tmp->next;
 			// l_lst_del_one(tmp);
 		}
 		lst_line = lst_line->next;

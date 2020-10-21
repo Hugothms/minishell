@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 13:27:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 19:47:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				// ft_printf("inside\n");
 				if (!(next_start = cmd->next))
 					return (FAILURE);
-				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
+				l_lst_add_back(lst_line, l_lst_new(next_start, (*lst_line)->separator));
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
