@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 12:22:53 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 12:37:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
 		{
 			(*lst_line)->separator = get_separator(cmd->next->str);
-			ft_printf("\nsplit:%s\n", cmd->next->str);
+			// ft_printf("\nsplit:%s\n", cmd->next->str);
 			if ((*lst_line)->separator == ';' || (*lst_line)->separator == '|')
 			{
 				if (!(next_start = cmd->next->next))
@@ -133,25 +133,26 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 			}
 			else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
 			{
-				ft_printf("inside\n");
+				// ft_printf("inside\n");
 				if (!(next_start = cmd->next))
 					return (FAILURE);
 				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
-				ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n\n", tmp->str, tmp->next->str);
+				// ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n", tmp->str, tmp->next->str);
 				tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
-				ft_printf("next_start->next->str:%s\n", next_start->next->str);
+				// ft_printf("next_start->next->str:%s\n", next_start->next->str);
 				if (!(cmd = next_start->next->next))	// on comtinue a spliter apres le chevron et son argument
 					return (SUCCESS);
-				ft_printf("ok\n");
-				ft_printf("cmd->str:\t%s\n", cmd->str);
-				ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\ntmp->str:\t%s\n", cmd->next->str, next_start->str, tmp->str);
-				if (split_cmd(lst_line, cmd, 3)) // on ne change pas de lst_line
+				// ft_printf("ok\n");
+				// ft_printf("cmd->str:\t%s\n", cmd->str);
+				// ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\n", cmd->next->str, next_start->str);
+				// ft_printf("tmp->str:\t%s\n", tmp->str);
+				if (split_cmd(lst_line, cmd, 2)) // on ne change pas de lst_line
 					return (FAILURE);
 				next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
-				ft_printf("poi\n");
+				// ft_printf("poi\n");
 			}
 		}
 		i++;
@@ -168,14 +169,14 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
 
-	ft_printf("CMD:\n-----------------\n");
+	// ft_printf("CMD:\n-----------------\n");
 	t_list_cmd	*copy = cmd;
 	while (copy)
 	{
-		ft_printf("%s\n", copy->str);
+		// ft_printf("%s\n", copy->str);
 		copy = copy->next;
 	}
-	ft_printf("-----------------\n\n");
+	// ft_printf("-----------------\n\n");
 
 
 	replace_dollar_and_tild(cmd, envp);

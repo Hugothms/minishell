@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 10:36:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 12:26:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	ft_putstr("***********************************\n");
 	ft_free_tab(tab);
 
-	// tab = lst_to_strs(lst_line->next->next->cmd);
-	// ft_putstr("***********************************\n");
-	// ft_print_tabstr(tab);
-	// ft_putstr("***********************************\n");
-	// ft_free_tab(tab);
-	// while (lst_line)
+	tab = lst_to_strs(lst_line->next->next->cmd);
+	ft_putstr("***********************************\n");
+	ft_print_tabstr(tab);
+	ft_putstr("***********************************\n");
+	ft_free_tab(tab);
+	while (lst_line)
 	{
 		fd_out = STDOUT;
 		if (lst_line->separator == '>' || lst_line->separator == '=' || lst_line->separator == '<')
