@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:47:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/21 18:24:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	parse_error(char *input, t_list_line *lst_line)
 {
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
 	l_lst_clear(lst_line);
-	// free(input);
+	free(input);
 	// exit(1);
 }
 
