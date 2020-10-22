@@ -12,4 +12,4 @@ Summary: The objective of this project is to create a simple shell like bash or 
 
 **It doesn't support:**
 * multi lines commands
-* many ohther things
+* many other things
