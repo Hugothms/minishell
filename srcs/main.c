@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:58:21 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:56:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes(t_list_line *lst_line)
+void	create_pipes_and_semicolon(t_list_line *lst_line)
 {
+
 
 }
 
@@ -66,30 +67,31 @@ void	redirections(t_list_line *lst_line)
 
 	start = lst_line;
 	start->output = STDOUT;
-	while (lst_line->next)
+	t_list_cmd *cmd = lst_line->cmd;
+	if (lst_line->cmd->flags & (F_OUTPUT + F_INPUT))
 	{
-		if (ft_in_charset(*lst_line->next->cmd->str, "<>"))
-		{
-			char *filename = lst_line->next->cmd->next->str;
-			ft_printf("filename:%s\n", filename);			
-			ft_printf("before:%d\n", start->output);
-			if (!filename)
-				ft_putstr_fd("pas de filename\n", STDERR);
-			if (lst_line->next->separator == '<')
-				start->output = open(filename, O_RDONLY);
-			else if (lst_line->next->separator == '>')
-				start->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else if (lst_line->next->separator == '=')
-				start->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			ft_printf("open:%d\n", start->output);
-			if (start->output < 0)
-				ft_putstr_fd("error open\n", STDERR);
-			
-			ft_printf("lst_line->next:%s\n", lst_line->next->cmd->str);
-			// l_lst_remove_next_one(lst_line);
-		}
-		lst_line = lst_line->next;
+		char *filename = lst_line->cmd->next->str;
+		ft_printf("filename:%s\n", filename);			
+		ft_printf("before:%d\n", start->output);
+		if (!filename)
+			ft_putstr_fd("pas de filename\n", STDERR);
+		
+		if (*lst_line->cmd->str == '<')
+			start->output = open(filename, O_RDONLY);
+		else if (*lst_line->cmd->str == '>')
+			start->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (*lst_line->cmd->str == '=')
+			start->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		ft_printf("open:%d\n", start->output);
+		if (start->output < 0)
+			ft_putstr_fd("error open\n", STDERR);
+		c_lst_remove_next_one(lst_line->cmd);
+		t_list_cmd *tmp = lst_line->cmd;
+		(lst_line->cmd = lst_line->cmd->next);
+			// break ;
+		c_lst_free_one(tmp);
 	}
+	// ft_printf("lst_line->cmd->str:%s\n", lst_line->cmd->str);
 }
 
 void	exec_line(t_list_line *lst_line, char **envp)
@@ -98,32 +100,45 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	t_list_line	*start;
 
 	start = lst_line;
-	char **tab = lst_to_strs(lst_line->cmd);
-	ft_putstr("***********************************\n");
-	ft_print_tabstr(tab);
-	ft_free_tab(tab);
-
-	tab = lst_to_strs(lst_line->next->cmd);
-	ft_putstr("***********************************\n");
-	ft_print_tabstr(tab);
-	ft_free_tab(tab);
-
-	tab = lst_to_strs(lst_line->next->next->cmd);
-	ft_putstr("***********************************\n");
-	ft_print_tabstr(tab);
-	ft_free_tab(tab);
-
-	ft_putstr("***********************************\n");
+	int i = 0;
+	// ft_printf("text\n");
 	while (lst_line)
 	{
+		redirections(lst_line);
+
+
+		ft_printf("\n\n\nexec_line number:%d\n",i);
+		char **tab = lst_to_strs(lst_line->cmd);
+		ft_putstr("***********************************\n");
+		ft_print_tabstr(tab);
+		ft_printf("**************************%d\n", lst_line->cmd->flags);
+		ft_free_tab(tab);
+
+		// tab = lst_to_strs(lst_line->next->cmd);
+		// ft_putstr("***********************************\n");
+		// ft_print_tabstr(tab);
+		// ft_printf("**************************%c\n", lst_line->next->separator);
+		// ft_free_tab(tab);
+
+		// tab = lst_to_strs(lst_line->next->next->cmd);
+		// ft_putstr("***********************************\n");
+		// ft_print_tabstr(tab);
+		// ft_printf("**************************%c\n", lst_line->next->next->separator);
+		// ft_free_tab(tab);
+
+		// ft_putstr("***********************************\n");
+
+
 		if ((ret = exec_cmd(lst_line->cmd, envp)))
 		{
+			ft_printf("output:%d\n", lst_line->output);
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
 		}
 		if (lst_line->output > 2 && close(lst_line->output) < 0)
 			ft_putstr_fd("error close\n", STDERR);
 		lst_line = lst_line->next;
+		i++;
 	}
 	l_lst_clear(start);
 }
@@ -142,30 +157,30 @@ void	in_developement_by_hugo(t_list_line *lst_line, char **envp)
 		int	fd_in;
 		int	fd_inold;
 		fd_out = STDOUT;
-		fd_in = STDIN;
 		fd_outold = STDOUT;
+		fd_in = STDIN;
 		fd_inold = STDIN;
-		if (lst_line->separator)
+		if (lst_line->cmd->flags)
 		{
 			char *filename = lst_line->next->cmd->next->str;
 			if (!filename)
 				ft_putstr_fd("pas de filename\n", STDERR);
-			if (lst_line->separator == '<')
+			if (lst_line->cmd->flags & F_INPUT)
 			{
 				fd_in = open(filename, O_RDONLY);
 				fd_inold = dup(STDIN);
 				dup2(fd_in, STDIN);
 			}
-			else if (lst_line->separator == '>' || lst_line->separator == '=')
+			else if (lst_line->cmd->flags & F_OUTPUT || lst_line->cmd->flags & F_APPEND)
 			{
-				if (lst_line->separator == '>')
+				if (lst_line->cmd->flags & F_OUTPUT)
 					fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				else if (lst_line->separator == '>')
+				else if (lst_line->cmd->flags & F_OUTPUT)
 					fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				fd_outold = dup(STDOUT);
 				dup2(fd_out, STDOUT);
 			}
-			else if (lst_line->separator == '|')
+			else if (lst_line->cmd->flags & F_APPEND)
 			{
 				int		tab[2];	// Used to store two ends of first pipe
 				pid_t	p;
@@ -291,8 +306,28 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			break ;
 		}
-		create_pipes(lst_line);
-		redirections(lst_line);
+
+		// char **tab = lst_to_strs(lst_line->cmd);
+		// ft_putstr("***********************************\n");
+		// ft_print_tabstr(tab);
+		// ft_printf("**************************%c\n", lst_line->separator);
+		// ft_free_tab(tab);
+
+		// tab = lst_to_strs(lst_line->next->cmd);
+		// ft_putstr("***********************************\n");
+		// ft_print_tabstr(tab);
+		// ft_printf("**************************%c\n", lst_line->next->separator);
+		// ft_free_tab(tab);
+
+		// tab = lst_to_strs(lst_line->next->next->cmd);
+		// ft_putstr("***********************************\n");
+		// ft_print_tabstr(tab);
+		// ft_printf("**************************%c\n", lst_line->next->next->separator);
+		// ft_free_tab(tab);
+
+		// ft_putstr("***********************************\n");
+
+		create_pipes_and_semicolon(lst_line);
 		exec_line(lst_line, envp);
 		free(input);
 	}

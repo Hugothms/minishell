@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:49:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:32:26 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	else if (par->in_simple)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTES | F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTE | F_NO_SPACE_AFTER);
 		else
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTES);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTE);
 	}
 	par->pos = par->i + 1;
 	par->in_simple += (par->in_simple == 0 ? 1 : -1);
@@ -34,9 +34,9 @@ void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	else if (par->in_double)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTES | F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTE | F_NO_SPACE_AFTER);
 		else
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTES);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTE);
 	}
 	par->pos = par->i + 1;
 	par->in_double += (par->in_double == 0 ? 1 : -1);
@@ -49,9 +49,9 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 	while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing segfaults/leaks when only arrows are pressed
 		par->pos++;
 	end = par->pos;
-	if (!ft_in_charset(input[par->pos], SEPARATORS))
+	if (!ft_in_charset(input[par->pos], SYMBOLS))
 	{
-		while (input[end] && !ft_in_charset(input[end], SEPARATORS))
+		while (input[end] && !ft_in_charset(input[end], SYMBOLS))
 			end++;
 		add_substr_to_cmd(&input[par->pos], cmd, end - par->pos, F_NOTHING);
 		if (!input[end])
@@ -59,7 +59,7 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 	}
 	if (input[par->pos + 1] == '>')
 		par->i++;
-	add_substr_to_cmd(&input[end], cmd, par->i - end + 1, F_SEPARATOR);
+	add_substr_to_cmd(&input[end], cmd, par->i - end + 1, get_flags(&input[par->pos]));
 	par->pos = end + 1;
 	if (!ft_strncmp(&input[end], ">>", 2))
 		par->pos++;

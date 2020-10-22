@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:57:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:27:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void			l_lst_clear(t_list_line *lst)
 // 	return (mapedlst);
 // }
 
-t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator)
+t_list_line		*l_lst_copy_all(t_list_cmd *cmd)
 {
 	t_list_cmd	*new_cmd;
 	t_list_line	*new_line;
@@ -129,6 +129,6 @@ t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator)
 		c_lst_add_back(&new_cmd, c_lst_new(cmd->str, cmd->flags));
 		cmd = cmd->next;
 	}
-	l_lst_add_back(&new_line, l_lst_new(new_cmd, separator));
+	l_lst_add_back(&new_line, l_lst_new(new_cmd));
 	return (new_line);
 }

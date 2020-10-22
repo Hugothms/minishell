@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:55:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:28:26 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 /* Charsets */
 # define WHITESPACES		" \t"
-# define SEPARATORS			"|><;"
+# define SYMBOLS			"|;<>"
 
 /* Error codes */
 # define SUCCESS			0
@@ -40,11 +40,18 @@
 # define STDERR			2
 
 /* Flags cmd */
-# define F_NOTHING			0b0000
-# define F_SIMPLE_QUOTES	0b0001
-# define F_DOUBLE_QUOTES	0b0010
-# define F_NO_SPACE_AFTER	0b0100
-# define F_SEPARATOR		0b1000
+# define F_NOTHING			0b00000000
+# define F_SIMPLE_QUOTE		0b00000001
+# define F_DOUBLE_QUOTE		0b00000010
+# define F_NO_SPACE_AFTER	0b00000100
+
+# define F_SEMICOLON		0b00001000
+# define F_PIPE				0b00010000
+
+# define F_INPUT			0b00100000
+# define F_OUTPUT			0b01000000
+# define F_APPEND			0b10000000
+# define F_SPECIALS			0b11111000
 
 
 /* STRUCTURES */
@@ -67,8 +74,6 @@ typedef struct		  	s_list_line
 	t_list_cmd			    *cmd;
 	int			   			input;
 	int			   			output;
-	// t_list_sep			    *sep;
-	char				     separator;
 	struct s_list_line	*next;
 }						           t_list_line;
 
@@ -107,8 +112,8 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags);
 int		escaped(char *str, int i);
 int		in_quotes(t_list_cmd *cmd);
 void	parse_error(char *input, t_list_line *lst_line);
-int   is_separator(char *str, int i);
-char	get_separator(char* str);
+int   	is_separator(char *str, int i);
+int		get_flags(char* str);
 void	cmd_plusplus_free(t_list_cmd **cmd);
 char	**lst_to_strs(t_list_cmd *cmd);
 
@@ -125,7 +130,7 @@ void			c_lst_iter(t_list_cmd *lst, void (*f)(void *));
 t_list_cmd		*c_lst_map(t_list_cmd *lst, void *(*f)(void *));
 
 /* list_line.c */
-t_list_line		*l_lst_new(t_list_cmd *cmd, char separator);
+t_list_line		*l_lst_new(t_list_cmd *cmd);
 void			l_lst_add_front(t_list_line **alst, t_list_line *new);
 void			l_lst_add_back(t_list_line **alst, t_list_line *new);
 int				l_lst_size(t_list_line *lst);
@@ -135,7 +140,7 @@ void			l_lst_remove_next_one(t_list_line *lst);
 void			l_lst_clear(t_list_line *lst);
 void			l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *));
-t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator);
+t_list_line		*l_lst_copy_all(t_list_cmd *cmd);
 
 
 

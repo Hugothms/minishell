@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:45:34 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:27:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@
 ** @return			The new element
 */
 
-t_list_line		*l_lst_new(t_list_cmd *cmd, char separator)
+t_list_line		*l_lst_new(t_list_cmd *cmd)
 {
 	t_list_line	*new;
 
 	if (!(new = malloc(sizeof(t_list_line))))
 		return (NULL);
 	new->cmd = cmd;
-	new->separator = separator;
 	new->next = NULL;
 	return (new);
 }

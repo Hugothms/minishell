@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:47:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:54:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTES) && cmd->str[i])
+		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i])
 		{
 			if (cmd->str[i] == '\\')
 			{
@@ -72,7 +72,7 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, char **envp)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTES) && cmd->str[i + 1] > 32)
+			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
 			{
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, envp);
@@ -115,16 +115,16 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	// 	return (FAILURE);
 	while (cmd)
 	{
-		if (cmd->next && (cmd->next->flags & F_SEPARATOR))
+		if (cmd->next && (cmd->next->flags & (F_PIPE + F_SEMICOLON)))
 		{
-			(*lst_line)->separator = get_separator(cmd->next->str);
+			(*lst_line)->cmd->flags = get_flags(cmd->next->str);
 			// ft_printf("\nsplit:%s\n", cmd->next->str);
-			ft_printf("separator:%c\n", (*lst_line)->separator);
-			if ((*lst_line)->separator == ';' || (*lst_line)->separator == '|')
+			// ft_printf("flags:%c\n", (*lst_line)->cmd->flags);
+			if ((*lst_line)->cmd->flags & F_SEMICOLON || (*lst_line)->cmd->flags & F_PIPE)
 			{
 				if (!(next_start = cmd->next->next))
 					return (FAILURE);
-				l_lst_add_back(lst_line, l_lst_new(next_start, '\0'));
+				l_lst_add_back(lst_line, l_lst_new(next_start));
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
@@ -132,29 +132,29 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				cmd = next_start;
 				return (split_cmd(&((*lst_line)->next), cmd, 0));
 			}
-			else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
-			{
-				// ft_printf("inside\n");
-				if (!(next_start = cmd->next))
-					return (FAILURE);
-				l_lst_add_back(lst_line, l_lst_new(next_start, (*lst_line)->separator));
-				t_list_cmd *tmp = (*lst_line)->cmd;
-				while (i--)
-					tmp = tmp->next;
-				// ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n", tmp->str, tmp->next->str);
-				tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
-				// ft_printf("next_start->next->str:%s\n", next_start->next->str);
-				if (!(cmd = next_start->next->next))	// on comtinue a spliter apres le chevron et son argument
-					return (SUCCESS);
-				// ft_printf("ok\n");
-				// ft_printf("cmd->str:\t%s\n", cmd->str);
-				// ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\n", cmd->next->str, next_start->str);
-				// ft_printf("tmp->str:\t%s\n", tmp->str);
-				if (split_cmd(lst_line, cmd, 2)) // on ne change pas de lst_line
-					return (FAILURE);
-				next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
-				// ft_printf("poi\n");
-			}
+			// else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
+			// {
+			// 	// ft_printf("inside\n");
+			// 	if (!(next_start = cmd->next))
+			// 		return (FAILURE);
+			// 	l_lst_add_back(lst_line, l_lst_new(next_start, 0));
+			// 	t_list_cmd *tmp = (*lst_line)->cmd;
+			// 	while (i--)
+			// 		tmp = tmp->next;
+			// 	// ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n", tmp->str, tmp->next->str);
+			// 	tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
+			// 	// ft_printf("next_start->next->str:%s\n", next_start->next->str);
+			// 	if (!(cmd = next_start->next->next))	// on comtinue a spliter apres le chevron et son argument
+			// 		return (SUCCESS);
+			// 	// ft_printf("ok\n");
+			// 	// ft_printf("cmd->str:\t%s\n", cmd->str);
+			// 	// ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\n", cmd->next->str, next_start->str);
+			// 	// ft_printf("tmp->str:\t%s\n", tmp->str);
+			// 	if (split_cmd(lst_line, cmd, 2)) // on ne change pas de lst_line
+			// 		return (FAILURE);
+			// 	next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
+			// 	// ft_printf("poi\n");
+			// }
 		}
 		i++;
 		cmd = cmd->next;
@@ -170,21 +170,22 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
 
-	// ft_printf("CMD:\n-----------------\n");
+	ft_printf("CMD:\n-----------------\n");
 	t_list_cmd	*copy = cmd;
 	while (copy)
 	{
-		// ft_printf("%s\n", copy->str);
+		ft_printf("F:%d\t", copy->flags);
+		ft_printf("%s\n", copy->str);
 		copy = copy->next;
 	}
-	// ft_printf("-----------------\n\n");
+	ft_printf("-----------------\n\n");
 
 
 	replace_dollar_and_tild(cmd, envp);
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);
 	delete_empty_elements(cmd);
-	l_lst_add_back(lst_line, l_lst_new(cmd, '\0'));
+	l_lst_add_back(lst_line, l_lst_new(cmd));
 	if (split_cmd(lst_line, cmd, 0))
 		return (FAILURE);
 	return (SUCCESS);
