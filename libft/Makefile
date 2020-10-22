@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
-#    Updated: 2020/09/30 14:37:32 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/20 13:07:34 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,33 +131,19 @@ SRCS 		+= 	srcs/ft_printf/ft_printf.c			\
 
 SRCS		+=	srcs/gnl/get_next_line.c
 
-
-
-###########################
-BLACK_FG = \033[38;5;0m
-RED_FG = \033[38;5;196m
-GREEN_FG = \033[38;5;46m
-
-BLACK_BG = \033[48;5;0m
-BLUE_BG = \033[48;5;39m
-PINK_BG = \033[48;5;213m
-YELLOW_BG = \033[48;5;11m
-RANLIB_BG = \033[48;5;172m
-
-CLEAR_COLOR = \033[m
 ###########################
 
 OPTI = -Ofast #-O3
 
 all:		$(NAME)
 
-$(NAME):	${OBJS} $(HEADER)
-	@echo "Creating $(GREEN_FG)libft.a$(CLEAR_COLOR)"
+$(NAME):	echoCL ${OBJS} $(HEADER) echoOK echoCS echoAR
 	ar rc	$(NAME) ${OBJS}
 	ranlib	$(NAME)
 
 .c.o:
 	${CC} -c ${CFLAGS} -I. -o $@ $<
+	printf "$(GREEN)█"
 
 clean:
 	rm -f $(OBJS)
@@ -166,3 +152,29 @@ fclean:		clean
 	rm -f $(NAME)
 
 re:			fclean all
+
+.SILENT:
+###########################COLOR
+#----------------reset----------------#
+NC = \033[0m
+
+#-----------Regular Colors------------#
+BLACK = \033[0;30m
+RED = \033[0;31m
+GREEN = \033[32m
+YELLOW = \033[33;33m
+BLUE = \033[0;34m
+PURPLE = \033[35m
+CYAN = \033[1;36m
+WHITE = \033[0;37m
+
+###########################ECHO
+
+echoCL:
+	echo "$(YELLOW)===> Compiling Libft$(NC)\n"
+echoOK:
+	echo "$(GREEN) OK$(NC)\n"
+echoCS :
+	echo "$(GREEN)===> Compilation Success$(NC)"
+echoAR :
+	echo "$(CYAN)===> Archiving Libft$(NC)$(GREEN) OK$(NC)\n"
