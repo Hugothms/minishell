@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:28:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 17:12:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@
 
 typedef struct		  	s_list_cmd
 {
-	char				        *str;
-	char				        flags;
+	char				  *str;
+	int				      flags;
 	struct s_list_cmd	  *next;
 }						          t_list_cmd;
 
@@ -118,7 +118,7 @@ void	cmd_plusplus_free(t_list_cmd **cmd);
 char	**lst_to_strs(t_list_cmd *cmd);
 
 /* list_cmd.c */
-t_list_cmd		*c_lst_new(char *str, char flags);
+t_list_cmd		*c_lst_new(char *str, int flags);
 void			c_lst_add_front(t_list_cmd **alst, t_list_cmd *new);
 void			c_lst_add_back(t_list_cmd **alst, t_list_cmd *new);
 int				c_lst_size(t_list_cmd *lst);

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:54:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 17:09:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,27 @@ void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
 {
 	int		azerty;
 	int		size;
+	int		pos_equal;
+	char	*after_equal;
 
 	azerty = 0;
 	while (envp[azerty])
 	{
-		if (!ft_strncmp(envp[azerty], &(cmd->str[i + 1]), ft_strlen(&(cmd->str[i])) - 1) && envp[azerty][ft_strlen(&(cmd->str[i])) - 1] == '=')
+		pos_equal = 0;
+		while (cmd->str[pos_equal] && cmd->str[pos_equal] != '=')
+			pos_equal++;
+		size = ft_strlen(&(cmd->str[i]));
+		if (pos_equal && pos_equal < size)
+			size = pos_equal;
+		if (!ft_strncmp(envp[azerty], &(cmd->str[i + 1]), size - 1) && envp[azerty][size - 1] == '=')
 		{
-			size = ft_strlen(&(cmd->str[i]));
+			after_equal = ft_strdup(&cmd->str[pos_equal]);
+			ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, after_equal);
 			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
 			cmd->str = ft_strjoin_free(cmd->str, &(envp[azerty][size]));
+			if (pos_equal)
+				cmd->str = ft_strjoin_free(cmd->str, after_equal);
+			free(after_equal);
 			return ;
 		}
 		azerty++;
@@ -169,19 +181,17 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
-
+	replace_dollar_and_tild(cmd, envp);
+	
 	ft_printf("CMD:\n-----------------\n");
 	t_list_cmd	*copy = cmd;
 	while (copy)
 	{
-		ft_printf("F:%d\t", copy->flags);
-		ft_printf("%s\n", copy->str);
+		ft_printf("F:%d\t%s\n", copy->flags, copy->str);
 		copy = copy->next;
 	}
 	ft_printf("-----------------\n\n");
-
-
-	replace_dollar_and_tild(cmd, envp);
+	
 	if (delete_backslashes(cmd, envp))
 		return (FAILURE);
 	delete_empty_elements(cmd);

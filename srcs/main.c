@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:56:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 17:08:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ void	redirections(t_list_line *lst_line)
 			ft_putstr_fd("error open\n", STDERR);
 		c_lst_remove_next_one(lst_line->cmd);
 		t_list_cmd *tmp = lst_line->cmd;
-		(lst_line->cmd = lst_line->cmd->next);
-			// break ;
+		lst_line->cmd = lst_line->cmd->next;
+			// return ;
 		c_lst_free_one(tmp);
 	}
-	// ft_printf("lst_line->cmd->str:%s\n", lst_line->cmd->str);
+	ft_printf("lst_line->cmd->str:%s\n", lst_line->cmd->str);
 }
 
 void	exec_line(t_list_line *lst_line, char **envp)
@@ -106,12 +106,11 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	{
 		redirections(lst_line);
 
-
-		ft_printf("\n\n\nexec_line number:%d\n",i);
+		ft_printf("\nexec_line number:%d\n",i);
 		char **tab = lst_to_strs(lst_line->cmd);
 		ft_putstr("***********************************\n");
 		ft_print_tabstr(tab);
-		ft_printf("**************************%d\n", lst_line->cmd->flags);
+		ft_printf("***********flags:%d\n", lst_line->cmd->flags);
 		ft_free_tab(tab);
 
 		// tab = lst_to_strs(lst_line->next->cmd);
