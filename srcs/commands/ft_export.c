@@ -1,31 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands2.c                                        :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/06 23:09:57 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:28:58 by vmoreau          ###   ########.fr       */
+/*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
+/*   Updated: 2020/10/22 16:19:27 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*ft_env(char **envp)
-{
-	char	*ret;
-	int		i;
-
-	ret = ft_strdup("");
-	i = 0;
-	while (envp[i])
-	{
-		ret = ft_strjoin_free(ret, envp[i++]);
-		ret = ft_strjoin_free(ret, "\n");
-	}
-	return (ret);
-}
 
 void sort(char **tri)
 {
@@ -105,30 +90,5 @@ char	*ft_export(t_list_cmd *args, char **envp)
 	envp[i] = ft_strjoin_free(envp[i], value);
 	free(value);
 	envp[i + 1] = NULL;
-	return (ft_strdup(""));
-}
-
-char	*ft_unset(t_list_cmd *args, char **envp)
-{
-	char	*var;
-	char	**tmp;
-	int		i;
-
-	if (!args || !args->str)
-		return (ft_strdup(""));
-	tmp = ft_split(args->str, '=');
-	var = ft_strdup(*tmp);
-	ft_free_tab(tmp);
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strcmp(envp[i], var))
-		{
-			envp[i][ft_strlen(var)] = '\0';
-			break ;
-		}
-		i++;
-	}
-	free(var);
 	return (ft_strdup(""));
 }

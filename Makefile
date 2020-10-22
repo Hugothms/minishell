@@ -6,7 +6,7 @@
 #    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/20 13:07:37 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/10/22 16:32:59 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,24 @@ CC = gcc
 CFLAGS += -Wall -Werror -Wextra
 LDFLAGS += -g3 -fsanitize=address
 
-SRCS =	srcs/commands1.c		\
-		srcs/commands2.c		\
-		srcs/list_cmd1.c		\
+#-----------------Main-----------------#
+
+SRCS += srcs/main.c
+#---------------Commands---------------#
+
+SRCS +=	srcs/commands/ft_cd.c		\
+		srcs/commands/ft_echo.c		\
+		srcs/commands/ft_env.c		\
+		srcs/commands/ft_exit.c		\
+		srcs/commands/ft_export.c	\
+		srcs/commands/ft_pwd.c		\
+		srcs/commands/ft_unset.c
+
+#-----------------Main-----------------#
+SRCS +=	srcs/list_cmd1.c		\
 		srcs/list_cmd2.c		\
 		srcs/list_line1.c		\
 		srcs/list_line2.c		\
-		srcs/main.c				\
 		srcs/parse.c			\
 		srcs/parse_quotes.c		\
 		srcs/search_command.c	\

@@ -1,51 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands1.c                                        :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/17 15:52:58 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/19 10:20:52 by hthomas          ###   ########.fr       */
+/*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
+/*   Updated: 2020/10/22 16:18:28 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*ft_pwd(void)
-{
-	char	*ret;
-
-	ret = getcwd(NULL, 0);
-	ret = ft_strjoin_free(ret, "\n");
-	return (ret);
-}
-
-char	*ft_echo(t_list_cmd *args)
-{
-	int		nflag;
-	char	*ret;
-
-	nflag = 0;
-	if (!args || !args->str)
-		return (ft_strdup("\n"));
-	while (!ft_strcmp(args->str, "-n"))
-	{
-		nflag = 1;
-		args = args->next;
-	}
-	ret = ft_strdup("");
-	while (args)
-	{
-		ret = ft_strjoin_free(ret, args->str);
-		if (args->next && !(args->flags & F_NO_SPACE_AFTER))
-			ret = ft_strjoin_free(ret, " ");
-		args = args->next;
-	}
-	if (!nflag)
-		ret = ft_strjoin_free(ret, "\n");
-	return (ret);
-}
 
 char	*find_var_env(char **envp, char *var)
 {
@@ -83,17 +48,4 @@ char	*ft_cd(t_list_cmd *args, char **envp)
 		return (ret);
 	}
 	return (ft_strdup(""));
-}
-
-char	*ft_exit(t_list_cmd *args)
-{
-	int	err;
-
-	if (args)
-	{
-		if ((err = ft_atoi(args->str)))
-			exit(err);
-	}
-	exit(0);
-	return (NULL);
 }
