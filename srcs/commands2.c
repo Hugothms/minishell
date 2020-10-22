@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 23:09:57 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/16 12:06:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:28:58 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,52 @@ char	*ft_env(char **envp)
 	return (ret);
 }
 
+void sort(char **tri)
+{
+	char *tmp;
+	int i;
+	int j;
+
+	i = 0;
+	j = 1;
+	while (tri[i + 1] != NULL)
+	{
+		if (ft_strcmp(tri[i], tri[j]) > 0)
+		{
+			tmp = tri[j];
+			tri[j] = tri[i];
+			tri[i] = tmp;
+			j = i + 1;
+		}
+		else if (tri[j + 1] == NULL)
+		{
+			i++;
+			j = i + 1;
+		}
+		else
+			j++;
+	}
+}
+
+char	*ft_export_no_arg(char **envp)
+{
+	char	*ret;
+	char	**tri;
+	int		i;
+
+	i = 0;
+	tri = envp;
+	sort(tri);
+	ret = ft_strdup("");
+	while (tri[i])
+	{
+		ret = ft_strjoin_free(ret, "declare -x ");
+		ret = ft_strjoin_free(ret, tri[i++]);
+		ret = ft_strjoin_free(ret, "\n");
+	}
+	return(ret);
+}
+
 char	*ft_export(t_list_cmd *args, char **envp)
 {
 	char	*key;
@@ -35,7 +81,7 @@ char	*ft_export(t_list_cmd *args, char **envp)
 	int		i;
 
 	if (!args || !args->str)
-		return (ft_env(envp));
+		return (ft_export_no_arg(envp));
 	equal_pos = 0;
 	while (args->str[equal_pos] && args->str[equal_pos] != '=')
 		equal_pos++;
