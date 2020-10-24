@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/24 17:13:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/24 17:16:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ void	redirections(t_list_line *lst_line, char **envp)
 		c_lst_remove_next_one(lst_line->cmd);
 		t_list_cmd *tmp = lst_line->cmd;
 		lst_line->cmd = lst_line->cmd->next;
-			// return ;
 		c_lst_free_one(tmp);
 	}
 
