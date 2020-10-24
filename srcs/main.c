@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 17:08:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/24 16:08:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,31 @@ void	redirections(t_list_line *lst_line)
 	start = lst_line;
 	start->output = STDOUT;
 	t_list_cmd *cmd = lst_line->cmd;
-	if (lst_line->cmd->flags & (F_OUTPUT + F_INPUT))
+	ft_printf("cmd->str:%s\n", cmd->str);
+	ft_printf("cmd->flags:%i\n", cmd->flags);
+	if (cmd->flags & (F_OUTPUT + F_INPUT))
 	{
-		char *filename = lst_line->cmd->next->str;
+		char *filename = cmd->next->str;
 		ft_printf("filename:%s\n", filename);			
 		ft_printf("before:%d\n", start->output);
 		if (!filename)
 			ft_putstr_fd("pas de filename\n", STDERR);
 		
-		if (*lst_line->cmd->str == '<')
+		if (cmd->flags & F_INPUT)
 			start->output = open(filename, O_RDONLY);
-		else if (*lst_line->cmd->str == '>')
-			start->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (*lst_line->cmd->str == '=')
+		else if (cmd->flags & F_APPEND)
 			start->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (cmd->flags & F_OUTPUT)
+			start->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		ft_printf("open:%d\n", start->output);
 		if (start->output < 0)
 			ft_putstr_fd("error open\n", STDERR);
-		c_lst_remove_next_one(lst_line->cmd);
-		t_list_cmd *tmp = lst_line->cmd;
-		lst_line->cmd = lst_line->cmd->next;
+		c_lst_remove_next_one(cmd);
+		t_list_cmd *tmp = cmd;
+		cmd = cmd->next;
 			// return ;
 		c_lst_free_one(tmp);
 	}
-	ft_printf("lst_line->cmd->str:%s\n", lst_line->cmd->str);
 }
 
 void	exec_line(t_list_line *lst_line, char **envp)
@@ -327,6 +328,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		// ft_putstr("***********************************\n");
 
 		create_pipes_and_semicolon(lst_line);
+		ft_printf("la %d\n", lst_line->cmd->flags);
 		exec_line(lst_line, envp);
 		free(input);
 	}

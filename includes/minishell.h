@@ -6,12 +6,12 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 17:12:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/24 16:01:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef minishell_H
-# define minishell_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 
 # include <fcntl.h>
@@ -25,6 +25,7 @@
 # include <math.h>
 # include <errno.h>
 # include "../libft/includes/libft.h"
+# include "welcome_message.h"
 
 /* Charsets */
 # define WHITESPACES		" \t"
@@ -55,27 +56,27 @@
 
 
 /* STRUCTURES */
-// typedef struct		  	s_list_sep
+// typedef struct			s_list_sep
 // {
-// 	char				        *arg;
-// 	char				        separator;
-// 	struct s_list_sep	  *next;
-// }						          t_list_sep;
+// 	char					*arg;
+// 	char					separator;
+// 	struct s_list_sep		*next;
+// }						t_list_sep;
 
-typedef struct		  	s_list_cmd
+typedef struct				s_list_cmd
 {
-	char				  *str;
-	int				      flags;
-	struct s_list_cmd	  *next;
-}						          t_list_cmd;
+	char					*str;
+	int						flags;
+	struct s_list_cmd		*next;
+}							t_list_cmd;
 
-typedef struct		  	s_list_line
+typedef struct				s_list_line
 {
-	t_list_cmd			    *cmd;
-	int			   			input;
-	int			   			output;
-	struct s_list_line	*next;
-}						           t_list_line;
+	t_list_cmd				*cmd;
+	int				 		input;
+	int				 		output;
+	struct s_list_line		*next;
+}							t_list_line;
 
 typedef struct			s_parse
 {
@@ -83,7 +84,7 @@ typedef struct			s_parse
 	int					in_double;
 	int					pos;
 	int					i;
-}					  	t_parse;
+}							t_parse;
 
 
 
@@ -112,7 +113,7 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags);
 int		escaped(char *str, int i);
 int		in_quotes(t_list_cmd *cmd);
 void	parse_error(char *input, t_list_line *lst_line);
-int   	is_separator(char *str, int i);
+int		is_separator(char *str, int i);
 int		get_flags(char* str);
 void	cmd_plusplus_free(t_list_cmd **cmd);
 char	**lst_to_strs(t_list_cmd *cmd);
@@ -141,97 +142,5 @@ void			l_lst_clear(t_list_line *lst);
 void			l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line		*l_lst_map(t_list_line *lst, void *(*f)(void *));
 t_list_line		*l_lst_copy_all(t_list_cmd *cmd);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# define WELCOME_MSG "            ▄███████████████▄           \n\
-         ██████▀   ██   ▀███████        \n\
-      ███   ▀███   ██   ███▀   ███      \n\
-     ██████   ██   ██   ██   ██████     \n\
-     ██   ██   ██  ██  ██   ██   ██     \n\
-    ███    ██  ██  ██  ██  ██    ███    \n\
-    ██ ██   ██  █  ██  █  ██   ██ ██    \n\
-    ██  ███  ██ ██ ██ ██ ██  ███  ██    \n\
-    ██    ██  ██ █ ██ █ ██  ██    ██    \n\
-    ████▄   ██ █  █  █  █ ██   ▄████    \n\
-       ████   █          █   ████       \n\
-          ██                ██          \n\
-          ████████▄  ▄████████          \n\
-                  ▀██▀                  \n\
-           _       _     _          _ _\n\
- _ __ ___ (_)_ __ (_)___| |__   ___| | |\n\
-| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n\
-| | | | | | | | | | \\__ \\ | | |  __/ | |\n\
-|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n\n"
-
-
-/*
-                                \n\
-        ▄███████████████▄       \n\
-       ███████████████████      \n\
-     ██████▀   ██   ▀███████    \n\
-   ████████    ██    ████████   \n\
-  ███   ▀███   ██   ███▀   ███  \n\
-  ████    ██   ██   ██    ████  \n\
- ██████   ██   ██   ██   ██████ \n\
- ██  ██   ██   ██   ██   ██  ██ \n\
- ██   ██   ██  ██  ██   ██   ██ \n\
-███   ██   ██  ██  ██   ██   ███\n\
-███    ██  ██  ██  ██  ██    ███\n\
-████   ██  ██  ██  █   ██   ████\n\
-██ ██   ██  █  ██  █  ██   ██ ██\n\
-██  ██  ██  ██ ██ ██  ██  ██  ██\n\
-██  ███  ██ ██ ██ ██ ██  ███  ██\n\
-██   ██  ██  █ ██ █  ██  ██   ██\n\
-██    ██  ██ █ ██ █ ██  ██    ██\n\
-███▄   ██  █ █ ██ █ █   █   ▄███\n\
-████▄   ██ █  █  █  █  █   ▄████\n\
- █████   █  █ █  █ █  █   █████ \n\
-   ████   █          █   ████   \n\
-     ███                ███     \n\
-      ██                ██      \n\
-      ██                ██      \n\
-      ████████▄  ▄████████      \n\
-      ████████████████████      \n\
-              ▀██▀              \n\
-*/
 
 #endif

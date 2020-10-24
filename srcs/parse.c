@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 17:09:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/24 16:15:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	// 	return (FAILURE);
 	while (cmd)
 	{
+		ft_printf("ici%d\n", cmd->flags);
+		ft_printf("aze%d\n", (*lst_line)->cmd->flags);
 		if (cmd->next && (cmd->next->flags & (F_PIPE + F_SEMICOLON)))
 		{
 			(*lst_line)->cmd->flags = get_flags(cmd->next->str);
@@ -142,6 +144,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 					tmp = tmp->next;
 				tmp->next = NULL;
 				cmd = next_start;
+				ft_printf("claire%d\n", (*lst_line)->cmd->flags);
 				return (split_cmd(&((*lst_line)->next), cmd, 0));
 			}
 			// else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
@@ -171,6 +174,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		i++;
 		cmd = cmd->next;
 	}
+	ft_printf("hugo%d\n", (*lst_line)->cmd->flags);
 	return (SUCCESS);
 }
 
@@ -198,5 +202,6 @@ int		parse_input(char *input, t_list_line **lst_line, char **envp)
 	l_lst_add_back(lst_line, l_lst_new(cmd));
 	if (split_cmd(lst_line, cmd, 0))
 		return (FAILURE);
+	ft_printf("qsd%d\n", (*lst_line)->cmd->flags);
 	return (SUCCESS);
 }
