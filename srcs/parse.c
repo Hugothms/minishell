@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 09:43:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/25 12:16:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		{
 			//(*lst_line)->cmd->flags = get_flags(cmd->next->str);
 			// ft_printf("\nsplit:%s\n", cmd->next->str);
-			// ft_printf("flags:%c\n", (*lst_line)->cmd->flags);
+			// ft_printf("flags:%d\n", (*lst_line)->cmd->flags);
 			if (cmd->next->flags & F_SEMICOLON || cmd->next->flags & F_PIPE)
 			{
 				if (!(next_start = cmd->next->next))
@@ -143,7 +143,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
-				// ft_printf("tmp:%s\n", tmp->str);
+				ft_printf("tmp:%s\n", tmp->str);
 				c_lst_remove_next_one(tmp);
 				tmp->next = NULL;
 				cmd = next_start;
