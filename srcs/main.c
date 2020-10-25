@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 09:42:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/25 09:44:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, envp))
 		{
 			parse_error(input, lst_line);
-			break ;
+			continue ;
 		}
 
 		// char **tab = lst_to_strs(lst_line->cmd);
