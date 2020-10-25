@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:32:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/25 09:43:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	int end;
 
+	// ft_printf("separator !!!\n");
 	while (input[par->pos] && ft_in_charset(input[par->pos], WHITESPACES)) // or  input[par->pos] <= 32) because this is causing segfaults/leaks when only arrows are pressed
 		par->pos++;
 	end = par->pos;
@@ -59,7 +60,8 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 	}
 	if (input[par->pos + 1] == '>')
 		par->i++;
-	add_substr_to_cmd(&input[end], cmd, par->i - end + 1, get_flags(&input[par->pos]));
+	add_substr_to_cmd(&input[end], cmd, par->i - end + 1, get_flags(&input[end]));
+	// ft_printf("input:%s\tsep:%d\n", &input[end], get_flags(&input[end]));
 	par->pos = end + 1;
 	if (!ft_strncmp(&input[end], ">>", 2))
 		par->pos++;
