@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 12:16:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/25 14:13:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		// ft_printf("ici%d\n", cmd->flags);
 		// ft_printf("aze%d\n", (*lst_line)->cmd->flags);
 		// ft_printf("f:%d\t%s\n", cmd->next->flags, cmd->next->str);
+		if (cmd->flags & (F_PIPE + F_SEMICOLON))
+			return (FAILURE);
 		if (cmd->next && (cmd->next->flags & (F_PIPE + F_SEMICOLON)))
 		{
 			//(*lst_line)->cmd->flags = get_flags(cmd->next->str);
@@ -143,7 +145,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				t_list_cmd *tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
-				ft_printf("tmp:%s\n", tmp->str);
+				// ft_printf("tmp:%s\n", tmp->str);
 				c_lst_remove_next_one(tmp);
 				tmp->next = NULL;
 				cmd = next_start;

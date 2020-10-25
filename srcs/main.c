@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 12:39:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/25 14:15:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,63 +60,66 @@ void	create_pipes_and_semicolon(t_list_line *lst_line)
 
 }
 
+void	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
+{
+	char *filename = cmd->next->str;
+	// ft_printf("filename:%s\n", filename);			
+	// ft_printf("before:%d\n", start->output);
+	if (!filename)
+		ft_putstr_fd("pas de filename\n", STDERR); //! todo
+	if (cmd->flags & F_INPUT)
+	{
+		// input = filename; //! todo
+		dup2(lst_line->input, STDIN);
+	}
+	else if (cmd->flags & F_APPEND)
+		lst_line->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (cmd->flags & F_OUTPUT)
+		lst_line->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->flags & F_OUTPUT)
+		dup2(lst_line->output, STDOUT);
+
+	// ft_printf("open:%d\n", start->output);
+	if (lst_line->output < 0)
+		ft_putstr_fd("error open\n", STDERR);
+}
+
 void	redirections(t_list_line *lst_line, char **envp)
 {
-	t_list_line	*start;
-	t_list_cmd	*cmd;
 	int	fd_outold;
 	int	fd_inold;
-	fd_outold = STDOUT;
-	fd_inold = STDIN;
+	fd_outold = dup(STDOUT);
+	fd_inold = dup(STDIN);
 
-	start = lst_line;
 	// int fd_outold = STDOUT;
 	// int fd_inold = STDIN;
-	start->output = STDOUT;
+	lst_line->output = STDOUT;
 	// ft_printf("lst_line->cmd->str:%s\n", lst_line->cmd->str);
 	// ft_printf("lst_line->cmd->flags:%i\n", lst_line->cmd->flags);
-	cmd = lst_line->cmd;
-	// while (cmd)
-	// {
-		if (lst_line->cmd && lst_line->cmd->flags & (F_OUTPUT + F_INPUT))
+	
+	t_list_cmd *cmd = lst_line->cmd;
+	while (cmd)
+	{
+		while (cmd->flags & (F_OUTPUT + F_INPUT))
 		{
-			char *filename = lst_line->cmd->next->str;
-			// ft_printf("filename:%s\n", filename);			
-			// ft_printf("before:%d\n", start->output);
-			if (!filename)
-				ft_putstr_fd("pas de filename\n", STDERR); //! todo
-			if (lst_line->cmd->flags & F_INPUT)
-			{
-				fd_inold = dup(STDIN);
-				dup2(lst_line->input, STDIN);
-			}
-			else if (lst_line->cmd->flags & F_APPEND)
-			{
-				fd_outold = dup(STDOUT);
-				lst_line->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				dup2(lst_line->output, STDOUT);
-			}
-			else if (lst_line->cmd->flags & F_OUTPUT)
-			{
-				fd_outold = dup(STDOUT);
-				lst_line->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				dup2(lst_line->output, STDOUT);
-			}
-			
-
-
-			// ft_printf("open:%d\n", start->output);
-			if (start->output < 0)
-				ft_putstr_fd("error open\n", STDERR);
-			c_lst_remove_next_one(lst_line->cmd);
-			t_list_cmd *tmp = lst_line->cmd;
-			lst_line->cmd = lst_line->cmd->next;
-			// ft_printf("tmp:%s\n", tmp->str);
-			// ft_printf("cmd:%s\n", cmd->str);
+			open_fd(lst_line, cmd);
+			c_lst_remove_next_one(cmd);
+			t_list_cmd *tmp = cmd;
+			lst_line->cmd = cmd->next;
+			cmd = lst_line->cmd;
 			c_lst_free_one(tmp);
 		}
-	// 	cmd = cmd->next;
-	// }
+		if (cmd->next && cmd->next->flags & (F_OUTPUT + F_INPUT))
+		{
+			open_fd(lst_line, cmd->next);
+			c_lst_remove_next_one(cmd->next);
+			t_list_cmd *tmp = cmd->next;
+			cmd->next = cmd->next->next;
+			c_lst_free_one(tmp);
+		}
+		cmd = cmd->next;
+	}
+	
 		char *ret;
 		if ((ret = exec_cmd(lst_line->cmd, envp)))
 		{
@@ -142,12 +145,12 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	{
 		redirections(lst_line, envp);
 
-		ft_printf("\nexec_line number:%d\n",i);
-		char **tab = lst_to_strs(lst_line->cmd);
-		ft_printf("***********************************\n");
-		ft_print_tabstr(tab);
-		ft_printf("***********flags:%d\n", lst_line->cmd->flags);
-		ft_free_tab(tab);
+		// ft_printf("\nexec_line number:%d\n",i);
+		// char **tab = lst_to_strs(lst_line->cmd);
+		// ft_printf("***********************************\n", 0);
+		// ft_print_tabstr(tab);
+		// ft_printf("***********flags:%d\n", lst_line->cmd->flags);
+		// ft_free_tab(tab);
 
 		// tab = lst_to_strs(lst_line->next->cmd);
 		// ft_printf("***********************************\n");
@@ -163,7 +166,7 @@ void	exec_line(t_list_line *lst_line, char **envp)
 
 		// ft_printf("***********************************\n");
 		
-		//! ici
+		//! ici exec + dup2
 
 		lst_line = lst_line->next;
 		i++;
