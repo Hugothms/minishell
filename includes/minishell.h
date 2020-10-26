@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:03:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:09:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ typedef struct				s_list_line
 	t_list_cmd				*cmd;
 	int				 		input;
 	int				 		output;
-	// int						fd_outold;
-	// int						fd_inold;
 	struct s_list_line		*next;
 }							t_list_line;
 
