@@ -1,4 +1,4 @@
-Allowed functions:
+• Allowed functions:
 malloc
 free
 write
@@ -30,20 +30,19 @@ errno
 
 
 
-good tests:
-	echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
-	echo$HOMER
-	echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
-	ls ; echo hugo 'is happy\" \" yeyez\y  f' > test.txt dontforgetme
-	echo blabla > toto qwerty >> tata azerty
-	> hugo ls ; echo lila ; echo klp
+• Good tests:
+echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
+echo$HOMER
+echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
+ls ; echo hugo 'is happy\" \" yeyez\y  f' > test.txt dontforgetme
+echo blabla > toto qwerty >> tata azerty
+> hugo ls ; echo lila ; echo klp
 
 
 
-TO DO:
-
-◦ export without any options
-◦ unset without any options
-• Pipes | should work like in bash
-• $? should work like in bash
-• ctrl-C, ctrl-D and ctrl-\ should have the same result as in bash
+• TO DO:
+export without any options
+unset without any options
+Pipes | should work like in bash
+$? should work like in bash
+ctrl-C, ctrl-D and ctrl-\ should have the same result as in bash
