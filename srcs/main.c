@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:07:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:41:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,41 @@ void	print_prompt(void)
 
 void	create_pipes_and_semicolon(t_list_line *lst_line)
 {
-	//! todo
+	t_list_cmd	*cmd;
+	t_list_cmd	*tmp;
+	int			fd_outold;
+	int			fd_inold;
+
+	fd_outold = dup(STDOUT);
+	fd_inold = dup(STDIN);
+	while (lst_line)
+	{
+
+		lst_line->output = STDOUT;
+		cmd = lst_line->cmd;
+		while (cmd)
+		{
+			while (cmd->flags & (F_OUTPUT + F_INPUT))
+			{
+				// open_fd(lst_line, cmd);
+				tmp = cmd;
+				lst_line->cmd = cmd->next;
+				cmd = lst_line->cmd;
+				c_lst_free_one(tmp);
+			}
+			if (cmd->next && cmd->next->flags & (F_OUTPUT + F_INPUT))
+			{
+				// open_fd(lst_line, cmd->next);
+				tmp = cmd->next;
+				cmd->next = cmd->next->next;
+				c_lst_free_one(tmp);
+			}
+			cmd = cmd->next;
+		}
+		dup2(fd_outold, STDOUT);
+		dup2(fd_inold, STDIN);
+		lst_line = lst_line->next;
+	}
 }
 
 void	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
@@ -85,7 +119,7 @@ void	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 	c_lst_remove_next_one(cmd);
 }
 
-void	redirections(t_list_line *lst_line, char **envp)
+void	redirections(t_list_line *lst_line)
 {
 	t_list_cmd	*cmd;
 	t_list_cmd	*tmp;
@@ -125,7 +159,7 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	start = lst_line;
 	while (lst_line)
 	{
-		redirections(lst_line, envp);
+		redirections(lst_line);
 
 		// ft_printf("\nexec_line number:%d\n",i);
 		// char **tab = lst_to_strs(lst_line->cmd);
@@ -178,7 +212,7 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			continue ;
 		}
-		create_pipes_and_semicolon(lst_line);
+		// create_pipes_and_semicolon(lst_line);
 		exec_line(lst_line, envp);
 		free(input);
 	}

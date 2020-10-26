@@ -41,17 +41,9 @@ good tests:
 
 
 TO DO:
-export	without any options
-unset	without any options
-echo	$?
-symbols	| > < >> ;
 
 ◦ export without any options
 ◦ unset without any options
-◦ exit without any options
-• ; in the cmd should separate commands like in bash
-• Redirections < > “>>” should work like in bash except for file descriptor aggregation
 • Pipes | should work like in bash
 • $? should work like in bash
 • ctrl-C, ctrl-D and ctrl-\ should have the same result as in bash
-
