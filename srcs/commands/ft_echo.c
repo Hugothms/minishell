@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/22 16:17:55 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/26 15:53:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_echo(t_list_cmd *args)
 	while (args)
 	{
 		ret = ft_strjoin_free(ret, args->str);
-		if (args->next && !(args->flags & F_NO_SPACE_AFTER))
+		if (args->next && !(args->flags & F_NO_SP_AFTER))
 			ret = ft_strjoin_free(ret, " ");
 		args = args->next;
 	}
