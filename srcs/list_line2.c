@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:45:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:06:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 void			l_lst_free_one(t_list_line *lst)
 {
+	if (!lst)
+		return ;
 	if (lst->cmd)
 		c_lst_clear(lst->cmd);
 	free(lst);
@@ -34,22 +36,6 @@ void			l_lst_remove_next_one(t_list_line *lst)
 	tmp = lst->next->next;
 	l_lst_free_one(lst->next);
 	lst->next = tmp;
-}
-
-/*
-** Takes as a parameter an element and frees the memory of
-**  the element’s content using the function ’del’ given as a parameter
-**  and free the element. The memory of ’next’ must not be freed
-** @param lst	The adress of a pointer to an element.
-** @param del	The adress of the function used to delete the content of the
-**	 			element.
-*/
-
-void			l_lst_del_one(t_list_line *lst)
-{
-	if (!lst)
-		return ;
-	l_lst_free_one(lst);
 }
 
 /*
@@ -69,7 +55,7 @@ void			l_lst_clear(t_list_line *lst)
 	{
 		l_lst_clear(lst->next);
 	}
-	l_lst_del_one(lst);
+	l_lst_free_one(lst);
 	lst = NULL;
 }
 
@@ -130,11 +116,10 @@ void			l_lst_clear(t_list_line *lst)
 // 	return (mapedlst);
 // }
 
-t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator)
+t_list_line		*l_lst_copy_all(t_list_cmd *cmd)
 {
 	t_list_cmd	*new_cmd;
 	t_list_line	*new_line;
-
 
 	new_cmd = NULL;
 	new_line = NULL;
@@ -143,6 +128,6 @@ t_list_line		*l_lst_copy_all(t_list_cmd *cmd, char separator)
 		c_lst_add_back(&new_cmd, c_lst_new(cmd->str, cmd->flags));
 		cmd = cmd->next;
 	}
-	l_lst_add_back(&new_line, l_lst_new(new_cmd, separator));
+	l_lst_add_back(&new_line, l_lst_new(new_cmd));
 	return (new_line);
 }

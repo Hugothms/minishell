@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:45:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:04:19 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** @return			The new element
 */
 
-t_list_cmd	*c_lst_new(char *str, char flags)
+t_list_cmd	*c_lst_new(char *str, int flags)
 {
 	t_list_cmd	*new;
 
@@ -56,7 +56,7 @@ void		c_lst_add_front(t_list_cmd **alst, t_list_cmd *new)
 
 int			c_lst_size(t_list_cmd *lst)
 {
-	int				cpt;
+	int			cpt;
 	t_list_cmd	*pt;
 
 	if (!lst)

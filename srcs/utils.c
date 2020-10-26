@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:47:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/22 14:45:12 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 
 	if (size <= 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTES) && !(flags & F_DOUBLE_QUOTES) && ft_in_charset(*input, WHITESPACES))
+	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE) && ft_in_charset(*input, WHITESPACES))
 		input++;
 	str = ft_strndup(input, size);
 	c_lst_add_back(cmd, c_lst_new(str, flags));
@@ -42,31 +42,41 @@ int		escaped(char *str, int i)
 
 int		is_separator(char *str, int i)
 {
-	return (ft_in_charset(str[i], SEPARATORS) || !ft_strncmp(&str[i], ">>", 2));
+	return (ft_in_charset(str[i], SYMBOLS) || !ft_strncmp(&str[i], ">>", 2));
 }
 
 int		in_quotes(t_list_cmd *cmd)
 {
-	return ((cmd->flags & F_SIMPLE_QUOTES) || \
-	(cmd->flags & F_DOUBLE_QUOTES));
+	return ((cmd->flags & F_SIMPLE_QUOTE) || \
+	(cmd->flags & F_DOUBLE_QUOTE));
 }
 
 void	parse_error(char *input, t_list_line *lst_line)
 {
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
 	l_lst_clear(lst_line);
-	// free(input);
+	free(input);
 	// exit(1);
 }
 
-char	get_separator(char *str)
+int		get_flags(char *str)
 {
-	char	separator;
+	int		flags;
 
-	separator = str[0];
-	if (str[1])
-		separator = '='; // if separator is ">>" we save char '='
-	return (separator);
+	flags = 0;
+	if (*str == ';')
+		flags += F_SEMICOLON;
+	else if (*str == '|')
+		flags += F_PIPE;
+	else if (*str == '<')
+		flags += F_INPUT;
+	else if (*str == '>')
+	{
+		flags += F_OUTPUT;
+		if (str[1] == '>')
+			flags += F_APPEND;
+	}
+	return (flags);
 }
 
 void	cmd_plusplus_free(t_list_cmd **cmd)
@@ -75,7 +85,7 @@ void	cmd_plusplus_free(t_list_cmd **cmd)
 
 	tmp = *cmd;
 	*cmd = (*cmd)->next;
-	c_lst_del_one(tmp);
+	c_lst_free_one(tmp);
 }
 
 char	**lst_to_strs(t_list_cmd *cmd)

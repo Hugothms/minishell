@@ -7,9 +7,5 @@
 libft.a
 libft/libft.a
 minishell
-
-#test and junk
-test*
-qwerty*
-azerty*
-hugo*
+# libft/Makefile
+# Makefile
