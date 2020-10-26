@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 15:48:36 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:04:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 14:09:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ t_list_line		*l_lst_new(t_list_cmd *cmd)
 		return (NULL);
 	new->cmd = cmd;
 	new->next = NULL;
+	new->input = STDIN;
+	new->output = STDOUT;
+	new->pipe = 0;
 	return (new);
 }
 

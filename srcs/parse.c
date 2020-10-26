@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:02:42 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 14:10:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 			{
 				if (!(next_start = cmd->next->next))
 					return (FAILURE);
+				if (cmd->next->flags & F_PIPE)
+					(*lst_line)->pipe = 1;
 				l_lst_add_back(lst_line, l_lst_new(next_start));
 				tmp = (*lst_line)->cmd;
 				while (i--)
