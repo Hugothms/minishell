@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 13:17:05 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 10:40:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@
 # define F_INPUT			0b00100000
 # define F_OUTPUT			0b01000000
 # define F_APPEND			0b10000000
+
+# define F_REDIRS			0b11100000
 # define F_SPECIALS			0b11111000
 
 
