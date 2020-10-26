@@ -6,7 +6,7 @@
 #    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/22 16:40:09 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/10/26 20:43:00 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = gcc
 CFLAGS += -Wall -Werror -Wextra
-LDFLAGS += -g3 -fsanitize=address
+LDFLAGS += 
 
 #-----------------Main-----------------#
 
@@ -26,6 +26,7 @@ SRCS +=	srcs/commands/ft_cd.c		\
 		srcs/commands/ft_env.c		\
 		srcs/commands/ft_exit.c		\
 		srcs/commands/ft_export.c	\
+		srcs/commands/ft_export2.c	\
 		srcs/commands/ft_pwd.c		\
 		srcs/commands/ft_unset.c
 

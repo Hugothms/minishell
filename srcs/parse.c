@@ -3,55 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 15:01:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 20:48:53 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
+void	replace_all_var_env(t_list_cmd *cmd, t_list *envp, int i)
 {
-	int		azerty;
 	int		size;
 	int		pos_equal;
 	char	*after_equal;
+	char	*var;
 
-	azerty = 0;
-	while (envp[azerty])
+	while (envp)
 	{
+		var = (char *)envp->content;
 		pos_equal = 0;
 		while (cmd->str[pos_equal] && cmd->str[pos_equal] != '=')
 			pos_equal++;
 		size = ft_strlen(&(cmd->str[i]));
 		if (pos_equal && pos_equal < size)
 			size = pos_equal;
-		if (!ft_strncmp(envp[azerty], &(cmd->str[i + 1]), size - 1) && envp[azerty][size - 1] == '=')
+		if (!ft_strncmp(envp->content, &(cmd->str[i + 1]), size - 1) && var[size - 1] == '=')
 		{
 			after_equal = ft_strdup(&cmd->str[pos_equal]);
 			ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, after_equal);
 			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
-			cmd->str = ft_strjoin_free(cmd->str, &(envp[azerty][size]));
+			cmd->str = ft_strjoin_free(cmd->str, &var[size]);
 			if (pos_equal)
 				cmd->str = ft_strjoin_free(cmd->str, after_equal);
 			free(after_equal);
 			return ;
 		}
-		azerty++;
+		envp = envp->next;
 	}
 	cmd->str[i] = '\0';
 }
 
-void	err_code(t_list_cmd *cmd, char **envp)
+void	err_code(t_list_cmd *cmd, t_list *envp)
 {
 	ft_putstr_fd("err_code\n", STDERR);
 	//!to do
 	return ;
 }
 
-int 	delete_backslashes(t_list_cmd *cmd, char **envp)
+int 	delete_backslashes(t_list_cmd *cmd, t_list *envp)
 {
 	int		i;
 
@@ -74,7 +74,7 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 	return (SUCCESS);
 }
 
-int		replace_dollar_and_tild(t_list_cmd *cmd, char **envp)
+int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *envp)
 {
 	int		i;
 	char	*tmp;
@@ -160,7 +160,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	return (SUCCESS);
 }
 
-int		parse_input(char *input, t_list_line **lst_line, char **envp)
+int		parse_input(char *input, t_list_line **lst_line, t_list *envp)
 {
 	t_list_cmd	*cmd;
 
