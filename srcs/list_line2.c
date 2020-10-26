@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:27:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:06:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ t_list_line		*l_lst_copy_all(t_list_cmd *cmd)
 {
 	t_list_cmd	*new_cmd;
 	t_list_line	*new_line;
-
 
 	new_cmd = NULL;
 	new_line = NULL;

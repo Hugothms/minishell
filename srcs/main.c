@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 10:53:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:07:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 		lst_line->output = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (cmd->flags & F_OUTPUT)
 		dup2(lst_line->output, STDOUT);
-
 	// ft_printf("open:%d\n", start->output);
 	if (lst_line->output < 0)
 		ft_putstr_fd("error open\n", STDERR);

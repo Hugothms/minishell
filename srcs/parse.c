@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 10:42:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:02:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,14 @@ void	delete_empty_elements(t_list_cmd *cmd)
 int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
+	t_list_cmd	*tmp;
 
-	// if (cmd && (cmd->flags & F_SEPARATOR))
-	// 	return (FAILURE);
 	while (cmd)
 	{
 		// ft_printf("ici%d\n", cmd->flags);
 		// ft_printf("aze%d\n", (*lst_line)->cmd->flags);
 		// ft_printf("f:%d\t%s\n", cmd->next->flags, cmd->next->str);
-		if (cmd->flags & (F_PIPE + F_SEMICOLON) || (cmd->flags & F_REDIRS && cmd->next->flags & F_REDIRS))
+		if (cmd->flags & (F_PIPE + F_SEMICOLON) || (cmd->flags & F_REDIRS && (!cmd->next || cmd->next->flags & F_REDIRS)))
 			return (FAILURE);
 		if (cmd->next && (cmd->next->flags & (F_PIPE + F_SEMICOLON)))
 		{
@@ -142,7 +141,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				if (!(next_start = cmd->next->next))
 					return (FAILURE);
 				l_lst_add_back(lst_line, l_lst_new(next_start));
-				t_list_cmd *tmp = (*lst_line)->cmd;
+				tmp = (*lst_line)->cmd;
 				while (i--)
 					tmp = tmp->next;
 				// ft_printf("tmp:%s\n", tmp->str);
@@ -152,29 +151,6 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 				// ft_printf("flags:%d\n", (*lst_line)->cmd->flags);
 				return (split_cmd(&((*lst_line)->next), cmd, 0));
 			}
-			// else if ((*lst_line)->separator == '>' || (*lst_line)->separator == '=' || (*lst_line)->separator == '<')
-			// {
-			// 	// ft_printf("inside\n");
-			// 	if (!(next_start = cmd->next))
-			// 		return (FAILURE);
-			// 	l_lst_add_back(lst_line, l_lst_new(next_start, 0));
-			// 	t_list_cmd *tmp = (*lst_line)->cmd;
-			// 	while (i--)
-			// 		tmp = tmp->next;
-			// 	// ft_printf("tmp->str:\t%s\ntmp->next->str:\t%s\n", tmp->str, tmp->next->str);
-			// 	tmp->next = next_start->next->next;	// link vers apres le chevron et son argument
-			// 	// ft_printf("next_start->next->str:%s\n", next_start->next->str);
-			// 	if (!(cmd = next_start->next->next))	// on comtinue a spliter apres le chevron et son argument
-			// 		return (SUCCESS);
-			// 	// ft_printf("ok\n");
-			// 	// ft_printf("cmd->str:\t%s\n", cmd->str);
-			// 	// ft_printf("cmd->next->str:\t%s\nnext_start->str:%s\n", cmd->next->str, next_start->str);
-			// 	// ft_printf("tmp->str:\t%s\n", tmp->str);
-			// 	if (split_cmd(lst_line, cmd, 2)) // on ne change pas de lst_line
-			// 		return (FAILURE);
-			// 	next_start->next->next = NULL;	// on termine la lst_line contenant le chevron et son argument
-			// 	// ft_printf("poi\n");
-			// }
 		}
 		i++;
 		cmd = cmd->next;

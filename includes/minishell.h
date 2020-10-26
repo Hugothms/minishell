@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 10:40:56 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:03:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@
 # define FAILURE			-1
 
 /* STD IN/OUT */
-# define STDIN			0
-# define STDOUT			1
-# define STDERR			2
+# define STDIN				0
+# define STDOUT				1
+# define STDERR				2
 
 /* Flags cmd */
 # define F_NOTHING			0b00000000
@@ -55,15 +55,6 @@
 
 # define F_REDIRS			0b11100000
 # define F_SPECIALS			0b11111000
-
-
-/* STRUCTURES */
-// typedef struct			s_list_sep
-// {
-// 	char					*arg;
-// 	char					separator;
-// 	struct s_list_sep		*next;
-// }						t_list_sep;
 
 typedef struct				s_list_cmd
 {
@@ -82,15 +73,13 @@ typedef struct				s_list_line
 	struct s_list_line		*next;
 }							t_list_line;
 
-typedef struct			s_parse
+typedef struct				s_parse
 {
-	int					in_simple;
-	int					in_double;
-	int					pos;
-	int					i;
+	int						in_simple;
+	int						in_double;
+	int						pos;
+	int						i;
 }							t_parse;
-
-
 
 /* commands.c */
 char	*ft_echo(t_list_cmd *args);
