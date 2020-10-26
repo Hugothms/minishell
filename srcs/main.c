@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 14:24:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 14:49:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	t_list_line	*lst_line;
 
 	ft_putstr(WELCOME_MSG);
+	//increment var $SHLVL
 	while (1)
 	{
 		print_prompt();

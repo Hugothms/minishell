@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 14:10:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 15:01:26 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int 	delete_backslashes(t_list_cmd *cmd, char **envp)
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i])
+		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTE) /*&& !(cmd->flags & F_SIMPLE_QUOTE)*/ && cmd->str[i])
 		{
 			if (cmd->str[i] == '\\')
 			{
