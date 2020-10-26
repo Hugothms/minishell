@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/22 14:45:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 20:30:40 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,22 @@ char	**lst_to_strs(t_list_cmd *cmd)
 	}
 	argv[i] = NULL;
 	return (argv);
+}
+
+char	**lst_to_chartab(t_list *envp)
+{
+	char	**ret;
+	int		i;
+
+	if (!(ret = (char **)malloc(sizeof(char *) * (ft_lstsize(envp) + 1))))
+		return (NULL);
+	i = 0;
+	while (envp)
+	{
+		ret[i] = ft_strdup(envp->content);
+		envp = envp->next;
+		i++;
+	}
+	ret[i] = NULL;
+	return (ret);
 }

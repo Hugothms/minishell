@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/20 09:48:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 20:42:15 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,18 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	return (ret);
 }
 
-int		search_command(t_list_cmd *cmd, char **envp)
+int		search_command(t_list_cmd *cmd, t_list *envp)
 {
 	int		ret;
 	int		status;
 	pid_t	pid;
+	char	**env;
 
 	pid = fork();
+	env = lst_to_chartab(envp);
 	if (pid == 0)
 	{
-		if (try_path(cmd, envp))
+		if (try_path(cmd, env))
 			exit(0);
 		ret = FAILURE;
 	}
@@ -100,5 +102,6 @@ int		search_command(t_list_cmd *cmd, char **envp)
 		wait(&status);
 		ret = SUCCESS;
 	}
+	ft_free_tab(env);
 	return (ret);
 }
