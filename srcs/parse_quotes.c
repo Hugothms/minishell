@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/25 09:43:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 11:15:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	if (!par->in_simple && par->i && !ft_in_charset(input[par->i - 1], WHITESPACES))
-		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SPACE_AFTER);
+		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SP_AFTER);
 	else if (par->in_simple)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTE | F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTE | F_NO_SP_AFTER);
 		else
 			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_SIMPLE_QUOTE);
 	}
@@ -30,11 +30,11 @@ void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	if (!par->in_double && par->i && !ft_in_charset(input[par->i - 1], WHITESPACES))
-		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SPACE_AFTER);
+		add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SP_AFTER);
 	else if (par->in_double)
 	{
 		if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WHITESPACES))
-			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTE | F_NO_SPACE_AFTER);
+			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTE | F_NO_SP_AFTER);
 		else
 			add_substr_to_cmd(&input[par->pos], cmd, par->i - par->pos, F_DOUBLE_QUOTE);
 	}
