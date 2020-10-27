@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 14:05:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 20:25:50 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>
+# include <stdio.h>
 # include "../libft/includes/libft.h"
 # include "welcome_message.h"
 
@@ -91,18 +92,20 @@ typedef struct			s_parse
 ** commands.c
 */
 char					*ft_echo(t_list_cmd *args);
-char					*ft_cd(t_list_cmd *args, char **envp);
+char					*ft_cd(t_list_cmd *args, t_list *envp);
 char					*ft_pwd(void);
-char					*ft_export(t_list_cmd *args, char **envp);
-char					*ft_unset(t_list_cmd *args, char **envp);
-char					*ft_env(char **envp);
+char					*ft_export(t_list_cmd *args, t_list *envp);
+void					add_quote(char **tri);
+void					sort(char **tri);
+char					*ft_unset(t_list_cmd *args, t_list *envp);
+char					*ft_env(t_list *envp);
 char					*ft_exit(t_list_cmd *args);
-char					*find_var_env(char **envp, char *var);
+char					*find_var_env(t_list *envp, char *var);
 
 /*
 ** parse.c
 */
-int						parse_input(char *line, t_list_line **cmd, char **envp);
+int						parse_input(char *line, t_list_line **cmd, t_list *envp);
 
 /*
 ** parse_quotes.c
@@ -112,7 +115,7 @@ int						input_to_command(char *input, t_list_cmd **cmd);
 /*
 ** search_command.c
 */
-int						search_command(t_list_cmd *cmd, char **envp);
+int						search_command(t_list_cmd *cmd, t_list *envp);
 
 /*
 ** utils.c
@@ -127,6 +130,7 @@ int						is_separator(char *str, int i);
 int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);
 char					**lst_to_strs(t_list_cmd *cmd);
+char					**lst_to_chartab(t_list *envp);
 
 /*
 ** list_cmd.c

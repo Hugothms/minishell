@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 14:49:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/27 17:09:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	not_found(char *cmd)
 	exit(0);
 }
 
-char	*exec_cmd(t_list_cmd *cmd, char **envp)
+char	*exec_cmd(t_list_cmd *cmd, t_list *envp)
 {
 	if (!cmd)
 		return (NULL);
@@ -121,7 +121,7 @@ void	redirections(t_list_line *lst_line)
 	}
 }
 
-void	exec_line(t_list_line *lst_line, char **envp)
+void	exec_line(t_list_line *lst_line, t_list *envp)
 {
 	char		*ret;
 	t_list_line	*start;
@@ -170,11 +170,42 @@ void	exec_line(t_list_line *lst_line, char **envp)
 	l_lst_clear(start);
 }
 
+void	set_env(char **envp, t_list **env)
+{
+	int		i;
+	char	*keyval;
+
+	i = 0;
+	*env = NULL;
+	while (envp[i])
+	{
+		keyval = ft_strdup(envp[i]);
+		ft_lstadd_back(env, ft_lstnew(keyval));
+		i++;
+	}
+}
+
+void	print(t_list *env)
+{
+	while (env)
+	{
+		printf("%s\n", (char *)env->content);
+		env = env->next;
+	}
+}
+
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_list_line	*lst_line;
+	t_list		*env;
 
+	if(argc != 1)
+	{
+		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
+		return (FAILURE);
+	}
+	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
 	//increment var $SHLVL
 	while (1)
@@ -182,14 +213,14 @@ int		main(const int argc, char *argv[], char *envp[])
 		print_prompt();
 		get_next_line(&input, 0);
 		lst_line = NULL;
-		if (parse_input(input, &lst_line, envp))
+		if (parse_input(input, &lst_line, env))
 		{
 			parse_error(input, lst_line);
 			continue ;
 		}
 		create_pipes_and_semicolon(lst_line);
-		exec_line(lst_line, envp);
+		exec_line(lst_line, env);
 		free(input);
 	}
-	return (0);
+	return (SUCCESS);
 }

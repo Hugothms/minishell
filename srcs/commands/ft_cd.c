@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/26 15:52:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/26 20:47:00 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*find_var_env(char **envp, char *var)
+char	*find_var_env(t_list *envp, char *var)
 {
 	int		i;
 
 	i = 0;
-	while (envp[i])
+	while (envp)
 	{
-		if (!ft_strncmp(envp[i], var, ft_strlen(var)))
-			return (envp[i]);
+		if (!ft_strncmp(envp->content, var, ft_strlen(var)))
+			return (envp->content);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*ft_cd(t_list_cmd *args, char **envp)
+char	*ft_cd(t_list_cmd *args, t_list *envp)
 {
 	char		*ret;
 	struct stat	stats;
