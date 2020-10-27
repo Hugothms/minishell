@@ -3,55 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 20:48:53 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/27 17:14:08 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_all_var_env(t_list_cmd *cmd, t_list *envp, int i)
+void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int i)
 {
 	int		size;
 	int		pos_equal;
-	char	*after_equal;
+	char	*key;
 	char	*var;
 
-	while (envp)
+	while (env)
 	{
-		var = (char *)envp->content;
+		var = (char *)env->content;
 		pos_equal = 0;
 		while (cmd->str[pos_equal] && cmd->str[pos_equal] != '=')
 			pos_equal++;
 		size = ft_strlen(&(cmd->str[i]));
 		if (pos_equal && pos_equal < size)
 			size = pos_equal;
-		if (!ft_strncmp(envp->content, &(cmd->str[i + 1]), size - 1) && var[size - 1] == '=')
+		if (!ft_strncmp(env->content, &(cmd->str[i + 1]), size - 1) && var[size - 1] == '=')
 		{
-			after_equal = ft_strdup(&cmd->str[pos_equal]);
-			ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, after_equal);
+			key = ft_strdup(&cmd->str[pos_equal]);
+			// ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, key);
 			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
 			cmd->str = ft_strjoin_free(cmd->str, &var[size]);
 			if (pos_equal)
-				cmd->str = ft_strjoin_free(cmd->str, after_equal);
-			free(after_equal);
+				cmd->str = ft_strjoin_free(cmd->str, key);
+			free(key);
 			return ;
 		}
-		envp = envp->next;
+		env = env->next;
 	}
 	cmd->str[i] = '\0';
 }
 
-void	err_code(t_list_cmd *cmd, t_list *envp)
+void	err_code(t_list_cmd *cmd, t_list *env)
 {
 	ft_putstr_fd("err_code\n", STDERR);
 	//!to do
 	return ;
 }
 
-int 	delete_backslashes(t_list_cmd *cmd, t_list *envp)
+int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 
@@ -74,7 +74,7 @@ int 	delete_backslashes(t_list_cmd *cmd, t_list *envp)
 	return (SUCCESS);
 }
 
-int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *envp)
+int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 	char	*tmp;
@@ -87,14 +87,14 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *envp)
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
 			{
 				if (cmd->str[i + 1] == '?')
-					err_code(cmd, envp);
+					err_code(cmd, env);
 				else
-					replace_all_var_env(cmd, envp, i);
+					replace_all_var_env(cmd, env, i);
 			}
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) && !in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
 			{
 				tmp = cmd->str;
-				cmd->str = ft_strdup(&find_var_env(envp, "HOME=")[5]);
+				cmd->str = ft_strdup(&find_var_env(env, "HOME=")[5]);
 				free(tmp);
 			}
 			i++;
@@ -160,14 +160,14 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	return (SUCCESS);
 }
 
-int		parse_input(char *input, t_list_line **lst_line, t_list *envp)
+int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 {
 	t_list_cmd	*cmd;
 
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
-	replace_dollar_and_tild(cmd, envp);
+	replace_dollar_and_tild(cmd, env);
 
 	// ft_printf("CMD:\n-----------------\n");
 	// t_list_cmd	*copy = cmd;
@@ -178,7 +178,7 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *envp)
 	// }
 	// ft_printf("-----------------\n\n");
 
-	if (delete_backslashes(cmd, envp))
+	if (delete_backslashes(cmd, env))
 		return (FAILURE);
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 19:59:09 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/27 17:09:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,29 +199,28 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*input;
 	t_list_line	*lst_line;
 	t_list		*env;
-	char *var;
 
-	if(argc == 1)
+	if(argc != 1)
 	{
-		set_env(envp, &env);
-		ft_putstr(WELCOME_MSG);
-		//increment var $SHLVL
-		while (1)
-		{
-			print_prompt();
-			get_next_line(&input, 0);
-			lst_line = NULL;
-			if (parse_input(input, &lst_line, env))
-			{
-				parse_error(input, lst_line);
-				continue ;
-			}
-			create_pipes_and_semicolon(lst_line);
-			exec_line(lst_line, env);
-			free(input);
-		}
-		return (SUCCESS);
+		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
+		return (FAILURE);
 	}
-	ft_printf("ERROR: Too many argument\n");
-	return (FAILURE);
+	set_env(envp, &env);
+	ft_putstr(WELCOME_MSG);
+	//increment var $SHLVL
+	while (1)
+	{
+		print_prompt();
+		get_next_line(&input, 0);
+		lst_line = NULL;
+		if (parse_input(input, &lst_line, env))
+		{
+			parse_error(input, lst_line);
+			continue ;
+		}
+		create_pipes_and_semicolon(lst_line);
+		exec_line(lst_line, env);
+		free(input);
+	}
+	return (SUCCESS);
 }
