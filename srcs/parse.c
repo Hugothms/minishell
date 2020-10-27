@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 15:01:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/27 16:53:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	replace_all_var_env(t_list_cmd *cmd, char **envp, int i)
 		if (!ft_strncmp(envp[azerty], &(cmd->str[i + 1]), size - 1) && envp[azerty][size - 1] == '=')
 		{
 			after_equal = ft_strdup(&cmd->str[pos_equal]);
-			ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, after_equal);
+			// ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, after_equal);
 			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
 			cmd->str = ft_strjoin_free(cmd->str, &(envp[azerty][size]));
 			if (pos_equal)
