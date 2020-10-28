@@ -37,6 +37,7 @@ echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
 ls ; echo hugo 'is happy\" \" yeyez\y  f' > test.txt dontforgetme
 echo blabla > toto qwerty >> tata azerty
 > hugo ls ; echo lila ; echo klp
+echo \\ '\' '\\' "\"" "\\" 
 
 
 
