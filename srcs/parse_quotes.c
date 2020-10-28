@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:15:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/28 14:23:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 
 void	end_word(char *input, t_list_cmd **cmd, t_parse *par)
 {
-	if (!input[par->i + 1] || (ft_in_charset(input[par->i + 1], WHITESPACES) && !escaped(input, par->i + 1)) || (ft_in_charset(input[par->i + 1], "\'\"") && !escaped(input, par->i + 1)))
+	if (!input[par->i + 1] || (ft_in_charset(input[par->i + 1], WHITESPACES) && !escaped(input, par->i + 1)) || (ft_in_charset(input[par->i + 1], "\'\"") && (!escaped(input, par->i) || par->in_simple)))
 	{
 		while (input[par->pos] && ((ft_in_charset(input[par->pos], WHITESPACES)))) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
 			par->pos++;
@@ -85,7 +85,7 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 	init_par(&par);
 	while (input[par.i])
 	{
-		if (input[par.i] == '\'' && !escaped(input, par.i) && !par.in_double)
+		if (input[par.i] == '\'' && (!escaped(input, par.i) || par.in_simple) && !par.in_double)
 			simple_quotes(input, cmd, &par);
 		else if (input[par.i] == '\"' && !escaped(input, par.i) && !par.in_simple)
 			double_quotes(input, cmd, &par);
@@ -96,5 +96,6 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 			end_word(input, cmd, &par);
 		par.i++;
 	}
+	ft_putnbr(par.in_simple || par.in_double);
 	return (par.in_simple || par.in_double);
 }

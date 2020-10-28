@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/27 17:14:08 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/28 14:16:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTE) /*&& !(cmd->flags & F_SIMPLE_QUOTE)*/ && cmd->str[i])
+		while (cmd->str && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i])
 		{
 			if (cmd->str[i] == '\\')
 			{
-				if (cmd->str[i + 1])
+				if (cmd->str[i + 1] == '\'')
+				{
+					i++;
+					continue;
+				}				
+				else if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
 					return (FAILURE);
@@ -169,17 +174,18 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 		return (FAILURE);
 	replace_dollar_and_tild(cmd, env);
 
-	// ft_printf("CMD:\n-----------------\n");
-	// t_list_cmd	*copy = cmd;
-	// while (copy)
-	// {
-	// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
-	// 	copy = copy->next;
-	// }
-	// ft_printf("-----------------\n\n");
+	ft_printf("CMD:\n-----------------\n");
+	t_list_cmd	*copy = cmd;
+	while (copy)
+	{
+		ft_printf("F:%d\t%s\n", copy->flags, copy->str);
+		copy = copy->next;
+	}
+	ft_printf("-----------------\n\n");
 
 	if (delete_backslashes(cmd, env))
 		return (FAILURE);
+	ft_printf("OK\n");
 	delete_empty_elements(cmd);
 	l_lst_add_back(lst_line, l_lst_new(cmd));
 	if (split_cmd(lst_line, cmd, 0))
