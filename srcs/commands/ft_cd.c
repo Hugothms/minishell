@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/26 20:47:00 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/28 12:37:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 char	*find_var_env(t_list *envp, char *var)
 {
-	int		i;
-
-	i = 0;
 	while (envp)
 	{
 		if (!ft_strncmp(envp->content, var, ft_strlen(var)))
 			return (envp->content);
-		i++;
+		envp = envp->next;
 	}
 	return (NULL);
 }
