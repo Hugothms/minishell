@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/27 17:09:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:21:12 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *envp)
 	else if (!ft_strcmp(cmd->str, "env"))
 		return (ft_env(envp));
 	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next));
+		return (ft_exit(cmd->next, envp));
 	else if (search_command(cmd, envp))
 		not_found(cmd->str);
 	return (NULL);
@@ -182,15 +182,6 @@ void	set_env(char **envp, t_list **env)
 		keyval = ft_strdup(envp[i]);
 		ft_lstadd_back(env, ft_lstnew(keyval));
 		i++;
-	}
-}
-
-void	print(t_list *env)
-{
-	while (env)
-	{
-		printf("%s\n", (char *)env->content);
-		env = env->next;
 	}
 }
 

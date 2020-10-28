@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/27 16:59:51 by hthomas          ###   ########.fr        #
+#    Updated: 2020/10/28 15:20:45 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = gcc
 CFLAGS += -Wall -Werror -Wextra
-LDFLAGS += #-g3 -fsanitize=address
+LDFLAGS += -g3 -fsanitize=address
 
 #-----------------Main-----------------#
 
