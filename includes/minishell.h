@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 20:25:50 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:01:40 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 /*
 ** Charsets
 */
-# define WHITESPACES	" \t"
+# define WSP			" \t"
 # define SYMBOLS		"|;<>"
 
 /*

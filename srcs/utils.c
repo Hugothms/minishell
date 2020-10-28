@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 20:30:40 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:08:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,21 @@ void	init_par(t_parse *par)
 	par->pos = 0;
 }
 
+/*
+** Add substring to command (in queue)
+** @param input	The string where to extract the substring
+** @param cmd	The adress of an element of command
+** @param size	The size of the string to add to command
+** @param flags	The flags to add to the command
+*/
+
 void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 {
 	char *str;
 
 	if (size <= 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE) && ft_in_charset(*input, WHITESPACES))
+	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE) && ft_in_charset(*input, WSP))
 		input++;
 	str = ft_strndup(input, size);
 	c_lst_add_back(cmd, c_lst_new(str, flags));
