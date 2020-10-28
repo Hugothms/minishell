@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:01:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:20:41 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,12 @@ char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *envp);
 void					add_quote(char **tri);
 void					sort(char **tri);
+int						have_egual(char *str);
 char					*ft_unset(t_list_cmd *args, t_list *envp);
 char					*ft_env(t_list *envp);
-char					*ft_exit(t_list_cmd *args);
+char					*ft_exit(t_list_cmd *args, t_list *env);
 char					*find_var_env(t_list *envp, char *var);
+
 
 /*
 ** parse.c

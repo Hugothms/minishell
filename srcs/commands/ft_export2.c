@@ -6,11 +6,27 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/26 14:23:09 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/27 15:55:25 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int		have_egual(char *str)
+{
+	int i;
+	int ret;
+
+	i = 0;
+	ret = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			ret = 1;
+		i++;
+	}
+	return (ret);
+}
 
 void	add_quote(char **tri)
 {
@@ -20,18 +36,21 @@ void	add_quote(char **tri)
 	i = 0;
 	while (tri[i])
 	{
-		j = ft_strlen(tri[i]) - 2;
-		while (tri[i][j] != '=')
+		if (have_egual(tri[i]))
 		{
-			tri[i][j] = tri[i][j - 1];
-			j--;
+			j = ft_strlen(tri[i]) - 2;
+			while (tri[i][j] != '=')
+			{
+				tri[i][j] = tri[i][j - 1];
+				j--;
+			}
+			tri[i][j + 1] = '\"';
 		}
-		tri[i][j + 1] = '\"';
 		i++;
 	}
 }
 
-int	ft_strcmp_ex(const char *s1, const char *s2)
+int		ft_strcmp_ex(const char *s1, const char *s2)
 {
 	unsigned int	i;
 
@@ -48,11 +67,11 @@ int	ft_strcmp_ex(const char *s1, const char *s2)
 		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void sort(char **tri)
+void	sort(char **tri)
 {
-	char *tmp;
-	int i;
-	int j;
+	char	*tmp;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 1;
