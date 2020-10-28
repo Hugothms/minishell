@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:20:41 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:40:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int						search_command(t_list_cmd *cmd, t_list *envp);
 ** utils.c
 */
 void					init_par(t_parse *par);
-void					add_substr_to_cmd(char *input, t_list_cmd **cmd,\
+void					add_cmd(char *input, t_list_cmd **cmd,\
 						int size, int flags);
 int						escaped(char *str, int i);
 int						in_quotes(t_list_cmd *cmd);

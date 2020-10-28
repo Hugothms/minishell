@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:08:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/28 15:40:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	init_par(t_parse *par)
 ** @param flags	The flags to add to the command
 */
 
-void	add_substr_to_cmd(char *input, t_list_cmd **cmd, int size, int flags)
+void	add_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 {
 	char *str;
 
