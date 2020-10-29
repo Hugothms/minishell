@@ -42,8 +42,6 @@ echo \\' '\' '\\' "\"" "\\" '"' "'" '\"' "\'"
 
 
 • TO DO:
-export without any options
-unset without any options
 Pipes | should work like in bash
 $? should work like in bash
 ctrl-C, ctrl-D and ctrl-\ should have the same result as in bash

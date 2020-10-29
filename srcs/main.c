@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:21:12 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/10/29 11:12:08 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,77 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line)
+void	create_pipes_and_semicolon(t_list_line *lst_line, char **envp)
 {
 	t_list_cmd	*cmd;
+	char		*ret;
+	t_list_line	*start;
 
+	// while (lst_line)
+	// {
+	// 	if (lst_line->pipe)
+	// 	{
+	// 		int tmp = lst_line->output;
+	// 		lst_line->output = lst_line->next->input;
+	// 		lst_line->next->input = tmp;
+	// 		ft_printf("output:%d\n", lst_line->output);
+	// 		ft_printf("input:%d\n\n", lst_line->next->input);
+	// 	}
+	// 	lst_line = lst_line->next;
+	// }
+
+	start = lst_line;
 	while (lst_line)
 	{
 		if (lst_line->pipe)
 		{
-			int tmp = lst_line->output;
-			lst_line->output = lst_line->next->input;
-			lst_line->next->input = tmp;
-			ft_printf("output:%d\n", lst_line->output);
-			ft_printf("input:%d\n\n", lst_line->next->input);
+			int		tab[2]; // Used to store two ends of first pipe
+			pid_t	p;
+
+			if (pipe(tab) == -1) //error
+			{
+				ft_putstr_fd("pipe failed\n", STDERR);
+				return;
+			}
+			// do something ?
+			p = fork();
+			if (p < 0) //error
+			{
+				ft_putstr_fd("fork failed\n", STDERR);
+				return;
+			}
+
+			else if (p > 0) //parent process
+			{
+				close(tab[0]);  // Close reading end of first pipe
+
+				// Write input string and close writing end of first pipe.
+			   	if ((ret = exec_cmd(lst_line->cmd, envp)))
+				{
+					write(tab[1], ret, strlen(ret)+1);
+					free(ret);
+				}
+				close(tab[1]);
+
+				// Wait for child to send a string
+				wait(NULL);
+				printf("Concatenated string\n");
+			}
+			else // child process
+			{
+				close(tab[1]);  // Close writing end of first pipe
+
+				// Read a string using first pipe
+				char	*line;
+				if(get_next_line(&line, tab[0]))
+					return (FAILURE);
+				
+				// Close both reading ends
+				close(tab[0]);
+				exit(0);
+			}
+			lst_line = lst_line->next;
+			break;
 		}
 		lst_line = lst_line->next;
 	}
@@ -80,7 +138,7 @@ void	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 	if (!filename)
 		ft_putstr_fd("pas de filename\n", STDERR); //! todo
 	//else if (cmd->flags & F_INPUT)
-		// input = filename; //! todo
+	// input = filename; //! todo
 	else if (cmd->flags & F_APPEND)
 		lst_line->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (cmd->flags & F_OUTPUT)
@@ -191,7 +249,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	t_list_line	*lst_line;
 	t_list		*env;
 
-	if(argc != 1)
+	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
 		return (FAILURE);
@@ -207,9 +265,9 @@ int		main(const int argc, char *argv[], char *envp[])
 		if (parse_input(input, &lst_line, env))
 		{
 			parse_error(input, lst_line);
-			continue ;
+			continue;
 		}
-		create_pipes_and_semicolon(lst_line);
+		create_pipes_and_semicolon(lst_line, envp);
 		exec_line(lst_line, env);
 		free(input);
 	}
