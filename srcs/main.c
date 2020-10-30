@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/29 11:12:08 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/10/30 16:09:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line, char **envp)
+void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 {
 	t_list_cmd	*cmd;
 	char		*ret;
@@ -96,31 +96,27 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, char **envp)
 
 			else if (p > 0) //parent process
 			{
-				close(tab[0]);  // Close reading end of first pipe
-
-				// Write input string and close writing end of first pipe.
-			   	if ((ret = exec_cmd(lst_line->cmd, envp)))
+				close(tab[1]);
+				char	*line;
+				ft_printf("***Before child exits\n");
+				wait(NULL);
+				ft_printf("***After child exits\n");
+				if(get_next_line(&line, tab[0]))
+					return ;
+				ft_printf("***line:%s\n***end line\n", line);
+				close(tab[0]);
+			}
+			else // child process
+			{
+				close(tab[0]);
+				lst_line->output = tab[1];
+				if ((ret = exec_cmd(lst_line->cmd, env)))
 				{
 					write(tab[1], ret, strlen(ret)+1);
 					free(ret);
 				}
 				close(tab[1]);
-
-				// Wait for child to send a string
-				wait(NULL);
-				printf("Concatenated string\n");
-			}
-			else // child process
-			{
-				close(tab[1]);  // Close writing end of first pipe
-
-				// Read a string using first pipe
-				char	*line;
-				if(get_next_line(&line, tab[0]))
-					return (FAILURE);
-				
-				// Close both reading ends
-				close(tab[0]);
+				ft_printf("***End child\n");
 				exit(0);
 			}
 			lst_line = lst_line->next;
@@ -179,13 +175,15 @@ void	redirections(t_list_line *lst_line)
 	}
 }
 
-void	exec_line(t_list_line *lst_line, t_list *envp)
+void	exec_line(t_list_line *lst_line, t_list *env)
 {
 	char		*ret;
 	t_list_line	*start;
 	int			fd_outold;
 	int			fd_inold;
 
+	create_pipes_and_semicolon(lst_line, env);
+	ft_printf("END PIPES\n");
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
 	start = lst_line;
@@ -214,7 +212,7 @@ void	exec_line(t_list_line *lst_line, t_list *envp)
 
 		// ft_printf("***********************************\n");
 
-		if ((ret = exec_cmd(lst_line->cmd, envp)))
+		if ((ret = exec_cmd(lst_line->cmd, env)))
 		{
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
@@ -267,7 +265,6 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			continue;
 		}
-		create_pipes_and_semicolon(lst_line, envp);
 		exec_line(lst_line, env);
 		free(input);
 	}
