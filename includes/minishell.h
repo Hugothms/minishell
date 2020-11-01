@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:40:33 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/01 08:02:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ typedef struct			s_parse
 	int					pos;
 	int					i;
 }						t_parse;
+
+int						fd_outold;
+int						fd_inold;
 
 /*
 ** commands.c

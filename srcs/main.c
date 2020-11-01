@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/30 16:09:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/01 08:37:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,44 +78,44 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 	{
 		if (lst_line->pipe)
 		{
-			int		tab[2]; // Used to store two ends of first pipe
+			int		fdpipe[2]; // Used to store two ends of first pipe
 			pid_t	p;
 
-			if (pipe(tab) == -1) //error
+			if (pipe(fdpipe) == -1) //error
 			{
-				ft_putstr_fd("pipe failed\n", STDERR);
+				ft_putstr_fd("pipe: pipe failed\n", STDERR);
 				return;
 			}
 			// do something ?
 			p = fork();
 			if (p < 0) //error
 			{
-				ft_putstr_fd("fork failed\n", STDERR);
+				ft_putstr_fd("pipe: fork failed\n", STDERR);
 				return;
 			}
 
 			else if (p > 0) //parent process
 			{
-				close(tab[1]);
+				close(fdpipe[1]);
 				char	*line;
 				ft_printf("***Before child exits\n");
 				wait(NULL);
 				ft_printf("***After child exits\n");
-				if(get_next_line(&line, tab[0]))
+				if(get_next_line(&line, fdpipe[0]))
 					return ;
 				ft_printf("***line:%s\n***end line\n", line);
-				close(tab[0]);
+				close(fdpipe[0]);
 			}
 			else // child process
 			{
-				close(tab[0]);
-				lst_line->output = tab[1];
+				close(fdpipe[0]);
+				lst_line->output = fdpipe[1];
 				if ((ret = exec_cmd(lst_line->cmd, env)))
 				{
-					write(tab[1], ret, strlen(ret)+1);
+					write(fdpipe[1], ret, strlen(ret)+1);
 					free(ret);
 				}
-				close(tab[1]);
+				close(fdpipe[1]);
 				ft_printf("***End child\n");
 				exit(0);
 			}
@@ -179,36 +179,34 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 {
 	char		*ret;
 	t_list_line	*start;
-	int			fd_outold;
-	int			fd_inold;
 
-	create_pipes_and_semicolon(lst_line, env);
-	ft_printf("END PIPES\n");
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
+	create_pipes_and_semicolon(lst_line, env);
+	ft_printf("END PIPES\n");
 	start = lst_line;
 	while (lst_line)
 	{
 		redirections(lst_line);
 
-		// char **tab = lst_to_strs(lst_line->cmd);
+		// char **fdpipe = lst_to_strs(lst_line->cmd);
 		// ft_printf("****************\n", 0);
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("****************flags:%d\n", lst_line->cmd->flags);
 		// ft_printf("*********************************************\n", 0);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
-		// tab = lst_to_strs(lst_line->next->cmd);
+		// fdpipe = lst_to_strs(lst_line->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->cmd->flags);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
-		// tab = lst_to_strs(lst_line->next->next->cmd);
+		// fdpipe = lst_to_strs(lst_line->next->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->next->cmd->flags);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
 		// ft_printf("***********************************\n");
 
