@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/01 08:37:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/02 16:20:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	char		*ret;
 	t_list_line	*start;
 
+	int		fd_outold;
+	int		fd_inold;
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
 	create_pipes_and_semicolon(lst_line, env);
