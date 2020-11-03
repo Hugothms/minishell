@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:02:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/03 17:26:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int i)
+void	replace_var_env(t_list_cmd *cmd, t_list *env, int i)
 {
 	int		size;
 	int		pos_equal;
@@ -42,13 +42,6 @@ void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int i)
 		env = env->next;
 	}
 	cmd->str[i] = '\0';
-}
-
-void	err_code(t_list_cmd *cmd, t_list *env)
-{
-	ft_putstr_fd("err_code\n", STDERR);
-	//!to do
-	return ;
 }
 
 int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
@@ -94,7 +87,8 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env);
 				else
-					replace_all_var_env(cmd, env, i);
+					cmd->flags = F_VAR_ENV;
+					// replace_var_env(cmd, env, i);
 			}
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) && !in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
 			{

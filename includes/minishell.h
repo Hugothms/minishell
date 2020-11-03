@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/02 21:04:42 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/03 17:27:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@
 
 # define F_REDIRS		0b11100000
 # define F_SPECIALS		0b11111000
+
+# define F_VAR_ENV		0b100000000
 
 typedef struct			s_list_cmd
 {
@@ -136,6 +138,7 @@ int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);
 char					**lst_to_strs(t_list_cmd *cmd);
 char					**lst_to_chartab(t_list *envp);
+void					err_code(t_list_cmd *cmd, t_list *env);
 
 /*
 ** list_cmd.c
