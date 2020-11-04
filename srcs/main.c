@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/04 09:56:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/04 11:44:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,9 +179,8 @@ void	fusion_cmd(t_list_cmd *cmd)
 {
 	while (cmd)
 	{
-		if (cmd->flags & F_NO_SP_AFTER && cmd->next && !(cmd->next->flags & F_SPECIALS))
+		while (cmd->flags & F_NO_SP_AFTER && cmd->next && !(cmd->next->flags & F_SPECIALS))
 		{
-			ft_printf("prout\n");
 			cmd->str = ft_strjoin_free(cmd->str, cmd->next->str);
 			c_lst_remove_next_one(cmd);
 		}
