@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/28 15:20:45 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/11/03 17:48:36 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ SRCS +=	srcs/list_cmd1.c		\
 		srcs/parse.c			\
 		srcs/parse_quotes.c		\
 		srcs/search_command.c	\
-		srcs/utils.c
+		srcs/utils.c			\
+		srcs/var_env.c
 
 OBJS = $(SRCS:.c=.o)
 INCL = includes/

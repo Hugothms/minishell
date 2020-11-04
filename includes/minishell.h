@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/03 17:27:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/03 17:48:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,10 @@ void					l_lst_clear(t_list_line *lst);
 void					l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line				*l_lst_map(t_list_line *lst, void *(*f)(void *));
 t_list_line				*l_lst_copy_all(t_list_cmd *cmd);
+
+/*
+** var_env.c
+*/
+void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
 
 #endif
