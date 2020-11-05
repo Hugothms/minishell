@@ -3,48 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/27 15:54:49 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:21:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**duptab(t_list *envp)
+char	**duptab(t_list *env)
 {
 	char	**dubtab;
 	int		i;
 
-	i = ft_lstsize(envp);
+	i = ft_lstsize(env);
 	dubtab = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while (envp)
+	while (env)
 	{
-		dubtab[i] = malloc(sizeof(char) * (ft_strlen(envp->content) + 3));
-		ft_strcpy(dubtab[i], envp->content);
-		if (have_egual(envp->content))
-			dubtab[i][ft_strlen(envp->content)] = '#';
+		dubtab[i] = malloc(sizeof(char) * (ft_strlen(env->content) + 3));
+		ft_strcpy(dubtab[i], env->content);
+		if (have_egual(env->content))
+			dubtab[i][ft_strlen(env->content)] = '#';
 		else
-			dubtab[i][ft_strlen(envp->content)] = '\0';
-		dubtab[i][ft_strlen(envp->content) + 1] = '\"';
-		dubtab[i][ft_strlen(envp->content) + 2] = '\0';
+			dubtab[i][ft_strlen(env->content)] = '\0';
+		dubtab[i][ft_strlen(env->content) + 1] = '\"';
+		dubtab[i][ft_strlen(env->content) + 2] = '\0';
 		i++;
-		envp = envp->next;
+		env = env->next;
 	}
 	dubtab[i] = NULL;
 	return (dubtab);
 }
 
-char	*ft_export_no_arg(t_list *envp)
+char	*ft_export_no_arg(t_list *env)
 {
 	char	*ret;
 	char	**tri;
 	int		i;
 
 	i = 0;
-	tri = duptab(envp);
+	tri = duptab(env);
 	sort(tri);
 	add_quote(tri);
 	ret = ft_strdup("");
@@ -58,33 +58,33 @@ char	*ft_export_no_arg(t_list *envp)
 	return (ret);
 }
 
-void	print_lst(t_list *envp)
+void	print_lst(t_list *env)
 {
-	while (envp)
+	while (env)
 	{
-		printf("%s\n", (char*)envp->content);
-		envp = envp->next;
+		printf("%s\n", (char*)env->content);
+		env = env->next;
 	}
 }
 
-int		modif_var_env(char egual, t_list *envp, char *key, char *value)
+int		modif_var_env(char egual, t_list *env, char *key, char *value)
 {
 	int		bool;
 
 	bool = 0;
-	while (envp)
+	while (env)
 	{
-		if (!ft_strncmp(envp->content, key, ft_strlen(key))
+		if (!ft_strncmp(env->content, key, ft_strlen(key))
 			&& egual == '=')
 		{
 			bool = 1;
-			free(envp->content);
-			envp->content = ft_strjoin_free(key, "=");
-			envp->content = ft_strjoin_free(envp->content, value);
+			free(env->content);
+			env->content = ft_strjoin_free(key, "=");
+			env->content = ft_strjoin_free(env->content, value);
 			free(value);
 			break ;
 		}
-		envp = envp->next;
+		env = env->next;
 	}
 	if (bool == 0)
 		return (1);
@@ -92,14 +92,14 @@ int		modif_var_env(char egual, t_list *envp, char *key, char *value)
 		return (0);
 }
 
-char	*ft_export(t_list_cmd *args, t_list *envp)
+char	*ft_export(t_list_cmd *args, t_list *env)
 {
 	char	*key;
 	char	*value;
 	int		i;
 
 	if (!args || !args->str)
-		return (ft_export_no_arg(envp));
+		return (ft_export_no_arg(env));
 	while (args)
 	{
 		i = 0;
@@ -110,9 +110,9 @@ char	*ft_export(t_list_cmd *args, t_list *envp)
 			value = ft_strdup(&(args->str[i + 1]));
 		else
 			value = ft_strdup("");
-		if (modif_var_env(args->str[i], envp, key, value))
+		if (modif_var_env(args->str[i], env, key, value))
 		{
-			ft_lstadd_back(&envp, ft_lstnew(ft_strdup(args->str)));
+			ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));
 			free(key);
 			free(value);
 		}

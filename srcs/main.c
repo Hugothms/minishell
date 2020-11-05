@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/04 12:15:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:22:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,25 @@ void	not_found(char *cmd)
 	exit(0);
 }
 
-char	*exec_cmd(t_list_cmd *cmd, t_list *envp)
+char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 {
 	if (!cmd)
 		return (NULL);
 	else if (!ft_strcmp(cmd->str, "echo"))
 		return (ft_echo(cmd->next));
 	else if (!ft_strcmp(cmd->str, "cd"))
-		return (ft_cd(cmd->next, envp));
+		return (ft_cd(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "pwd"))
 		return (ft_pwd());
 	else if (!ft_strcmp(cmd->str, "export"))
-		return (ft_export(cmd->next, envp));
+		return (ft_export(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "unset"))
-		return (ft_unset(cmd->next, envp));
+		return (ft_unset(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "env"))
-		return (ft_env(envp));
+		return (ft_env(env));
 	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next, envp));
-	else if (search_command(cmd, envp))
+		return (ft_exit(cmd->next, env));
+	else if (search_command(cmd, env))
 		not_found(cmd->str);
 	return (NULL);
 }
@@ -258,6 +258,17 @@ void	set_env(char **envp, t_list **env)
 	}
 }
 
+increment_shlvl(t_list *env)
+{
+	t_list_cmd	*args;
+	int			sh_lvl;
+
+	args = c_lst_new("SHLVL", 0);
+	sh_lvl = ft_atoi(ft_echo(c_lst_new("$SHLVL", 0)));
+	c_lst_add_back(&args, c_lst_new(ft_itoa(sh_lvl), 0));
+	ft_export("=", env);
+}
+
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
@@ -270,6 +281,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		return (FAILURE);
 	}
 	set_env(envp, &env);
+	increment_shlvl(env);
 	ft_putstr(WELCOME_MSG);
 	//increment var $SHLVL
 	while (1)
