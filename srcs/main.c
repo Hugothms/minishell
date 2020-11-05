@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/05 18:30:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:45:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,23 +261,25 @@ void	set_env(char **envp, t_list **env)
 void	increment_shlvl(t_list *env)
 {
 	t_list_cmd	*args;
-	t_list_cmd	*ask_echo;
-	char		*sh_lvl_str;
 	char		*tmp;
 	int			sh_lvl;
 
-	args = c_lst_new("SHLVL", 0);
-	ask_echo = c_lst_new("$SHLVL", 0);
-	tmp = ft_echo(ask_echo);
+	args = c_lst_new("$SHLVL", F_NOTHING);
+	ft_printf(":%s\n", args->str);
+	tmp = ft_echo(args);
+	c_lst_clear(args);
+	ft_printf(":%s\n", tmp);
 	sh_lvl = ft_atoi(tmp);
 	free(tmp);
-	sh_lvl_str = ft_itoa(sh_lvl);
-	c_lst_add_back(&args, c_lst_new(sh_lvl_str, 0));
+	args = c_lst_new("SHLVL", F_NOTHING);
+	tmp = ft_itoa(sh_lvl + 1);
+	ft_printf(":%s\n", tmp);
+	c_lst_add_back(&args, c_lst_new(tmp, F_NOTHING));
+	free(tmp);
+	ft_printf(":%s\n%s\n", args->str, args->next->str);
 	tmp = ft_export(args, env);
 	free(tmp);
-	free(sh_lvl_str);
 	c_lst_clear(args);
-	c_lst_clear(ask_echo);
 }
 
 int		main(const int argc, char *argv[], char *envp[])
@@ -292,9 +294,8 @@ int		main(const int argc, char *argv[], char *envp[])
 		return (FAILURE);
 	}
 	set_env(envp, &env);
-	increment_shlvl(env);
 	ft_putstr(WELCOME_MSG);
-	//increment var $SHLVL
+	increment_shlvl(env);
 	while (1)
 	{
 		print_prompt();
