@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/03 18:07:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/05 17:53:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env);
 				else
-					cmd->flags = F_VAR_ENV;
+					cmd->flags += F_VAR_ENV;
 					// replace_var_env(cmd, env, i);
 			}
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) && !in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
