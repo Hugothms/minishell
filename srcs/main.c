@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/05 18:22:10 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:30:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,15 +258,26 @@ void	set_env(char **envp, t_list **env)
 	}
 }
 
-increment_shlvl(t_list *env)
+void	increment_shlvl(t_list *env)
 {
 	t_list_cmd	*args;
+	t_list_cmd	*ask_echo;
+	char		*sh_lvl_str;
+	char		*tmp;
 	int			sh_lvl;
 
 	args = c_lst_new("SHLVL", 0);
-	sh_lvl = ft_atoi(ft_echo(c_lst_new("$SHLVL", 0)));
-	c_lst_add_back(&args, c_lst_new(ft_itoa(sh_lvl), 0));
-	ft_export("=", env);
+	ask_echo = c_lst_new("$SHLVL", 0);
+	tmp = ft_echo(ask_echo);
+	sh_lvl = ft_atoi(tmp);
+	free(tmp);
+	sh_lvl_str = ft_itoa(sh_lvl);
+	c_lst_add_back(&args, c_lst_new(sh_lvl_str, 0));
+	tmp = ft_export(args, env);
+	free(tmp);
+	free(sh_lvl_str);
+	c_lst_clear(args);
+	c_lst_clear(ask_echo);
 }
 
 int		main(const int argc, char *argv[], char *envp[])
