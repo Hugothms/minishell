@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/05 18:45:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 09:45:05 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,19 +264,14 @@ void	increment_shlvl(t_list *env)
 	char		*tmp;
 	int			sh_lvl;
 
-	args = c_lst_new("$SHLVL", F_NOTHING);
-	ft_printf(":%s\n", args->str);
-	tmp = ft_echo(args);
+	args = c_lst_new("$SHLVL", F_VAR_ENV);
+	replace_all_var_env(args, env);
+	sh_lvl = ft_atoi(args->str);
 	c_lst_clear(args);
-	ft_printf(":%s\n", tmp);
-	sh_lvl = ft_atoi(tmp);
-	free(tmp);
 	args = c_lst_new("SHLVL", F_NOTHING);
 	tmp = ft_itoa(sh_lvl + 1);
-	ft_printf(":%s\n", tmp);
 	c_lst_add_back(&args, c_lst_new(tmp, F_NOTHING));
 	free(tmp);
-	ft_printf(":%s\n%s\n", args->str, args->next->str);
 	tmp = ft_export(args, env);
 	free(tmp);
 	c_lst_clear(args);
