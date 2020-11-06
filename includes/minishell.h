@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 14:12:56 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 16:18:08 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define SUCCESS		0
 # define FAILURE		-1
 # define CMD_NOT_FOUND	127
-# define SYNTAX_ERROR	127
+# define SYNTAX_ERROR	1
 # define CMD_NOT_FOUND	127
 
 
@@ -90,9 +90,6 @@ typedef struct			s_parse
 	int					pos;
 	int					i;
 }						t_parse;
-
-// int						g_fd_outold;
-// int						g_fd_inold;
 
 /*
 ** commands.c
