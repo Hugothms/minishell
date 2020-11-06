@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/28 15:02:55 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:18:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_exit(t_list_cmd *args, t_list *env)
 	clear_env_lst(env);
 	if (args)
 	{
-		if ((err = ft_atoi(args->str)))
+		if ((err = ft_atoi_strict(args->str)))
 			exit(err);
 	}
 	exit(0);

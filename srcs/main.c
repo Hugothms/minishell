@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 09:45:05 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:08:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	not_found(char *cmd)
 	ft_putstr_fd("minishell: command not found: ", STDERR);
 	ft_putstr_fd(cmd, STDERR);
 	ft_putstr_fd("\n", STDERR);
-	exit(0);
+	exit(CMD_NOT_FOUND);
 }
 
 char	*exec_cmd(t_list_cmd *cmd, t_list *env)

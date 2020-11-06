@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/03 17:48:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:12:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@
 */
 # define SUCCESS		0
 # define FAILURE		-1
+# define CMD_NOT_FOUND	127
+# define SYNTAX_ERROR	127
+# define CMD_NOT_FOUND	127
+
 
 /*
 ** STD IN/OUT
@@ -53,18 +57,15 @@
 # define F_SIMPLE_QUOTE	0b00000001
 # define F_DOUBLE_QUOTE	0b00000010
 # define F_NO_SP_AFTER	0b00000100
-
 # define F_SEMICOLON	0b00001000
 # define F_PIPE			0b00010000
-
 # define F_INPUT		0b00100000
 # define F_OUTPUT		0b01000000
 # define F_APPEND		0b10000000
-
 # define F_REDIRS		0b11100000
 # define F_SPECIALS		0b11111000
-
 # define F_VAR_ENV		0b100000000
+
 
 typedef struct			s_list_cmd
 {
