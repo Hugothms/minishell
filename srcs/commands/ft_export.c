@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/05 18:21:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:00:38 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,24 @@ void	print_lst(t_list *env)
 
 int		modif_var_env(char egual, t_list *env, char *key, char *value)
 {
-	int		bool;
-
-	bool = 0;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, key, ft_strlen(key))
-			&& egual == '=')
+		if (!ft_strncmp(env->content, key, ft_strlen(key)))
 		{
-			bool = 1;
-			free(env->content);
-			env->content = ft_strjoin_free(key, "=");
-			env->content = ft_strjoin_free(env->content, value);
+			if (egual == '=')
+			{
+				free(env->content);
+				env->content = ft_strjoin_free(key, "=");
+				env->content = ft_strjoin_free(env->content, value);
+			}
+			else
+				free(key);
 			free(value);
-			break ;
+			return (0);
 		}
 		env = env->next;
 	}
-	if (bool == 0)
-		return (1);
-	else
-		return (0);
+	return (1);
 }
 
 char	*ft_export(t_list_cmd *args, t_list *env)
