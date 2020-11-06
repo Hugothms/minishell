@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 15:33:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 16:56:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ void	fusion_cmd(t_list_cmd *cmd)
 	}
 }
 
-void	exec_line(t_list_line *lst_line, t_list *env)
+void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 {
 	char		*ret;
 	t_list_line	*start;
@@ -204,7 +204,7 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	start = lst_line;
 	while (lst_line)
 	{
-		replace_all_var_env(lst_line->cmd, env);
+		replace_all_var_env(lst_line->cmd, env, exit_status);
 		fusion_cmd(lst_line->cmd);
 		redirections(lst_line);
 
@@ -258,14 +258,14 @@ void	set_env(char **envp, t_list **env)
 	}
 }
 
-void	increment_shlvl(t_list *env)
+void	increment_shlvl(t_list *env, int *exit_status)
 {
 	t_list_cmd	*args;
 	char		*tmp;
 	int			sh_lvl;
 
 	args = c_lst_new("$SHLVL", F_VAR_ENV);
-	replace_all_var_env(args, env);
+	replace_all_var_env(args, env, exit_status);
 	sh_lvl = ft_atoi(args->str);
 	c_lst_clear(args);
 	args = c_lst_new("SHLVL", F_NOTHING);
@@ -283,7 +283,8 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*input;
 	t_list_line	*lst_line;
 	t_list		*env;
-
+	int			*exit_status;
+	// *exit_status = 0;
 	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
@@ -291,7 +292,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	}
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
-	increment_shlvl(env);
+	increment_shlvl(env, exit_status);
 	while (1)
 	{
 		print_prompt();
@@ -302,7 +303,7 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			continue;
 		}
-		exec_line(lst_line, env);
+		exec_line(lst_line, env, exit_status);
 		free(input);
 	}
 	return (SUCCESS);

@@ -34,12 +34,15 @@ errno
 echo hugo "azerty       qsdfgh" $HOME "$HOME" '$HOME' \u \$HOME \"''h
 echo$HOMER
 echo $HOME '$HOME' "$HOME" $AZERTY '$AZERTY' "$AZERTY" ~ '~' "~"
+echo $HOMEa '$HOMEa' "$HOMEa" $AZERTYa '$AZERTYa' "$AZERTYa" ~a '~a' "~a"
 ls ; echo hugo 'is happy\" \" yeyez\y  f' > test.txt dontforgetme
 echo blabla > toto qwerty >> tata azerty
 > hugo ls ; echo lila ; echo klp
 echo \\ '\' '\\' "\"" "\\" '"' "'" '\"' "\'"
 echo \\' '\' '\\' "\"" "\\" '"' "'" '\"' "\'"
-
+echo a; echo $? ; ezfre  ; echo $?
+echo a; echo $?hugo ; ezfre  ; echo $?=popy
+echo a; echo $HOMEhugo ; ezfre  ; echo $HOME=popy
 
 • TO DO:
 Pipes | should work like in bash

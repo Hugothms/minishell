@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 16:18:08 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 20:53:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 */
 # define WSP			" \t"
 # define SYMBOLS		"|;<>"
-
+# define AFTER_VAR_ENV	"\t!\"#$%&'*+-./=:@"
 /*
 ** Error codes
 */
@@ -136,7 +136,7 @@ int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);
 char					**lst_to_strs(t_list_cmd *cmd);
 char					**lst_to_chartab(t_list *envp);
-void					err_code(t_list_cmd *cmd, t_list *env);
+void					err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status);
 
 /*
 ** list_cmd.c
@@ -170,6 +170,6 @@ t_list_line				*l_lst_copy_all(t_list_cmd *cmd);
 /*
 ** var_env.c
 */
-void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
+void					replace_all_var_env(t_list_cmd *cmd, t_list *env, int *exit_status);
 
 #endif

@@ -6,37 +6,55 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/05 18:11:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 21:09:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i)
+void	err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 {
 	int		size;
 	int		pos_sep;
-	char	*key;
+	char	*after;
 	char	*var;
+
+	size = ft_strlen(&(cmd->str[i]));
+	if (2 < size)
+		size = 2;
+	after = ft_strdup(&cmd->str[2]);
+	cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
+	var = ft_itoa(*exit_status);
+	cmd->str = ft_strjoin_free(cmd->str, var);
+	free(var);
+	cmd->str = ft_strjoin_free(cmd->str, after);
+	free(after);
+	return ;
+	cmd->str[i] = '\0';
+}
+
+void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
+{
+	int		size;
+	int		pos_sep;
+	char	*after;
 
 	while (env)
 	{
-		var = (char *)env->content;
-		pos_sep = 0;
-		while (cmd->str[pos_sep] && !ft_in_charset(cmd->str[pos_sep], "= \t/"))
+		pos_sep = 1;
+		while (cmd->str[pos_sep] && !ft_in_charset(cmd->str[pos_sep], AFTER_VAR_ENV))
 			pos_sep++;
 		size = ft_strlen(&(cmd->str[i]));
 		if (pos_sep && pos_sep < size)
 			size = pos_sep;
-		if (!ft_strncmp(env->content, &(cmd->str[i + 1]), size - 1) && var[size - 1] == '=')
+		if (!ft_strncmp(env->content, &(cmd->str[i + 1]), size - 1) && ((char *)env->content)[size - 1] == '=')
 		{
-			key = ft_strdup(&cmd->str[pos_sep]);
-			// ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_sep, key);
+			after = ft_strdup(&cmd->str[pos_sep]);
 			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
-			cmd->str = ft_strjoin_free(cmd->str, &var[size]);
+			cmd->str = ft_strjoin_free(cmd->str, &((char *)env->content)[size]);
 			if (pos_sep)
-				cmd->str = ft_strjoin_free(cmd->str, key);
-			free(key);
+				cmd->str = ft_strjoin_free(cmd->str, after);
+			free(after);
 			return ;
 		}
 		env = env->next;
@@ -44,7 +62,7 @@ void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i)
 	cmd->str[i] = '\0';
 }
 
-int		replace_var_env(t_list_cmd *cmd, t_list *env)
+int		replace_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
 {
 	int	i;
 
@@ -54,7 +72,12 @@ int		replace_var_env(t_list_cmd *cmd, t_list *env)
 		while (cmd->str && cmd->str[i])
 		{
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
-				replace_var_env2(cmd, env, i);
+			{
+				if (cmd->str[i + 1] == '?')
+					err_code(cmd, env, i, exit_status);
+				else
+					replace_var_env2(cmd, env, i, exit_status);
+			}
 			i++;
 		}
 		cmd = cmd->next;
@@ -62,12 +85,12 @@ int		replace_var_env(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-void	replace_all_var_env(t_list_cmd *cmd, t_list *env)
+void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
 {
 	while (cmd)
 	{
 		if (cmd->flags & F_VAR_ENV)
-			replace_var_env(cmd, env);
+			replace_var_env(cmd, env, exit_status);
 		cmd = cmd->next;
 	}	
 }

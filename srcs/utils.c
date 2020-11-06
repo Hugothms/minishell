@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 14:12:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 16:44:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,4 @@ char	**lst_to_chartab(t_list *envp)
 	}
 	ret[i] = NULL;
 	return (ret);
-}
-
-void	err_code(t_list_cmd *cmd, t_list *env)
-{
-	ft_putstr_fd("err_code\n", STDERR);
-	//!to do
-	return ;
 }
