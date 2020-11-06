@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 14:12:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 17:55:26 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,4 +136,18 @@ void	err_code(t_list_cmd *cmd, t_list *env)
 	ft_putstr_fd("err_code\n", STDERR);
 	//!to do
 	return ;
+}
+
+void	modif_var_env(t_list *env, char *key, char *new_value)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, key, ft_strlen(key)))
+		{
+				free(env->content);
+				env->content = ft_strjoin(key, "=");
+				env->content = ft_strjoin_free(env->content, new_value);
+		}
+		env = env->next;
+	}
 }

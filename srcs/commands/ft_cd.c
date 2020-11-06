@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/28 15:21:21 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/06 17:59:24 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ char	*find_var_env(t_list *envp, char *var)
 		envp = envp->next;
 	}
 	return (NULL);
+}
+
+void	modif_oldpwd_pwd(t_list *env)
+{
+	char *pwd;
+
+	pwd = getcwd(NULL, 0);
+	modif_var_env(env, "OLDPWD", &find_var_env(env, "PWD=")[4]);
+	modif_var_env(env, "PWD", pwd);
+	free(pwd);
 }
 
 char	*ft_cd(t_list_cmd *args, t_list *envp)
@@ -44,5 +54,6 @@ char	*ft_cd(t_list_cmd *args, t_list *envp)
 		ret = ft_strjoin_free(ret, "\n");
 		return (ret);
 	}
+	modif_oldpwd_pwd(envp);
 	return (ft_strdup(""));
 }

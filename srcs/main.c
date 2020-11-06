@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 15:33:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 17:07:44 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,21 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	l_lst_clear(start);
 }
 
+void	fill_env(t_list **env)
+{
+	char	*keyval;
+	char	*pwd;
+
+	keyval = ft_strdup("SHLVL=0");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	pwd = getcwd(NULL, 0);
+	keyval = ft_strjoin("PWD=", pwd);
+	free(pwd);
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	keyval = ft_strdup("OLDPWD=");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+}
+
 void	set_env(char **envp, t_list **env)
 {
 	int		i;
@@ -250,12 +265,17 @@ void	set_env(char **envp, t_list **env)
 
 	i = 0;
 	*env = NULL;
-	while (envp[i])
+	if (envp[i])
 	{
-		keyval = ft_strdup(envp[i]);
-		ft_lstadd_back(env, ft_lstnew(keyval));
-		i++;
+		while (envp[i])
+		{
+			keyval = ft_strdup(envp[i]);
+			ft_lstadd_back(env, ft_lstnew(keyval));
+			i++;
+		}
 	}
+	else
+		fill_env(env);
 }
 
 void	increment_shlvl(t_list *env)
