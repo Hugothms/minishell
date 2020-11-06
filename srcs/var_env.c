@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 21:09:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 21:09:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 	cmd->str = ft_strjoin_free(cmd->str, after);
 	free(after);
 	return ;
-	cmd->str[i] = '\0';
 }
 
 void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
