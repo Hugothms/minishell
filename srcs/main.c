@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 14:08:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:33:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,8 @@ void	increment_shlvl(t_list *env)
 	c_lst_clear(args);
 	args = c_lst_new("SHLVL", F_NOTHING);
 	tmp = ft_itoa(sh_lvl + 1);
-	c_lst_add_back(&args, c_lst_new(tmp, F_NOTHING));
+	args->str = ft_strjoin_free(args->str, "=");
+	args->str = ft_strjoin_free(args->str, tmp);
 	free(tmp);
 	tmp = ft_export(args, env);
 	free(tmp);
