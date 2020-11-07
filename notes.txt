@@ -43,8 +43,32 @@ echo \\' '\' '\\' "\"" "\\" '"' "'" '\"' "\'"
 echo a; echo $? ; ezfre  ; echo $?
 echo a; echo $?hugo ; ezfre  ; echo $?=popy
 echo a; echo $HOMEhugo ; ezfre  ; echo $HOME=popy
+echo $SHLVL\! $SHLVL! $SHLVL\!azerty $SHLVL!azerty ;
+echo $SHLVL\\ $SHLVL\ $SHLVL\\azerty $SHLVL\azerty ;
+echo $SHLVL\" $SHLVL" $SHLVL\"azerty $SHLVL"azerty ;
+echo $SHLVL\# $SHLVL# $SHLVL\#azerty $SHLVL#azerty ;
+echo $SHLVL\$ $SHLVL$ $SHLVL\$azerty $SHLVL$azerty ;
+echo $SHLVL\% $SHLVL% $SHLVL\%azerty $SHLVL%azerty ;
+echo $SHLVL\& $SHLVL& $SHLVL\&azerty $SHLVL&azerty ;
+echo $SHLVL\' $SHLVL' $SHLVL\'azerty $SHLVL'azerty ;
+echo $SHLVL\* $SHLVL* $SHLVL\*azerty $SHLVL*azerty ;
+echo $SHLVL\+ $SHLVL+ $SHLVL\+azerty $SHLVL+azerty ;
+echo $SHLVL\- $SHLVL- $SHLVL\-azerty $SHLVL-azerty ;
+echo $SHLVL\. $SHLVL. $SHLVL\.azerty $SHLVL.azerty ;
+echo $SHLVL\/ $SHLVL/ $SHLVL\/azerty $SHLVL/azerty ;
+echo $SHLVL\= $SHLVL= $SHLVL\=azerty $SHLVL=azerty ;
+echo $SHLVL\: $SHLVL: $SHLVL\:azerty $SHLVL:azerty ;
+echo $SHLVL\@ $SHLVL@ $SHLVL\@azerty $SHLVL@azerty ;
+echo $SHLVL\" $SHLVL" $SHLVL\"azerty $SHLVL"azerty 
 
 • TO DO:
 Pipes | should work like in bash
 $? should work like in bash
 ctrl-C, ctrl-D and ctrl-\ should have the same result as in bash
+
+
+
+
+
+
+

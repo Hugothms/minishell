@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 21:09:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:12:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 	while (env)
 	{
 		pos_sep = 1;
-		while (cmd->str[pos_sep] && !ft_in_charset(cmd->str[pos_sep], AFTER_VAR_ENV))
+		while (cmd->str[pos_sep] && (ft_isalnum(cmd->str[pos_sep]))/*!ft_in_charset(cmd->str[pos_sep], AFTER_VAR_ENV)*/)
 			pos_sep++;
 		size = ft_strlen(&(cmd->str[i]));
 		if (pos_sep && pos_sep < size)

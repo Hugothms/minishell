@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 20:53:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:18:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 */
 # define WSP			" \t"
 # define SYMBOLS		"|;<>"
-# define AFTER_VAR_ENV	"\t!\"#$%&'*+-./=:@"
+// # define AFTER_VAR_ENV	"\t !\"#$%&'*+-./=:@[\\]^{}"
+
 /*
 ** Error codes
 */
