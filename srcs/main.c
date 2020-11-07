@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 16:56:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:22:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,16 +283,17 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*input;
 	t_list_line	*lst_line;
 	t_list		*env;
-	int			*exit_status;
-	// *exit_status = 0;
+	int			exit_status;
+	
 	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
 		return (FAILURE);
 	}
+	exit_status = 0;
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
-	increment_shlvl(env, exit_status);
+	increment_shlvl(env, &exit_status);
 	while (1)
 	{
 		print_prompt();
@@ -303,7 +304,7 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			continue;
 		}
-		exec_line(lst_line, env, exit_status);
+		exec_line(lst_line, env, &exit_status);
 		free(input);
 	}
 	return (SUCCESS);

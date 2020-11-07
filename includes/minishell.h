@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/07 09:18:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:20:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@
 # define CMD_NOT_FOUND	127
 # define SYNTAX_ERROR	1
 # define CMD_NOT_FOUND	127
-
 
 /*
 ** STD IN/OUT
