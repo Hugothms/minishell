@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 11:52:19 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:09:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,18 @@ char	**lst_to_strs(t_list_cmd *cmd)
 	return (argv);
 }
 
-char	**lst_to_chartab(t_list *envp)
+char	**lst_to_chartab(t_list *env)
 {
 	char	**ret;
 	int		i;
 
-	if (!(ret = (char **)malloc(sizeof(char *) * (ft_lstsize(envp) + 1))))
+	if (!(ret = (char **)malloc(sizeof(char *) * (ft_lstsize(env) + 1))))
 		return (NULL);
 	i = 0;
-	while (envp)
+	while (env)
 	{
-		ret[i] = ft_strdup(envp->content);
-		envp = envp->next;
+		ret[i] = ft_strdup(env->content);
+		env = env->next;
 		i++;
 	}
 	ret[i] = NULL;

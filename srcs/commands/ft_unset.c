@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 11:57:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:09:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	lst_del_next_node(t_list *env)
 	env->next = tmp;
 }
 
-char	*ft_unset(t_list_cmd *args, t_list *envp, int *exit_status)
+char	*ft_unset(t_list_cmd *args, t_list *env, int *exit_status)
 {
 	char	**var;
 	int		i;
@@ -55,14 +55,14 @@ char	*ft_unset(t_list_cmd *args, t_list *envp, int *exit_status)
 	i = 0;
 	while (var[i])
 	{
-		while (envp->next)
+		while (env->next)
 		{
-			if (!ft_strncmp(envp->next->content, var[i], ft_strlen(var[i])))
+			if (!ft_strncmp(env->next->content, var[i], ft_strlen(var[i])))
 			{
-				lst_del_next_node(envp);
+				lst_del_next_node(env);
 				break ;
 			}
-			envp = envp->next;
+			env = env->next;
 		}
 		i++;
 	}

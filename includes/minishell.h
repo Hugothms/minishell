@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 11:57:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:08:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,22 @@ typedef struct			s_parse
 ** commands.c
 */
 char					*ft_echo(t_list_cmd *args, int *exit_status);
-char					*ft_cd(t_list_cmd *args, t_list *envp, int *exit_status);
+char					*ft_cd(t_list_cmd *args, t_list *env, int *exit_status);
 char					*ft_pwd(int *exit_status);
-char					*ft_export(t_list_cmd *args, t_list *envp, int *exit_status);
+char					*ft_export(t_list_cmd *args, t_list *env, int *exit_status);
 void					add_quote(char **tri);
 void					sort(char **tri);
 int						have_egual(char *str);
-char					*ft_unset(t_list_cmd *args, t_list *envp, int *exit_status);
-char					*ft_env(t_list *envp, int *exit_status);
+char					*ft_unset(t_list_cmd *args, t_list *env, int *exit_status);
+char					*ft_env(t_list *env, int *exit_status);
 char					*ft_exit(t_list_cmd *args, t_list *env, int *exit_status);
-char					*find_var_env(t_list *envp, char *var);
+char					*find_var_env(t_list *env, char *var);
 
 
 /*
 ** parse.c
 */
-int						parse_input(char *line, t_list_line **cmd, t_list *envp);
+int						parse_input(char *line, t_list_line **cmd, t_list *env);
 
 /*
 ** parse_quotes.c
@@ -120,7 +120,7 @@ int						input_to_command(char *input, t_list_cmd **cmd);
 /*
 ** search_command.c
 */
-int						search_command(t_list_cmd *cmd, t_list *envp);
+int						search_command(t_list_cmd *cmd, t_list *env);
 
 /*
 ** utils.c
@@ -135,7 +135,7 @@ int						is_separator(char *str, int i);
 int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);
 char					**lst_to_strs(t_list_cmd *cmd);
-char					**lst_to_chartab(t_list *envp);
+char					**lst_to_chartab(t_list *env);
 void					err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status);
 void					modif_var_env(t_list *env, char *key, char *new_value);
 

@@ -60,6 +60,9 @@ echo $SHLVL\= $SHLVL= $SHLVL\=azerty $SHLVL=azerty ;
 echo $SHLVL\: $SHLVL: $SHLVL\:azerty $SHLVL:azerty ;
 echo $SHLVL\@ $SHLVL@ $SHLVL\@azerty $SHLVL@azerty ;
 echo $SHLVL\" $SHLVL" $SHLVL\"azerty $SHLVL"azerty 
+echo $? ; cd azerty ; echo $? ; echo $?
+
+
 
 • TO DO:
 Pipes | should work like in bash
