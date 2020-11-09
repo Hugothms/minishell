@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 12:44:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 17:18:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,20 @@ void	increment_shlvl(t_list *env, int *exit_status)
 	c_lst_clear(args);
 }
 
+void	sighandler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("-> Crtl + C Pressed <-\n", STDOUT);
+		exit(130);
+	}
+	else if (signum == SIGQUIT)
+	{
+		ft_putstr_fd("-> Crtl + / Pressed <-\n", STDOUT);
+		exit(0);
+	}
+}
+
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
@@ -322,6 +336,8 @@ int		main(const int argc, char *argv[], char *envp[])
 		return (FAILURE);
 	}
 	exit_status = 0;
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
 	increment_shlvl(env, &exit_status);

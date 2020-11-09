@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 12:44:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 16:40:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>
+# include <signal.h>
 # include <stdio.h>
 # include "../libft/includes/libft.h"
 # include "welcome_message.h"

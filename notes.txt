@@ -61,6 +61,7 @@ echo $SHLVL\: $SHLVL: $SHLVL\:azerty $SHLVL:azerty ;
 echo $SHLVL\@ $SHLVL@ $SHLVL\@azerty $SHLVL@azerty ;
 echo $SHLVL\" $SHLVL" $SHLVL\"azerty $SHLVL"azerty 
 echo $? ; cd azerty ; echo $? ; echo $?
+echo $? ; azerty ; echo $? ; echo $?
 
 
 
