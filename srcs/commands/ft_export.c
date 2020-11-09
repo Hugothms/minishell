@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 11:57:21 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:20:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	*ft_export(t_list_cmd *args, t_list *env, int *exit_status)
 	char	*value;
 	int		i;
 
+	*exit_status = 0;
 	if (!args || !args->str)
 		return (ft_export_no_arg(env));
 	while (args)

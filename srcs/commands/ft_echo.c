@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:01:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:36:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*ft_echo(t_list_cmd *args, int *exit_status)
 	int		nflag;
 	char	*ret;
 
+	*exit_status = 0;
 	nflag = 0;
 	if (!args || !args->str)
 		return (ft_strdup("\n"));
@@ -53,6 +54,5 @@ char	*ft_echo(t_list_cmd *args, int *exit_status)
 	}
 	if (!nflag)
 		ret = ft_strjoin_free(ret, "\n");
-	*exit_status = 0;
 	return (ret);
 }

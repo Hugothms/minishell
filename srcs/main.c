@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 11:59:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:42:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 void	not_found(char *cmd, int *exit_status)
 {
-	ft_putstr_fd("minishell: command not found: ", STDERR);
-	ft_putstr_fd(cmd, STDERR);
-	ft_putstr_fd("\n", STDERR);
+	char	*ret;
+
+	ret = ft_strdup("minishell: command not found: ");
+	ret = ft_strjoin_free(ret, cmd);
+	ret = ft_strjoin_free(ret, "\n");
 	*exit_status = CMD_NOT_FOUND;
+	ft_putstr_fd(ret, STDERR);
+	free(ret);
 	exit(CMD_NOT_FOUND);
+	// return (ret);
 }
 
 char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
@@ -116,6 +121,8 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_st
 					write(fdpipe[1], ret, strlen(ret)+1);
 					free(ret);
 				}
+				else
+					*exit_status = 127;
 				close(fdpipe[1]);
 				ft_printf("***End child\n");
 				exit(0);
@@ -236,6 +243,8 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
 		}
+		else
+			*exit_status = 127;
 		if (lst_line->output > 2 && close(lst_line->output) < 0)
 			ft_putstr_fd("error close\n", STDERR);
 		dup2(fd_outold, STDOUT);

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:08:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:36:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_cd(t_list_cmd *args, t_list *env, int *exit_status)
 	char		*ret;
 	struct stat	stats;
 
+	*exit_status = 0;
 	if (!args || !args->str)
 		chdir(&find_var_env(env, "HOME=")[5]);
 	else if (stat(args->str, &stats) != 0)
