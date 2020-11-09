@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/07 09:33:43 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:53:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 	while (lst_line)
 	{
 		replace_all_var_env(lst_line->cmd, env, exit_status);
-	ft_printf("exit:%d\n", *exit_status);
+		// ft_printf("exit:%d\n", *exit_status);
 		fusion_cmd(lst_line->cmd);
 		redirections(lst_line);
 
@@ -245,6 +245,21 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 	l_lst_clear(start);
 }
 
+void	fill_env(t_list **env)
+{
+	char	*keyval;
+	char	*pwd;
+
+	keyval = ft_strdup("SHLVL=0");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	pwd = getcwd(NULL, 0);
+	keyval = ft_strjoin("PWD=", pwd);
+	free(pwd);
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	keyval = ft_strdup("OLDPWD=");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+}
+
 void	set_env(char **envp, t_list **env)
 {
 	int		i;
@@ -252,12 +267,17 @@ void	set_env(char **envp, t_list **env)
 
 	i = 0;
 	*env = NULL;
-	while (envp[i])
+	if (envp[i])
 	{
-		keyval = ft_strdup(envp[i]);
-		ft_lstadd_back(env, ft_lstnew(keyval));
-		i++;
+		while (envp[i])
+		{
+			keyval = ft_strdup(envp[i]);
+			ft_lstadd_back(env, ft_lstnew(keyval));
+			i++;
+		}
 	}
+	else
+		fill_env(env);
 }
 
 void	increment_shlvl(t_list *env, int *exit_status)

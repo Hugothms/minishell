@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/07 09:25:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:48:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void					cmd_plusplus_free(t_list_cmd **cmd);
 char					**lst_to_strs(t_list_cmd *cmd);
 char					**lst_to_chartab(t_list *envp);
 void					err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status);
+void					modif_var_env(t_list *env, char *key, char *new_value);
 
 /*
 ** list_cmd.c

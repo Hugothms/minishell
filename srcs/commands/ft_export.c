@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/06 15:00:38 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/06 17:52:13 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_lst(t_list *env)
 	}
 }
 
-int		modif_var_env(char egual, t_list *env, char *key, char *value)
+int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 {
 	while (env)
 	{
@@ -107,7 +107,7 @@ char	*ft_export(t_list_cmd *args, t_list *env)
 			value = ft_strdup(&(args->str[i + 1]));
 		else
 			value = ft_strdup("");
-		if (modif_var_env(args->str[i], env, key, value))
+		if (modif_var_exp(args->str[i], env, key, value))
 		{
 			ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));
 			free(key);

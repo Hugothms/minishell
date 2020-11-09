@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 16:44:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:52:19 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,18 @@ char	**lst_to_chartab(t_list *envp)
 	}
 	ret[i] = NULL;
 	return (ret);
+}
+
+void	modif_var_env(t_list *env, char *key, char *new_value)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, key, ft_strlen(key)))
+		{
+				free(env->content);
+				env->content = ft_strjoin(key, "=");
+				env->content = ft_strjoin_free(env->content, new_value);
+		}
+		env = env->next;
+	}
 }
