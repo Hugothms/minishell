@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 12:42:34 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:44:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		lst_line = NULL;
 		if (parse_input(input, &lst_line, env))
 		{
-			parse_error(input, lst_line);
+			parse_error(input, lst_line, &exit_status);
 			continue;
 		}
 		exec_line(lst_line, env, &exit_status);
