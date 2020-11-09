@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/07 09:20:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:25:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void					sort(char **tri);
 int						have_egual(char *str);
 char					*ft_unset(t_list_cmd *args, t_list *envp);
 char					*ft_env(t_list *envp);
-char					*ft_exit(t_list_cmd *args, t_list *env);
+char					*ft_exit(t_list_cmd *args, t_list *env, int *exit_status);
 char					*find_var_env(t_list *envp, char *var);
 
 

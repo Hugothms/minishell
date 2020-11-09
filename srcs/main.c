@@ -6,21 +6,22 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/07 09:22:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:33:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	not_found(char *cmd)
+void	not_found(char *cmd, int *exit_status)
 {
 	ft_putstr_fd("minishell: command not found: ", STDERR);
 	ft_putstr_fd(cmd, STDERR);
 	ft_putstr_fd("\n", STDERR);
+	*exit_status = CMD_NOT_FOUND;
 	exit(CMD_NOT_FOUND);
 }
 
-char	*exec_cmd(t_list_cmd *cmd, t_list *env)
+char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
 {
 	if (!cmd)
 		return (NULL);
@@ -37,9 +38,9 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 	else if (!ft_strcmp(cmd->str, "env"))
 		return (ft_env(env));
 	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next, env));
+		return (ft_exit(cmd->next, env, exit_status));
 	else if (search_command(cmd, env))
-		not_found(cmd->str);
+		not_found(cmd->str, exit_status);
 	return (NULL);
 }
 
@@ -54,7 +55,7 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
+void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_status)
 {
 	t_list_cmd	*cmd;
 	char		*ret;
@@ -110,7 +111,7 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 			{
 				close(fdpipe[0]);
 				lst_line->output = fdpipe[1];
-				if ((ret = exec_cmd(lst_line->cmd, env)))
+				if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
 				{
 					write(fdpipe[1], ret, strlen(ret)+1);
 					free(ret);
@@ -199,12 +200,13 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 	int		fd_inold;
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
-	create_pipes_and_semicolon(lst_line, env);
+	create_pipes_and_semicolon(lst_line, env, exit_status);
 	// ft_printf("END PIPES\n");
 	start = lst_line;
 	while (lst_line)
 	{
 		replace_all_var_env(lst_line->cmd, env, exit_status);
+	ft_printf("exit:%d\n", *exit_status);
 		fusion_cmd(lst_line->cmd);
 		redirections(lst_line);
 
@@ -229,7 +231,7 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 
 		// ft_printf("***********************************\n");
 
-		if ((ret = exec_cmd(lst_line->cmd, env)))
+		if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
 		{
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
