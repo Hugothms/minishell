@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/06 17:52:13 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:57:21 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 	return (1);
 }
 
-char	*ft_export(t_list_cmd *args, t_list *env)
+char	*ft_export(t_list_cmd *args, t_list *env, int *exit_status)
 {
 	char	*key;
 	char	*value;

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 11:48:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:57:51 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,15 @@ typedef struct			s_parse
 /*
 ** commands.c
 */
-char					*ft_echo(t_list_cmd *args);
-char					*ft_cd(t_list_cmd *args, t_list *envp);
-char					*ft_pwd(void);
-char					*ft_export(t_list_cmd *args, t_list *envp);
+char					*ft_echo(t_list_cmd *args, int *exit_status);
+char					*ft_cd(t_list_cmd *args, t_list *envp, int *exit_status);
+char					*ft_pwd(int *exit_status);
+char					*ft_export(t_list_cmd *args, t_list *envp, int *exit_status);
 void					add_quote(char **tri);
 void					sort(char **tri);
 int						have_egual(char *str);
-char					*ft_unset(t_list_cmd *args, t_list *envp);
-char					*ft_env(t_list *envp);
+char					*ft_unset(t_list_cmd *args, t_list *envp, int *exit_status);
+char					*ft_env(t_list *envp, int *exit_status);
 char					*ft_exit(t_list_cmd *args, t_list *env, int *exit_status);
 char					*find_var_env(t_list *envp, char *var);
 

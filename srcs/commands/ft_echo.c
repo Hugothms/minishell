@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/04 17:32:25 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:01:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		check_nflag(char *str)
 		return (0);
 }
 
-char	*ft_echo(t_list_cmd *args)
+char	*ft_echo(t_list_cmd *args, int *exit_status)
 {
 	int		nflag;
 	char	*ret;
@@ -53,5 +53,6 @@ char	*ft_echo(t_list_cmd *args)
 	}
 	if (!nflag)
 		ret = ft_strjoin_free(ret, "\n");
+	*exit_status = 0;
 	return (ret);
 }

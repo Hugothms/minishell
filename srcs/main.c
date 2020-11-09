@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 11:53:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:59:45 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
 	if (!cmd)
 		return (NULL);
 	else if (!ft_strcmp(cmd->str, "echo"))
-		return (ft_echo(cmd->next));
+		return (ft_echo(cmd->next, exit_status));
 	else if (!ft_strcmp(cmd->str, "cd"))
-		return (ft_cd(cmd->next, env));
+		return (ft_cd(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "pwd"))
-		return (ft_pwd());
+		return (ft_pwd(exit_status));
 	else if (!ft_strcmp(cmd->str, "export"))
-		return (ft_export(cmd->next, env));
+		return (ft_export(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "unset"))
-		return (ft_unset(cmd->next, env));
+		return (ft_unset(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "env"))
-		return (ft_env(env));
+		return (ft_env(env, exit_status));
 	else if (!ft_strcmp(cmd->str, "exit"))
 		return (ft_exit(cmd->next, env, exit_status));
 	else if (search_command(cmd, env))
@@ -295,7 +295,7 @@ void	increment_shlvl(t_list *env, int *exit_status)
 	args->str = ft_strjoin_free(args->str, "=");
 	args->str = ft_strjoin_free(args->str, tmp);
 	free(tmp);
-	tmp = ft_export(args, env);
+	tmp = ft_export(args, env, exit_status);
 	free(tmp);
 	c_lst_clear(args);
 }

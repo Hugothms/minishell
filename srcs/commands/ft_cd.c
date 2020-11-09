@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/06 17:59:24 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:00:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	modif_oldpwd_pwd(t_list *env)
 	free(pwd);
 }
 
-char	*ft_cd(t_list_cmd *args, t_list *envp)
+char	*ft_cd(t_list_cmd *args, t_list *envp, int *exit_status)
 {
 	char		*ret;
 	struct stat	stats;
@@ -42,6 +42,7 @@ char	*ft_cd(t_list_cmd *args, t_list *envp)
 		chdir(&find_var_env(envp, "HOME=")[5]);
 	else if (stat(args->str, &stats) != 0)
 	{
+		*exit_status = 1;
 		ret = ft_strdup("cd: no such file or directory: ");
 		ret = ft_strjoin_free(ret, args->str);
 		ret = ft_strjoin_free(ret, "\n");

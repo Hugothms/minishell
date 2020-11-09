@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/28 15:11:28 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:57:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	lst_del_next_node(t_list *env)
 	env->next = tmp;
 }
 
-char	*ft_unset(t_list_cmd *args, t_list *envp)
+char	*ft_unset(t_list_cmd *args, t_list *envp, int *exit_status)
 {
 	char	**var;
 	int		i;

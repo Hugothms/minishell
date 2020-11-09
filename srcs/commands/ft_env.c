@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:31 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/28 15:10:36 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:57:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_env(t_list *envp)
+char	*ft_env(t_list *envp, int *exit_status)
 {
 	char	*ret;
 	int		i;
