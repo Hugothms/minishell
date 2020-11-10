@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 17:35:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/10 16:57:45 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,9 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	ret = FAILURE;
 	if (!(argv = lst_to_strs(cmd)))
 		return (FAILURE);
-	if (cmd->str[0] == '/')
+	if (cmd->str[0] == '/' || cmd->str[0] == '.')
 	{
 		if (execve(cmd->str, argv, envp))
-			binary_not_found(cmd->str, &ret);
-	}
-	else if (cmd->str[0] == '.' && cmd->str[1] == '/')
-	{
-		if (execve(&cmd->str[2], argv, envp))
 			binary_not_found(cmd->str, &ret);
 	}
 	else

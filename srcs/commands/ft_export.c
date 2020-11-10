@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:20:25 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/10 17:45:56 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,6 @@ char	*ft_export_no_arg(t_list *env)
 	return (ret);
 }
 
-void	print_lst(t_list *env)
-{
-	while (env)
-	{
-		printf("%s\n", (char*)env->content);
-		env = env->next;
-	}
-}
-
 int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 {
 	while (env)
@@ -89,31 +80,68 @@ int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 	return (1);
 }
 
+int		check_identifier(char *key)
+{
+	int		i;
+
+	i = 0;
+	if (key[i] != '\0')
+	{
+		while (key[i])
+		{
+			if (!ft_isalpha(key[i]))
+				return (0);
+			i++;
+		}
+		if (key[i] == '\0')
+			return (1);
+	}
+	else
+		return (0);
+}
+
+int		set_keyval(t_list_cmd *args, char **key, char **value, int *exit_status)
+{
+	int		i;
+
+	i = 0;
+	while (args->str[i] && args->str[i] != '=')
+		i++;
+	*key = ft_strndup(args->str, i);
+	if (check_identifier(*key))
+	{
+		if (args->str[i] == '=')
+			*value = ft_strdup(&(args->str[i + 1]));
+		else
+			*value = ft_strdup("");
+		return (1);
+	}
+	else
+	{
+		*exit_status = 1;
+		ft_printf("minishell: export: « %s » : not valid identifier\n", *key);
+		free(*key);
+		return (0);
+	}
+}
+
 char	*ft_export(t_list_cmd *args, t_list *env, int *exit_status)
 {
 	char	*key;
 	char	*value;
-	int		i;
 
 	*exit_status = 0;
 	if (!args || !args->str)
 		return (ft_export_no_arg(env));
 	while (args)
 	{
-		i = 0;
-		while (args->str[i] && args->str[i] != '=')
-			i++;
-		key = ft_strndup(args->str, i);
-		if (args->str[i] == '=')
-			value = ft_strdup(&(args->str[i + 1]));
-		else
-			value = ft_strdup("");
-		if (modif_var_exp(args->str[i], env, key, value))
-		{
-			ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));
-			free(key);
-			free(value);
-		}
+		if (set_keyval(args, &key, &value, exit_status))
+			if (modif_var_exp(args->str[ft_strlen(key)], env, key, value))
+			{
+				ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));
+				free(key);
+				free(value);
+			}
 		args = args->next;
 	}
 	return (ft_strdup(""));
