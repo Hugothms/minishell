@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/10 16:57:45 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:51:04 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ char	**get_paths(char **envp)
 	char	**path;
 
 	i = 0;
+	path = NULL;
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
 		i++;
-	path = ft_split(&envp[i][5], ':');
+	if (envp[i] != NULL)
+		path = ft_split(&envp[i][5], ':');
 	return (path);
 }
 
@@ -49,18 +51,23 @@ void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 	i = 0;
 	cpt = 0;
 	path = get_paths(envp);
-	while (path[i])
+	if (path != NULL)
 	{
-		full_path = ft_strjoin(path[i], "/");
-		full_path = ft_strjoin_free(full_path, cmd->str);
-		if (execve(full_path, argv, envp))
-			cpt++;
-		free(full_path);
-		if (i != cpt)
-			*ret = SUCCESS;
-		i++;
+		while (path[i])
+		{
+			full_path = ft_strjoin(path[i], "/");
+			full_path = ft_strjoin_free(full_path, cmd->str);
+			if (execve(full_path, argv, envp))
+				cpt++;
+			free(full_path);
+			if (i != cpt)
+				*ret = SUCCESS;
+			i++;
+		}
+		ft_free_tab(path);
 	}
-	ft_free_tab(path);
+	else
+		binary_not_found(cmd->str, ret);
 }
 
 int		try_path(t_list_cmd *cmd, char **envp)

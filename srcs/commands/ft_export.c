@@ -6,13 +6,13 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/10 17:45:56 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:36:49 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**duptab(t_list *env)
+char	**dup_lst(t_list *env)
 {
 	char	**dubtab;
 	int		i;
@@ -44,7 +44,7 @@ char	*ft_export_no_arg(t_list *env)
 	int		i;
 
 	i = 0;
-	tri = duptab(env);
+	tri = dup_lst(env);
 	sort(tri);
 	add_quote(tri);
 	ret = ft_strdup("");
