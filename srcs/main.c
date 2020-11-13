@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 17:18:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 14:13:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
 		return (ft_env(env, exit_status));
 	else if (!ft_strcmp(cmd->str, "exit"))
 		return (ft_exit(cmd->next, env, exit_status));
-	else if (search_command(cmd, env))
+	else if (!search_command(cmd, env, exit_status))
 		not_found(cmd->str, exit_status);
 	return (NULL);
 }
@@ -243,8 +243,6 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
 		}
-		else
-			*exit_status = 127;
 		if (lst_line->output > 2 && close(lst_line->output) < 0)
 			ft_putstr_fd("error close\n", STDERR);
 		dup2(fd_outold, STDOUT);

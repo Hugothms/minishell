@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/10 17:46:46 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/13 13:45:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int						input_to_command(char *input, t_list_cmd **cmd);
 /*
 ** search_command.c
 */
-int						search_command(t_list_cmd *cmd, t_list *env);
+int						search_command(t_list_cmd *cmd, t_list *env, int *exit_status);
 
 /*
 ** utils.c
