@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 15:59:48 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 16:14:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-void	binary_not_found(char *path, int *ret)
+void	binary_not_found(char *path, int *ret, int *exit_status)
 {
 	struct stat	buf;
 	int			dir;
@@ -35,13 +35,19 @@ void	binary_not_found(char *path, int *ret)
 	ft_putstr_fd(path, STDERR);
 	dir = lstat(path, &buf);
 	if (dir == 0)
+	{
 		ft_putstr_fd(": Is a directory\n", STDERR);
+		*exit_status = 126;
+	}
 	else
+	{
 		ft_putstr_fd(": No such file or directory\n", STDERR);
+		*exit_status = 127;
+	}
 	*ret = FAILURE;
 }
 
-void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
+void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret, int *exit_status)
 {
 	int		i;
 	int		cpt;
@@ -67,7 +73,7 @@ void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 		ft_free_tab(path);
 	}
 	else
-		binary_not_found(cmd->str, ret);
+		binary_not_found(cmd->str, ret, exit_status);
 }
 
 int		try_path(t_list_cmd *cmd, char **envp, int *exit_status)
@@ -81,10 +87,10 @@ int		try_path(t_list_cmd *cmd, char **envp, int *exit_status)
 	if (cmd->str[0] == '/' || cmd->str[0] == '.')
 	{
 		if (execve(cmd->str, argv, envp))
-			binary_not_found(cmd->str, &ret);
+			binary_not_found(cmd->str, &ret, exit_status);
 	}
 	else
-		try_path2(cmd, envp, argv, &ret);
+		try_path2(cmd, envp, argv, &ret, exit_status);
 	ft_free_tab(argv);
 	return (ret);
 }
@@ -102,7 +108,7 @@ int		search_command(t_list_cmd *cmd, t_list *env, int *exit_status)
 	if (pid == 0)
 	{
 		if (try_path(cmd, envp, exit_status))
-			exit(0);
+			exit(*exit_status);
 	}
 	else
 	{
