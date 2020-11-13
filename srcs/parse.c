@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/06 16:41:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 16:03:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
+int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 
@@ -23,11 +23,12 @@ int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
 		{
 			if (cmd->str[i] == '\\')
 			{
-				if ((cmd->flags & F_SIMPLE_QUOTE || (cmd->flags & F_DOUBLE_QUOTE)) && cmd->str[i + 1] == '\'')
+				if ((cmd->flags & F_SIMPLE_QUOTE ||\
+				(cmd->flags & F_DOUBLE_QUOTE)) && cmd->str[i + 1] == '\'')
 				{
 					i++;
 					continue;
-				}				
+				}
 				else if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
@@ -50,9 +51,11 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
+			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
+			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
 				cmd->flags += F_VAR_ENV;
-			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) && !in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
+			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) &&\
+			!in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
 			{
 				tmp = cmd->str;
 				cmd->str = ft_strdup(&find_var_env(env, "HOME=")[5]);

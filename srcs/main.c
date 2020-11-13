@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 14:13:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 15:55:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	not_found(char *cmd, int *exit_status)
 	ft_putstr_fd(ret, STDERR);
 	free(ret);
 	exit(CMD_NOT_FOUND);
-	// return (ret);
 }
 
 char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
@@ -99,7 +98,6 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_st
 				ft_putstr_fd("pipe: fork failed\n", STDERR);
 				return;
 			}
-
 			else if (p > 0) //parent process
 			{
 				close(fdpipe[1]);

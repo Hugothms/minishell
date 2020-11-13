@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/09 12:44:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 15:59:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	add_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 
 	if (size <= 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE) && ft_in_charset(*input, WSP))
+	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
+	&& ft_in_charset(*input, WSP))
 		input++;
 	str = ft_strndup(input, size);
 	c_lst_add_back(cmd, c_lst_new(str, flags));
-	free(str); //! todo
+	free(str);
 }
 
 int		escaped(char *str, int i)
@@ -138,9 +139,9 @@ void	modif_var_env(t_list *env, char *key, char *new_value)
 	{
 		if (!ft_strncmp(env->content, key, ft_strlen(key)))
 		{
-				free(env->content);
-				env->content = ft_strjoin(key, "=");
-				env->content = ft_strjoin_free(env->content, new_value);
+			free(env->content);
+			env->content = ft_strjoin(key, "=");
+			env->content = ft_strjoin_free(env->content, new_value);
 		}
 		env = env->next;
 	}
