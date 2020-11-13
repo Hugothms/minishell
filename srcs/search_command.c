@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 14:26:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 15:46:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int		search_command(t_list_cmd *cmd, t_list *env, int *exit_status)
 	}
 	else
 	{
-		wait(&status);
-		*exit_status = 0;
+		wait(exit_status);
+		*exit_status = *exit_status>>8;
 		ret = FAILURE;
 	}
 	ft_free_tab(envp);
