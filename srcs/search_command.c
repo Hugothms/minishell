@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 14:10:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 14:26:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 		binary_not_found(cmd->str, ret);
 }
 
-int		try_path(t_list_cmd *cmd, char **envp)
+int		try_path(t_list_cmd *cmd, char **envp, int *exit_status)
 {
 	int		ret;
 	char	**argv;
@@ -101,9 +101,8 @@ int		search_command(t_list_cmd *cmd, t_list *env, int *exit_status)
 	envp = lst_to_chartab(env);
 	if (pid == 0)
 	{
-		if (try_path(cmd, envp))
+		if (try_path(cmd, envp, exit_status))
 			exit(0);
-		*exit_status = 0;
 	}
 	else
 	{
