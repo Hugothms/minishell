@@ -6,40 +6,45 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/29 11:12:08 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 15:55:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	not_found(char *cmd)
+void	not_found(char *cmd, int *exit_status)
 {
-	ft_putstr_fd("minishell: command not found: ", STDERR);
-	ft_putstr_fd(cmd, STDERR);
-	ft_putstr_fd("\n", STDERR);
-	exit(0);
+	char	*ret;
+
+	ret = ft_strdup("minishell: command not found: ");
+	ret = ft_strjoin_free(ret, cmd);
+	ret = ft_strjoin_free(ret, "\n");
+	*exit_status = CMD_NOT_FOUND;
+	ft_putstr_fd(ret, STDERR);
+	free(ret);
+	exit(CMD_NOT_FOUND);
 }
 
-char	*exec_cmd(t_list_cmd *cmd, t_list *envp)
+char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
 {
 	if (!cmd)
 		return (NULL);
 	else if (!ft_strcmp(cmd->str, "echo"))
-		return (ft_echo(cmd->next));
+		return (ft_echo(cmd->next, exit_status));
 	else if (!ft_strcmp(cmd->str, "cd"))
-		return (ft_cd(cmd->next, envp));
+		return (ft_cd(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "pwd"))
-		return (ft_pwd());
+		return (ft_pwd(exit_status));
 	else if (!ft_strcmp(cmd->str, "export"))
-		return (ft_export(cmd->next, envp));
+		return (ft_export(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "unset"))
-		return (ft_unset(cmd->next, envp));
+		return (ft_unset(cmd->next, env, exit_status));
 	else if (!ft_strcmp(cmd->str, "env"))
-		return (ft_env(envp));
+		return (ft_env(env, exit_status));
 	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next, envp));
-	else if (search_command(cmd, envp))
-		not_found(cmd->str);
+		return (ft_exit(cmd->next, env, exit_status));
+	else if (!search_command(cmd, env, exit_status))
+		not_found(cmd->str, exit_status);
 	return (NULL);
 }
 
@@ -54,7 +59,7 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line, char **envp)
+void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_status)
 {
 	t_list_cmd	*cmd;
 	char		*ret;
@@ -78,49 +83,46 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, char **envp)
 	{
 		if (lst_line->pipe)
 		{
-			int		tab[2]; // Used to store two ends of first pipe
+			int		fdpipe[2]; // Used to store two ends of first pipe
 			pid_t	p;
 
-			if (pipe(tab) == -1) //error
+			if (pipe(fdpipe) == -1) //error
 			{
-				ft_putstr_fd("pipe failed\n", STDERR);
+				ft_putstr_fd("pipe: pipe failed\n", STDERR);
 				return;
 			}
 			// do something ?
 			p = fork();
 			if (p < 0) //error
 			{
-				ft_putstr_fd("fork failed\n", STDERR);
+				ft_putstr_fd("pipe: fork failed\n", STDERR);
 				return;
 			}
-
 			else if (p > 0) //parent process
 			{
-				close(tab[0]);  // Close reading end of first pipe
-
-				// Write input string and close writing end of first pipe.
-			   	if ((ret = exec_cmd(lst_line->cmd, envp)))
-				{
-					write(tab[1], ret, strlen(ret)+1);
-					free(ret);
-				}
-				close(tab[1]);
-
-				// Wait for child to send a string
+				close(fdpipe[1]);
+				char	*line;
+				ft_printf("***Before child exits\n");
 				wait(NULL);
-				printf("Concatenated string\n");
+				ft_printf("***After child exits\n");
+				if(get_next_line(&line, fdpipe[0]))
+					return ;
+				ft_printf("***line:%s\n***end line\n", line);
+				close(fdpipe[0]);
 			}
 			else // child process
 			{
-				close(tab[1]);  // Close writing end of first pipe
-
-				// Read a string using first pipe
-				char	*line;
-				if(get_next_line(&line, tab[0]))
-					return (FAILURE);
-				
-				// Close both reading ends
-				close(tab[0]);
+				close(fdpipe[0]);
+				lst_line->output = fdpipe[1];
+				if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
+				{
+					write(fdpipe[1], ret, strlen(ret)+1);
+					free(ret);
+				}
+				else
+					*exit_status = 127;
+				close(fdpipe[1]);
+				ft_printf("***End child\n");
 				exit(0);
 			}
 			lst_line = lst_line->next;
@@ -179,42 +181,62 @@ void	redirections(t_list_line *lst_line)
 	}
 }
 
-void	exec_line(t_list_line *lst_line, t_list *envp)
+void	fusion_cmd(t_list_cmd *cmd)
+{
+	while (cmd)
+	{
+		while (cmd->flags & F_NO_SP_AFTER && cmd->next && !(cmd->next->flags & F_SPECIALS))
+		{
+			if (!(cmd->next->flags & F_NO_SP_AFTER))
+				cmd->flags -= F_NO_SP_AFTER;
+			cmd->str = ft_strjoin_free(cmd->str, cmd->next->str);
+			c_lst_remove_next_one(cmd);
+		}
+		cmd = cmd->next;
+	}
+}
+
+void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 {
 	char		*ret;
 	t_list_line	*start;
-	int			fd_outold;
-	int			fd_inold;
 
+	int		fd_outold;
+	int		fd_inold;
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
+	create_pipes_and_semicolon(lst_line, env, exit_status);
+	// ft_printf("END PIPES\n");
 	start = lst_line;
 	while (lst_line)
 	{
+		replace_all_var_env(lst_line->cmd, env, exit_status);
+		// ft_printf("exit:%d\n", *exit_status);
+		fusion_cmd(lst_line->cmd);
 		redirections(lst_line);
 
-		// char **tab = lst_to_strs(lst_line->cmd);
+		// char **fdpipe = lst_to_strs(lst_line->cmd);
 		// ft_printf("****************\n", 0);
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("****************flags:%d\n", lst_line->cmd->flags);
 		// ft_printf("*********************************************\n", 0);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
-		// tab = lst_to_strs(lst_line->next->cmd);
+		// fdpipe = lst_to_strs(lst_line->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->cmd->flags);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
-		// tab = lst_to_strs(lst_line->next->next->cmd);
+		// fdpipe = lst_to_strs(lst_line->next->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_tabstr(tab);
+		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->next->cmd->flags);
-		// ft_free_tab(tab);
+		// ft_free_fdpipe(fdpipe);
 
 		// ft_printf("***********************************\n");
 
-		if ((ret = exec_cmd(lst_line->cmd, envp)))
+		if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
 		{
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
@@ -228,6 +250,21 @@ void	exec_line(t_list_line *lst_line, t_list *envp)
 	l_lst_clear(start);
 }
 
+void	fill_env(t_list **env)
+{
+	char	*keyval;
+	char	*pwd;
+
+	keyval = ft_strdup("SHLVL=0");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	pwd = getcwd(NULL, 0);
+	keyval = ft_strjoin("PWD=", pwd);
+	free(pwd);
+	ft_lstadd_back(env, ft_lstnew(keyval));
+	keyval = ft_strdup("OLDPWD=");
+	ft_lstadd_back(env, ft_lstnew(keyval));
+}
+
 void	set_env(char **envp, t_list **env)
 {
 	int		i;
@@ -235,11 +272,50 @@ void	set_env(char **envp, t_list **env)
 
 	i = 0;
 	*env = NULL;
-	while (envp[i])
+	if (envp[i])
 	{
-		keyval = ft_strdup(envp[i]);
-		ft_lstadd_back(env, ft_lstnew(keyval));
-		i++;
+		while (envp[i])
+		{
+			keyval = ft_strdup(envp[i]);
+			ft_lstadd_back(env, ft_lstnew(keyval));
+			i++;
+		}
+	}
+	else
+		fill_env(env);
+}
+
+void	increment_shlvl(t_list *env, int *exit_status)
+{
+	t_list_cmd	*args;
+	char		*tmp;
+	int			sh_lvl;
+
+	args = c_lst_new("$SHLVL", F_VAR_ENV);
+	replace_all_var_env(args, env, exit_status);
+	sh_lvl = ft_atoi(args->str);
+	c_lst_clear(args);
+	args = c_lst_new("SHLVL", F_NOTHING);
+	tmp = ft_itoa(sh_lvl + 1);
+	args->str = ft_strjoin_free(args->str, "=");
+	args->str = ft_strjoin_free(args->str, tmp);
+	free(tmp);
+	tmp = ft_export(args, env, exit_status);
+	free(tmp);
+	c_lst_clear(args);
+}
+
+void	sighandler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("-> Crtl + C Pressed <-\n", STDOUT);
+		exit(130);
+	}
+	else if (signum == SIGQUIT)
+	{
+		ft_putstr_fd("-> Crtl + / Pressed <-\n", STDOUT);
+		exit(0);
 	}
 }
 
@@ -248,15 +324,19 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*input;
 	t_list_line	*lst_line;
 	t_list		*env;
-
+	int			exit_status;
+	
 	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
 		return (FAILURE);
 	}
+	exit_status = 0;
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
-	//increment var $SHLVL
+	increment_shlvl(env, &exit_status);
 	while (1)
 	{
 		print_prompt();
@@ -264,11 +344,10 @@ int		main(const int argc, char *argv[], char *envp[])
 		lst_line = NULL;
 		if (parse_input(input, &lst_line, env))
 		{
-			parse_error(input, lst_line);
+			parse_error(input, lst_line, &exit_status);
 			continue;
 		}
-		create_pipes_and_semicolon(lst_line, envp);
-		exec_line(lst_line, env);
+		exec_line(lst_line, env, &exit_status);
 		free(input);
 	}
 	return (SUCCESS);

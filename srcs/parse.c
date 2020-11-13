@@ -6,52 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:02:02 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 16:03:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int i)
-{
-	int		size;
-	int		pos_equal;
-	char	*key;
-	char	*var;
-
-	while (env)
-	{
-		var = (char *)env->content;
-		pos_equal = 0;
-		while (cmd->str[pos_equal] && cmd->str[pos_equal] != '=')
-			pos_equal++;
-		size = ft_strlen(&(cmd->str[i]));
-		if (pos_equal && pos_equal < size)
-			size = pos_equal;
-		if (!ft_strncmp(env->content, &(cmd->str[i + 1]), size - 1) && var[size - 1] == '=')
-		{
-			key = ft_strdup(&cmd->str[pos_equal]);
-			// ft_printf("((((((((((((%s)))))))))%d)))%s\n", &cmd->str[i], pos_equal, key);
-			cmd->str[i] = '\0';// wil maybe cause some leaks later ¯\_(ツ)_/¯
-			cmd->str = ft_strjoin_free(cmd->str, &var[size]);
-			if (pos_equal)
-				cmd->str = ft_strjoin_free(cmd->str, key);
-			free(key);
-			return ;
-		}
-		env = env->next;
-	}
-	cmd->str[i] = '\0';
-}
-
-void	err_code(t_list_cmd *cmd, t_list *env)
-{
-	ft_putstr_fd("err_code\n", STDERR);
-	//!to do
-	return ;
-}
-
-int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
+int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 
@@ -62,11 +23,12 @@ int 	delete_backslashes(t_list_cmd *cmd, t_list *env)
 		{
 			if (cmd->str[i] == '\\')
 			{
-				if ((cmd->flags & F_SIMPLE_QUOTE || (cmd->flags & F_DOUBLE_QUOTE)) && cmd->str[i + 1] == '\'')
+				if ((cmd->flags & F_SIMPLE_QUOTE ||\
+				(cmd->flags & F_DOUBLE_QUOTE)) && cmd->str[i + 1] == '\'')
 				{
 					i++;
 					continue;
-				}				
+				}
 				else if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
@@ -89,14 +51,11 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
-			{
-				if (cmd->str[i + 1] == '?')
-					err_code(cmd, env);
-				else
-					replace_all_var_env(cmd, env, i);
-			}
-			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) && !in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
+			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
+			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
+				cmd->flags += F_VAR_ENV;
+			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) &&\
+			!in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
 			{
 				tmp = cmd->str;
 				cmd->str = ft_strdup(&find_var_env(env, "HOME=")[5]);

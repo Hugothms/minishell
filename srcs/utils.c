@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:40:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/13 15:59:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	add_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 
 	if (size <= 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE) && ft_in_charset(*input, WSP))
+	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
+	&& ft_in_charset(*input, WSP))
 		input++;
 	str = ft_strndup(input, size);
 	c_lst_add_back(cmd, c_lst_new(str, flags));
-	free(str); //! todo
+	free(str);
 }
 
 int		escaped(char *str, int i)
@@ -59,12 +60,13 @@ int		in_quotes(t_list_cmd *cmd)
 	(cmd->flags & F_DOUBLE_QUOTE));
 }
 
-void	parse_error(char *input, t_list_line *lst_line)
+void	parse_error(char *input, t_list_line *lst_line, int *exit_status)
 {
+	*exit_status = 1;
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
 	l_lst_clear(lst_line);
 	free(input);
-	// exit(1);
+	// exit(SYNTAX_ERROR);
 }
 
 int		get_flags(char *str)
@@ -113,20 +115,34 @@ char	**lst_to_strs(t_list_cmd *cmd)
 	return (argv);
 }
 
-char	**lst_to_chartab(t_list *envp)
+char	**lst_to_chartab(t_list *env)
 {
 	char	**ret;
 	int		i;
 
-	if (!(ret = (char **)malloc(sizeof(char *) * (ft_lstsize(envp) + 1))))
+	if (!(ret = (char **)malloc(sizeof(char *) * (ft_lstsize(env) + 1))))
 		return (NULL);
 	i = 0;
-	while (envp)
+	while (env)
 	{
-		ret[i] = ft_strdup(envp->content);
-		envp = envp->next;
+		ret[i] = ft_strdup(env->content);
+		env = env->next;
 		i++;
 	}
 	ret[i] = NULL;
 	return (ret);
+}
+
+void	modif_var_env(t_list *env, char *key, char *new_value)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, key, ft_strlen(key)))
+		{
+			free(env->content);
+			env->content = ft_strjoin(key, "=");
+			env->content = ft_strjoin_free(env->content, new_value);
+		}
+		env = env->next;
+	}
 }

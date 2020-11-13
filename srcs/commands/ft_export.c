@@ -6,45 +6,45 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/27 15:54:49 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:36:49 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**duptab(t_list *envp)
+char	**dup_lst(t_list *env)
 {
 	char	**dubtab;
 	int		i;
 
-	i = ft_lstsize(envp);
+	i = ft_lstsize(env);
 	dubtab = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while (envp)
+	while (env)
 	{
-		dubtab[i] = malloc(sizeof(char) * (ft_strlen(envp->content) + 3));
-		ft_strcpy(dubtab[i], envp->content);
-		if (have_egual(envp->content))
-			dubtab[i][ft_strlen(envp->content)] = '#';
+		dubtab[i] = malloc(sizeof(char) * (ft_strlen(env->content) + 3));
+		ft_strcpy(dubtab[i], env->content);
+		if (have_egual(env->content))
+			dubtab[i][ft_strlen(env->content)] = '#';
 		else
-			dubtab[i][ft_strlen(envp->content)] = '\0';
-		dubtab[i][ft_strlen(envp->content) + 1] = '\"';
-		dubtab[i][ft_strlen(envp->content) + 2] = '\0';
+			dubtab[i][ft_strlen(env->content)] = '\0';
+		dubtab[i][ft_strlen(env->content) + 1] = '\"';
+		dubtab[i][ft_strlen(env->content) + 2] = '\0';
 		i++;
-		envp = envp->next;
+		env = env->next;
 	}
 	dubtab[i] = NULL;
 	return (dubtab);
 }
 
-char	*ft_export_no_arg(t_list *envp)
+char	*ft_export_no_arg(t_list *env)
 {
 	char	*ret;
 	char	**tri;
 	int		i;
 
 	i = 0;
-	tri = duptab(envp);
+	tri = dup_lst(env);
 	sort(tri);
 	add_quote(tri);
 	ret = ft_strdup("");
@@ -58,64 +58,90 @@ char	*ft_export_no_arg(t_list *envp)
 	return (ret);
 }
 
-void	print_lst(t_list *envp)
+int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 {
-	while (envp)
+	while (env)
 	{
-		printf("%s\n", (char*)envp->content);
-		envp = envp->next;
+		if (!ft_strncmp(env->content, key, ft_strlen(key)))
+		{
+			if (egual == '=')
+			{
+				free(env->content);
+				env->content = ft_strjoin_free(key, "=");
+				env->content = ft_strjoin_free(env->content, value);
+			}
+			else
+				free(key);
+			free(value);
+			return (0);
+		}
+		env = env->next;
 	}
+	return (1);
 }
 
-int		modif_var_env(char egual, t_list *envp, char *key, char *value)
+int		check_identifier(char *key)
 {
-	int		bool;
+	int		i;
 
-	bool = 0;
-	while (envp)
+	i = 0;
+	if (key[i] != '\0')
 	{
-		if (!ft_strncmp(envp->content, key, ft_strlen(key))
-			&& egual == '=')
+		while (key[i])
 		{
-			bool = 1;
-			free(envp->content);
-			envp->content = ft_strjoin_free(key, "=");
-			envp->content = ft_strjoin_free(envp->content, value);
-			free(value);
-			break ;
+			if (!ft_isalpha(key[i]))
+				return (0);
+			i++;
 		}
-		envp = envp->next;
+		if (key[i] == '\0')
+			return (1);
 	}
-	if (bool == 0)
-		return (1);
 	else
 		return (0);
 }
 
-char	*ft_export(t_list_cmd *args, t_list *envp)
+int		set_keyval(t_list_cmd *args, char **key, char **value, int *exit_status)
+{
+	int		i;
+
+	i = 0;
+	while (args->str[i] && args->str[i] != '=')
+		i++;
+	*key = ft_strndup(args->str, i);
+	if (check_identifier(*key))
+	{
+		if (args->str[i] == '=')
+			*value = ft_strdup(&(args->str[i + 1]));
+		else
+			*value = ft_strdup("");
+		return (1);
+	}
+	else
+	{
+		*exit_status = 1;
+		ft_printf("minishell: export: « %s » : not valid identifier\n", *key);
+		free(*key);
+		return (0);
+	}
+}
+
+char	*ft_export(t_list_cmd *args, t_list *env, int *exit_status)
 {
 	char	*key;
 	char	*value;
-	int		i;
 
+	*exit_status = 0;
 	if (!args || !args->str)
-		return (ft_export_no_arg(envp));
+		return (ft_export_no_arg(env));
 	while (args)
 	{
-		i = 0;
-		while (args->str[i] && args->str[i] != '=')
-			i++;
-		key = ft_strndup(args->str, i);
-		if (args->str[i] == '=')
-			value = ft_strdup(&(args->str[i + 1]));
-		else
-			value = ft_strdup("");
-		if (modif_var_env(args->str[i], envp, key, value))
-		{
-			ft_lstadd_back(&envp, ft_lstnew(ft_strdup(args->str)));
-			free(key);
-			free(value);
-		}
+		if (set_keyval(args, &key, &value, exit_status))
+			if (modif_var_exp(args->str[ft_strlen(key)], env, key, value))
+			{
+				ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));
+				free(key);
+				free(value);
+			}
 		args = args->next;
 	}
 	return (ft_strdup(""));

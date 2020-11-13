@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/27 15:55:25 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/04 16:15:21 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,24 @@ void	sort(char **tri)
 
 	i = 0;
 	j = 1;
-	while (tri[i + 1] != NULL)
+	if (tri[i])
 	{
-		if (ft_strcmp_ex(tri[i], tri[j]) > 0)
+		while (tri[i + 1] != NULL)
 		{
-			tmp = tri[j];
-			tri[j] = tri[i];
-			tri[i] = tmp;
+			if (ft_strcmp_ex(tri[i], tri[j]) > 0)
+			{
+				tmp = tri[j];
+				tri[j] = tri[i];
+					tri[i] = tmp;
 			j = i + 1;
-		}
-		else if (tri[j + 1] == NULL)
+			}
+				else if (tri[j + 1] == NULL)
 		{
-			i++;
-			j = i + 1;
+					i++;
+				j = i + 1;
 		}
-		else
-			j++;
+			else
+				j++;
+		}
 	}
 }

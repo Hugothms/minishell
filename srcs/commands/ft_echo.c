@@ -3,24 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/10/28 15:20:50 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:36:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_echo(t_list_cmd *args)
+int		check_nflag(char *str)
+{
+	int i;
+
+	i = 1;
+	if (!ft_strncmp(str, "-n", 2))
+	{
+		while (str[i] == 'n')
+			i++;
+		if (str[i] != '\0')
+			return (0);
+		else
+			return (1);
+	}
+	else
+		return (0);
+}
+
+char	*ft_echo(t_list_cmd *args, int *exit_status)
 {
 	int		nflag;
 	char	*ret;
 
+	*exit_status = 0;
 	nflag = 0;
 	if (!args || !args->str)
 		return (ft_strdup("\n"));
-	while (!ft_strcmp(args->str, "-n"))
+	while (args && check_nflag(args->str))
 	{
 		nflag = 1;
 		args = args->next;
