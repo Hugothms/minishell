@@ -76,3 +76,11 @@ exit_status to do in:
 -export
 -unset
 
+
+
+As for the exit code,
+Bits 15-8 = Exit code.
+Bit     7 = 1 if a core dump was produced.
+Bits  6-0 = Signal number that killed the process.
+32512 = 0x7F00
+So it didn't die from a signal, a core dump wasn't produced, and it exited with code 127 (0x7F).

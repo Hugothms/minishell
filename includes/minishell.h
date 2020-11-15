@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 13:45:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/15 15:09:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
-# include <dirent.h>
 # include <sys/stat.h>
+# include <dirent.h>
 # include <time.h>
 # include <sys/wait.h>
 # include <stdlib.h>
