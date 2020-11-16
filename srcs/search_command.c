@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 16:14:17 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:13:42 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-void	binary_not_found(char *path, int *ret, int *exit_status)
+void	binary_not_found(char *path, int *ret)
 {
 	struct stat	buf;
 	int			dir;
@@ -37,17 +37,17 @@ void	binary_not_found(char *path, int *ret, int *exit_status)
 	if (dir == 0)
 	{
 		ft_putstr_fd(": Is a directory\n", STDERR);
-		*exit_status = 126;
+		g_glob.exit = 126;
 	}
 	else
 	{
 		ft_putstr_fd(": No such file or directory\n", STDERR);
-		*exit_status = 127;
+		g_glob.exit = 127;
 	}
 	*ret = FAILURE;
 }
 
-void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret, int *exit_status)
+void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 {
 	int		i;
 	int		cpt;
@@ -73,10 +73,10 @@ void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret, int *exit_st
 		ft_free_tab(path);
 	}
 	else
-		binary_not_found(cmd->str, ret, exit_status);
+		binary_not_found(cmd->str, ret);
 }
 
-int		try_path(t_list_cmd *cmd, char **envp, int *exit_status)
+int		try_path(t_list_cmd *cmd, char **envp)
 {
 	int		ret;
 	char	**argv;
@@ -87,15 +87,15 @@ int		try_path(t_list_cmd *cmd, char **envp, int *exit_status)
 	if (cmd->str[0] == '/' || cmd->str[0] == '.')
 	{
 		if (execve(cmd->str, argv, envp))
-			binary_not_found(cmd->str, &ret, exit_status);
+			binary_not_found(cmd->str, &ret);
 	}
 	else
-		try_path2(cmd, envp, argv, &ret, exit_status);
+		try_path2(cmd, envp, argv, &ret);
 	ft_free_tab(argv);
 	return (ret);
 }
 
-int		search_command(t_list_cmd *cmd, t_list *env, int *exit_status)
+int		search_command(t_list_cmd *cmd, t_list *env)
 {
 	int		ret;
 	int		status;
@@ -107,13 +107,13 @@ int		search_command(t_list_cmd *cmd, t_list *env, int *exit_status)
 	envp = lst_to_chartab(env);
 	if (pid == 0)
 	{
-		if (try_path(cmd, envp, exit_status))
-			exit(*exit_status);
+		if (try_path(cmd, envp))
+			exit(g_glob.exit);
 	}
 	else
 	{
-		wait(exit_status);
-		*exit_status = *exit_status >> 8;
+		wait(&g_glob.exit);
+		g_glob.exit = g_glob.exit >> 8;
 		ret = FAILURE;
 	}
 	ft_free_tab(envp);

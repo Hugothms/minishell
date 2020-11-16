@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:38 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:27:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:12:38 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_pwd(int *exit_status)
+char	*ft_pwd()
 {
 	char	*ret;
 
-	*exit_status = 0;
+	g_glob.exit = 0;
 	ret = getcwd(NULL, 0);
 	ret = ft_strjoin_free(ret, "\n");
 	return (ret);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 15:57:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:13:33 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
+void	err_code(t_list_cmd *cmd, t_list *env, int i)
 {
 	int		size;
 	int		pos_sep;
@@ -24,7 +24,7 @@ void	err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 		size = 2;
 	after = ft_strdup(&cmd->str[2]);
 	cmd->str[i] = '\0';
-	var = ft_itoa(*exit_status);
+	var = ft_itoa(g_glob.exit);
 	cmd->str = ft_strjoin_free(cmd->str, var);
 	free(var);
 	cmd->str = ft_strjoin_free(cmd->str, after);
@@ -32,7 +32,7 @@ void	err_code(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 	return ;
 }
 
-void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
+void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i)
 {
 	int		size;
 	int		pos_sep;
@@ -61,7 +61,7 @@ void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i, int *exit_status)
 	cmd->str[i] = '\0';
 }
 
-int		replace_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
+int		replace_var_env(t_list_cmd *cmd, t_list *env)
 {
 	int	i;
 
@@ -73,9 +73,9 @@ int		replace_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) && !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
 			{
 				if (cmd->str[i + 1] == '?')
-					err_code(cmd, env, i, exit_status);
+					err_code(cmd, env, i);
 				else
-					replace_var_env2(cmd, env, i, exit_status);
+					replace_var_env2(cmd, env, i);
 			}
 			i++;
 		}
@@ -84,12 +84,12 @@ int		replace_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
 	return (SUCCESS);
 }
 
-void	replace_all_var_env(t_list_cmd *cmd, t_list *env, int *exit_status)
+void	replace_all_var_env(t_list_cmd *cmd, t_list *env)
 {
 	while (cmd)
 	{
 		if (cmd->flags & F_VAR_ENV)
-			replace_var_env(cmd, env, exit_status);
+			replace_var_env(cmd, env);
 		cmd = cmd->next;
 	}
 }
