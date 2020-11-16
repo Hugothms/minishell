@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:36:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:12:37 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int		check_nflag(char *str)
 		return (0);
 }
 
-char	*ft_echo(t_list_cmd *args, int *exit_status)
+char	*ft_echo(t_list_cmd *args)
 {
 	int		nflag;
 	char	*ret;
 
-	*exit_status = 0;
+	g_glob.exit = 0;
 	nflag = 0;
 	if (!args || !args->str)
 		return (ft_strdup("\n"));

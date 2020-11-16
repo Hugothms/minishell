@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/07 09:27:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:10:32 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	clear_env_lst(t_list *env)
 	env = NULL;
 }
 
-char	*ft_exit(t_list_cmd *args, t_list *env, int *exit_status)
+char	*ft_exit(t_list_cmd *args, t_list *env)
 {
 	int	err;
 
@@ -31,12 +31,12 @@ char	*ft_exit(t_list_cmd *args, t_list *env, int *exit_status)
 	if (args)
 	{
 		if ((err = ft_atoi_strict(args->str)))
-		{		
-			*exit_status = err;
+		{
+			g_glob.exit = err;
 			exit(err);
-		}	
+		}
 	}
-	*exit_status = 0;
+	g_glob.exit = 0;
 	exit(0);
 	return (NULL);
 }

@@ -3,48 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 15:55:54 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 15:22:31 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	not_found(char *cmd, int *exit_status)
+void	not_found(char *cmd)
 {
 	char	*ret;
 
 	ret = ft_strdup("minishell: command not found: ");
 	ret = ft_strjoin_free(ret, cmd);
 	ret = ft_strjoin_free(ret, "\n");
-	*exit_status = CMD_NOT_FOUND;
+	g_glob.exit = CMD_NOT_FOUND;
 	ft_putstr_fd(ret, STDERR);
 	free(ret);
 	exit(CMD_NOT_FOUND);
 }
 
-char	*exec_cmd(t_list_cmd *cmd, t_list *env, int *exit_status)
+char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 {
 	if (!cmd)
 		return (NULL);
 	else if (!ft_strcmp(cmd->str, "echo"))
-		return (ft_echo(cmd->next, exit_status));
+		return (ft_echo(cmd->next));
 	else if (!ft_strcmp(cmd->str, "cd"))
-		return (ft_cd(cmd->next, env, exit_status));
+		return (ft_cd(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "pwd"))
-		return (ft_pwd(exit_status));
+		return (ft_pwd());
 	else if (!ft_strcmp(cmd->str, "export"))
-		return (ft_export(cmd->next, env, exit_status));
+		return (ft_export(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "unset"))
-		return (ft_unset(cmd->next, env, exit_status));
+		return (ft_unset(cmd->next, env));
 	else if (!ft_strcmp(cmd->str, "env"))
-		return (ft_env(env, exit_status));
+		return (ft_env(env));
 	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next, env, exit_status));
-	else if (!search_command(cmd, env, exit_status))
-		not_found(cmd->str, exit_status);
+		return (ft_exit(cmd->next, env));
+	else if (!search_command(cmd, env))
+		not_found(cmd->str);
 	return (NULL);
 }
 
@@ -59,7 +59,7 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_status)
+void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 {
 	t_list_cmd	*cmd;
 	char		*ret;
@@ -114,13 +114,13 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env, int *exit_st
 			{
 				close(fdpipe[0]);
 				lst_line->output = fdpipe[1];
-				if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
+				if ((ret = exec_cmd(lst_line->cmd, env)))
 				{
 					write(fdpipe[1], ret, strlen(ret)+1);
 					free(ret);
 				}
 				else
-					*exit_status = 127;
+					g_glob.exit = 127;
 				close(fdpipe[1]);
 				ft_printf("***End child\n");
 				exit(0);
@@ -196,7 +196,7 @@ void	fusion_cmd(t_list_cmd *cmd)
 	}
 }
 
-void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
+void	exec_line(t_list_line *lst_line, t_list *env)
 {
 	char		*ret;
 	t_list_line	*start;
@@ -205,13 +205,13 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 	int		fd_inold;
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
-	create_pipes_and_semicolon(lst_line, env, exit_status);
+	create_pipes_and_semicolon(lst_line, env);
 	// ft_printf("END PIPES\n");
 	start = lst_line;
 	while (lst_line)
 	{
-		replace_all_var_env(lst_line->cmd, env, exit_status);
-		// ft_printf("exit:%d\n", *exit_status);
+		replace_all_var_env(lst_line->cmd, env);
+		// ft_printf("exit:%d\n", g_glob.exit);
 		fusion_cmd(lst_line->cmd);
 		redirections(lst_line);
 
@@ -236,7 +236,7 @@ void	exec_line(t_list_line *lst_line, t_list *env, int *exit_status)
 
 		// ft_printf("***********************************\n");
 
-		if ((ret = exec_cmd(lst_line->cmd, env, exit_status)))
+		if ((ret = exec_cmd(lst_line->cmd, env)))
 		{
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
@@ -285,14 +285,14 @@ void	set_env(char **envp, t_list **env)
 		fill_env(env);
 }
 
-void	increment_shlvl(t_list *env, int *exit_status)
+void	increment_shlvl(t_list *env)
 {
 	t_list_cmd	*args;
 	char		*tmp;
 	int			sh_lvl;
 
 	args = c_lst_new("$SHLVL", F_VAR_ENV);
-	replace_all_var_env(args, env, exit_status);
+	replace_all_var_env(args, env);
 	sh_lvl = ft_atoi(args->str);
 	c_lst_clear(args);
 	args = c_lst_new("SHLVL", F_NOTHING);
@@ -300,7 +300,7 @@ void	increment_shlvl(t_list *env, int *exit_status)
 	args->str = ft_strjoin_free(args->str, "=");
 	args->str = ft_strjoin_free(args->str, tmp);
 	free(tmp);
-	tmp = ft_export(args, env, exit_status);
+	tmp = ft_export(args, env);
 	free(tmp);
 	c_lst_clear(args);
 }
@@ -309,13 +309,15 @@ void	sighandler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		ft_putstr_fd("-> Crtl + C Pressed <-\n", STDOUT);
-		exit(130);
+		ft_putstr_fd("\n", STDOUT);
+		print_prompt();
+		g_glob.exit = 130;
 	}
 	else if (signum == SIGQUIT)
 	{
-		ft_putstr_fd("-> Crtl + / Pressed <-\n", STDOUT);
-		exit(0);
+		ft_putstr_fd("Quit (core dumped)\n", STDOUT);
+		print_prompt();
+		g_glob.exit = 131;
 	}
 }
 
@@ -324,31 +326,33 @@ int		main(const int argc, char *argv[], char *envp[])
 	char		*input;
 	t_list_line	*lst_line;
 	t_list		*env;
-	int			exit_status;
-	
+
 	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
 		return (FAILURE);
 	}
-	exit_status = 0;
+	g_glob.exit = 0;
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
-	increment_shlvl(env, &exit_status);
-	while (1)
+	increment_shlvl(env);
+	print_prompt();
+	while (get_next_line(&input, 0) > 0)
 	{
-		print_prompt();
-		get_next_line(&input, 0);
 		lst_line = NULL;
 		if (parse_input(input, &lst_line, env))
 		{
-			parse_error(input, lst_line, &exit_status);
+			parse_error(input, lst_line);
 			continue;
 		}
-		exec_line(lst_line, env, &exit_status);
+		exec_line(lst_line, env);
 		free(input);
+		print_prompt();
 	}
-	return (SUCCESS);
+	clear_env_lst(env);
+	free(input);
+	ft_printf("\n");
+	return (g_glob.exit);
 }
