@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 16:03:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 16:15:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,25 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-void	delete_empty_elements(t_list_cmd *cmd)
+void	delete_empty_elements(t_list_cmd **cmd)
 {
 	t_list_cmd	*tmp;
 
-	while (cmd)
+	tmp = *cmd;
+	while (tmp)
 	{
-		if (cmd->next)
+		if (tmp->next)
 		{
-			if (!ft_strlen(cmd->next->str) && !in_quotes(cmd->next))
-				c_lst_remove_next_one(cmd);
+			if (!ft_strlen(tmp->next->str) && !in_quotes(tmp->next))
+				c_lst_remove_next_one(tmp);
 		}
-		cmd = cmd->next;
+		else if (!ft_strlen(tmp->str) && !in_quotes(tmp))
+		{
+			c_lst_free_one(tmp);
+			*cmd = NULL;
+			return ;
+		}
+		(tmp) = (tmp)->next;
 	}
 }
 
@@ -145,9 +152,12 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 	if (delete_backslashes(cmd, env))
 		return (FAILURE);
 	// ft_printf("OK\n");
-	delete_empty_elements(cmd);
-	l_lst_add_back(lst_line, l_lst_new(cmd));
-	if (split_cmd(lst_line, cmd, 0))
-		return (FAILURE);
+	delete_empty_elements(&cmd);
+	if (cmd)
+	{
+		l_lst_add_back(lst_line, l_lst_new(cmd));
+		if (split_cmd(lst_line, cmd, 0))
+			return (FAILURE);
+	}
 	return (SUCCESS);
 }

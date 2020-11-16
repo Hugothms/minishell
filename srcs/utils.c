@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 15:59:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 12:29:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,17 @@ void	add_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 {
 	char *str;
 
-	if (size <= 0)
+	if (size < 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
-	&& ft_in_charset(*input, WSP))
-		input++;
-	str = ft_strndup(input, size);
+	else if (size == 0)
+		str = ft_strdup("");
+	else
+	{
+		while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
+		&& ft_in_charset(*input, WSP))
+			input++;
+		str = ft_strndup(input, size);
+	}
 	c_lst_add_back(cmd, c_lst_new(str, flags));
 	free(str);
 }
