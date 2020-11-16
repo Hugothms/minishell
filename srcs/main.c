@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 14:15:41 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/16 15:22:31 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,18 +307,17 @@ void	increment_shlvl(t_list *env)
 
 void	sighandler(int signum)
 {
-	// printf("SIGNAL PUSH ID : %d\n", signum);
 	if (signum == SIGINT)
 	{
-
 		ft_putstr_fd("\n", STDOUT);
 		print_prompt();
-		g_glob.exit = 666;
+		g_glob.exit = 130;
 	}
 	else if (signum == SIGQUIT)
 	{
-		ft_putstr_fd("-> Crtl + / Pressed <-\n", STDOUT);
-		exit(0);
+		ft_putstr_fd("Quit (core dumped)\n", STDOUT);
+		print_prompt();
+		g_glob.exit = 131;
 	}
 }
 
@@ -339,10 +338,9 @@ int		main(const int argc, char *argv[], char *envp[])
 	set_env(envp, &env);
 	ft_putstr(WELCOME_MSG);
 	increment_shlvl(env);
-	while (1)
+	print_prompt();
+	while (get_next_line(&input, 0) > 0)
 	{
-		print_prompt();
-		get_next_line(&input, 0);
 		lst_line = NULL;
 		if (parse_input(input, &lst_line, env))
 		{
@@ -351,6 +349,10 @@ int		main(const int argc, char *argv[], char *envp[])
 		}
 		exec_line(lst_line, env);
 		free(input);
+		print_prompt();
 	}
-	return (SUCCESS);
+	clear_env_lst(env);
+	free(input);
+	ft_printf("\n");
+	return (g_glob.exit);
 }

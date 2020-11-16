@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 13:59:16 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:53:00 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ char					**lst_to_strs(t_list_cmd *cmd);
 char					**lst_to_chartab(t_list *env);
 void					err_code(t_list_cmd *cmd, t_list *env, int i);
 void					modif_var_env(t_list *env, char *key, char *new_value);
+void					clear_env_lst(t_list *env);
 
 /*
 ** list_cmd.c
