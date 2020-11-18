@@ -6,24 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:16:10 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 17:04:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 15:51:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
-
-int			ft_in_charset(char c, char const *charset)
-{
-	int	i_charset;
-
-	i_charset = 0;
-	while (charset[i_charset])
-	{
-		if (c == charset[i_charset++])
-			return (1);
-	}
-	return (0);
-}
 
 static int	*count_lengths(int *words_len, const char *str, char *charset)
 {
