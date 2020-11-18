@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 16:44:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:23:45 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,4 +150,15 @@ void	modif_var_env(t_list *env, char *key, char *new_value)
 		}
 		env = env->next;
 	}
+}
+
+char	*find_var_env(t_list *env, char *var)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, var, ft_strlen(var)))
+			return (env->content);
+		env = env->next;
+	}
+	return (NULL);
 }
