@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:29:35 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 15:50:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-int		count(int size, char **strs, char *sep)
+static int	count(int size, char **strs, char *sep)
 {
 	int	i;
 	int	j;
@@ -35,7 +35,7 @@ int		count(int size, char **strs, char *sep)
 	return ((k * (size - 1)) + cpt + 1);
 }
 
-char	*join(int size, char **strs, char *res, char *sep)
+static char	*join(int size, char **strs, char *res, char *sep)
 {
 	int	l;
 	int	i;
@@ -60,7 +60,7 @@ char	*join(int size, char **strs, char *res, char *sep)
 	return (res);
 }
 
-char	*ft_strjoin_sep(int size, char **strs, char *sep)
+char		*ft_strjoin_sep(int size, char **strs, char *sep)
 {
 	char	*res;
 
