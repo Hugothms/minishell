@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 16:49:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 16:53:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static char	*format_var_env(t_list *env, int size)
 			ft_strcpy(&ret[i - 1], &ret[i--]);
 		i++;
 	}
-	ft_printf("str:%s\n", ret);
 	return (ret);
 }
 
