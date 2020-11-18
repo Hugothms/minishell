@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 15:43:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:26:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,8 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	while (lst_line)
 	{
 		replace_all_var_env(lst_line->cmd, env);
+		// split_cmd(&lst_line, lst_line->cmd, 0);
+		// delete_empty_elements(&(lst_line->cmd));
 		// ft_printf("exit:%d\n", g_glob.exit);
 		fusion_cmd(lst_line->cmd);
 		if (delete_backslashes(lst_line->cmd, env))

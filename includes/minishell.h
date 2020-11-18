@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 14:03:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:21:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ char					*find_var_env(t_list *env, char *var);
 ** parse.c
 */
 int						delete_backslashes(t_list_cmd *cmd, t_list *env);
+int						split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i);
+void					delete_empty_elements(t_list_cmd **cmd);
 int						parse_input(char *line, t_list_line **cmd, t_list *env);
 
 /*

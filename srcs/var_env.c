@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 16:53:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:12:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void		err_code(t_list_cmd *cmd, t_list *env, int i)
 	free(after);
 }
 
-static char	*format_var_env(t_list *env, int size)
+static char	*format_var_env(t_list *env, int size, int space_begin)
 {
 	char	*ret;
 	char	*tmp;
 	int		i;
 
 	ret = ft_strtrim(&((char *)env->content)[size], WSP);
-	if (ft_in_charset(((char *)env->content)[size], WSP))
+	if (space_begin && ft_in_charset(((char *)env->content)[size], WSP))
 	{
 		tmp = ft_strjoin(" ", ret);
 		free(ret);
@@ -47,8 +47,11 @@ static char	*format_var_env(t_list *env, int size)
 	i = 1;
 	while (ret[i])
 	{
-		if (ft_in_charset(ret[i], WSP) && ft_in_charset(ret[i - 1], WSP))
-			ft_strcpy(&ret[i - 1], &ret[i--]);
+		if (ft_in_charset(ret[i - 1], WSP) && ft_in_charset(ret[i], WSP))
+		{
+			ft_strcpy(&ret[i - 1], &ret[i]);
+			i--;
+		}
 		i++;
 	}
 	return (ret);
@@ -61,7 +64,7 @@ static void	replace_var_env(t_list_cmd *cmd, t_list *env, int *i, int size)
 
 	after = ft_strdup(&cmd->str[*i + size]);
 	cmd->str[*i] = '\0';
-	tmp = format_var_env(env ,size);
+	tmp = format_var_env(env ,size, *i);
 	cmd->str = ft_strjoin_free(cmd->str, tmp);
 	free(tmp);
 	size = ft_strlen(cmd->str);
