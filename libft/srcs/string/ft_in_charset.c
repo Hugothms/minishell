@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_in_charset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 16:04:54 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 16:52:51 by hthomas          ###   ########.fr       */
+/*   Created: 2020/11/18 15:51:36 by hthomas           #+#    #+#             */
+/*   Updated: 2020/11/18 15:56:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
-
-char	*ft_strdup(char const *src)
+int			ft_in_charset(char const c, char const *charset)
 {
-	int		len;
-	char	*cpy;
+	int	i_charset;
 
-	if (!src)
-		return (NULL);
-	len = ft_strlen(src);
-	if (!(cpy = malloc((len + 1) * sizeof(char))))
-		return (0);
-	ft_memcpy(cpy, src, len);
-	cpy[len] = '\0';
-	return (cpy);
+	i_charset = 0;
+	while (charset[i_charset])
+	{
+		if (c == charset[i_charset++])
+			return (1);
+	}
+	return (0);
 }

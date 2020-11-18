@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:31 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/09 12:36:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:12:37 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_env(t_list *env, int *exit_status)
+char	*ft_env(t_list *env)
 {
 	char	*ret;
 	int		i;
 
-	*exit_status = 0;
+	g_glob.exit = 0;
 	ret = ft_strdup("");
 	i = 0;
 	while (env)

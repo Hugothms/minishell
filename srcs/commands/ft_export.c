@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/12 10:36:49 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:12:38 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		check_identifier(char *key)
 		return (0);
 }
 
-int		set_keyval(t_list_cmd *args, char **key, char **value, int *exit_status)
+int		set_keyval(t_list_cmd *args, char **key, char **value)
 {
 	int		i;
 
@@ -118,24 +118,24 @@ int		set_keyval(t_list_cmd *args, char **key, char **value, int *exit_status)
 	}
 	else
 	{
-		*exit_status = 1;
+		g_glob.exit = 1;
 		ft_printf("minishell: export: « %s » : not valid identifier\n", *key);
 		free(*key);
 		return (0);
 	}
 }
 
-char	*ft_export(t_list_cmd *args, t_list *env, int *exit_status)
+char	*ft_export(t_list_cmd *args, t_list *env)
 {
 	char	*key;
 	char	*value;
 
-	*exit_status = 0;
+	g_glob.exit = 0;
 	if (!args || !args->str)
 		return (ft_export_no_arg(env));
 	while (args)
 	{
-		if (set_keyval(args, &key, &value, exit_status))
+		if (set_keyval(args, &key, &value))
 			if (modif_var_exp(args->str[ft_strlen(key)], env, key, value))
 			{
 				ft_lstadd_back(&env, ft_lstnew(ft_strdup(args->str)));

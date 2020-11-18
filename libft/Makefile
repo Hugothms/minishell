@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 11:49:24 by hthomas           #+#    #+#              #
-#    Updated: 2020/10/20 13:07:34 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/11/18 16:08:51 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,8 @@ SRCS		+=	srcs/numeric/ft_nbrlen.c			\
 				srcs/numeric/ft_min_float.c			\
 
 # string
-SRCS		+=	srcs/string/ft_is_from_charset.c	\
+SRCS		+=	srcs/string/ft_in_charset.c			\
+				srcs/string/ft_is_from_charset.c	\
 				srcs/string/ft_strlen.c				\
 				srcs/string/ft_strdup.c				\
 				srcs/string/ft_strndup.c			\

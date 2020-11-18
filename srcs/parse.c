@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 16:03:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 14:01:40 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 			if (cmd->str[i] == '\\')
 			{
 				if ((cmd->flags & F_SIMPLE_QUOTE ||\
-				(cmd->flags & F_DOUBLE_QUOTE)) && cmd->str[i + 1] == '\'')
+				(cmd->flags & F_DOUBLE_QUOTE)) && (ft_isalpha(cmd->str[i + 1]) || cmd->str[i+ 1] == '\''))
 				{
 					i++;
 					continue;
@@ -41,7 +41,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
+int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 	char	*tmp;
@@ -52,7 +52,7 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 		while (cmd->str && cmd->str[i])
 		{
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
-			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
+			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32 && !(cmd->flags & F_VAR_ENV))
 				cmd->flags += F_VAR_ENV;
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) &&\
 			!in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
@@ -68,18 +68,25 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-void	delete_empty_elements(t_list_cmd *cmd)
+void	delete_empty_elements(t_list_cmd **cmd)
 {
 	t_list_cmd	*tmp;
 
-	while (cmd)
+	tmp = *cmd;
+	while (tmp)
 	{
-		if (cmd->next)
+		if (tmp->next)
 		{
-			if (!ft_strlen(cmd->next->str) && !in_quotes(cmd->next))
-				c_lst_remove_next_one(cmd);
+			if (!ft_strlen(tmp->next->str) && !in_quotes(tmp->next))
+				c_lst_remove_next_one(tmp);
 		}
-		cmd = cmd->next;
+		else if (!ft_strlen(tmp->str) && !in_quotes(tmp))
+		{
+			c_lst_free_one(tmp);
+			*cmd = NULL;
+			return ;
+		}
+		(tmp) = (tmp)->next;
 	}
 }
 
@@ -131,7 +138,7 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
-	replace_dollar_and_tild(cmd, env);
+	flag_dollar_and_replace_tild(cmd, env);
 
 	// ft_printf("CMD:\n-----------------\n");
 	// t_list_cmd	*copy = cmd;
@@ -142,12 +149,15 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 	// }
 	// ft_printf("-----------------\n\n");
 
-	if (delete_backslashes(cmd, env))
-		return (FAILURE);
+	// if (delete_backslashes(cmd, env))
+	// 	return (FAILURE);
 	// ft_printf("OK\n");
-	delete_empty_elements(cmd);
-	l_lst_add_back(lst_line, l_lst_new(cmd));
-	if (split_cmd(lst_line, cmd, 0))
-		return (FAILURE);
+	delete_empty_elements(&cmd);
+	if (cmd)
+	{
+		l_lst_add_back(lst_line, l_lst_new(cmd));
+		if (split_cmd(lst_line, cmd, 0))
+			return (FAILURE);
+	}
 	return (SUCCESS);
 }

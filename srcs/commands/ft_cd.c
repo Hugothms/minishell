@@ -6,22 +6,11 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/12 13:03:29 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:25:02 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*find_var_env(t_list *env, char *var)
-{
-	while (env)
-	{
-		if (!ft_strncmp(env->content, var, ft_strlen(var)))
-			return (env->content);
-		env = env->next;
-	}
-	return (NULL);
-}
 
 void	modif_oldpwd_pwd(t_list *env)
 {
@@ -33,11 +22,11 @@ void	modif_oldpwd_pwd(t_list *env)
 	free(pwd);
 }
 
-char	*error_cd(char *arg, int *exit_status, int err_status)
+char	*error_cd(char *arg, int err_status)
 {
 	char *ret;
 
-	*exit_status = 1;
+	g_glob.exit = 1;
 	ret = ft_strdup("minishell: cd: ");
 	if (err_status > 0)
 		ret = ft_strjoin_free(ret, arg);
@@ -47,46 +36,69 @@ char	*error_cd(char *arg, int *exit_status, int err_status)
 		ret = ft_strjoin_free(ret, ": No such file or directory");
 	else if (err_status == 2)
 		ret = ft_strjoin_free(ret, ": Not a directory");
+	else if (err_status == 3)
+		ret = ft_strjoin_free(ret, " Not set");
 	ret = ft_strjoin_free(ret, "\n");
 	return (ret);
 }
 
-char	*cd_oldpwd(t_list *env, int *ex_st, t_list_cmd *arg, struct stat *stats)
+char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 {
 	char *path;
 	char *ret;
 
-	path = ft_strdup(&find_var_env(env, "OLDPWD=")[7]);
-	if (path[0] == '\0')
+	if (find_var_env(env, "OLDPWD=") && find_var_env(env, "OLDPWD=")[7] != '\0')
 	{
-		ret = ft_strdup("minishell: cd: OLDPWD not set");
-		*ex_st = 1;
+		path = ft_strdup(&find_var_env(env, "OLDPWD=")[7]);
+		if (stat(path, stats) != 0)
+			return (error_cd(path, 1));
+		else if (chdir(path))
+			return (error_cd(path, 2));
+		modif_oldpwd_pwd(env);
+		ret = ft_strjoin_free(path, "\n");
 	}
-	else if (stat(path, stats) != 0)
-		return (error_cd(path, ex_st, 1));
-	else if (chdir(path))
-		return (error_cd(path, ex_st, 2));
-	modif_oldpwd_pwd(env);
-	ret = ft_strjoin_free(path, "\n");
+	else
+	{
+		ret = ft_strdup("minishell: cd: OLDPWD not set\n");
+		g_glob.exit = 1;
+	}
 	return (ret);
 }
 
-char	*ft_cd(t_list_cmd *args, t_list *env, int *exit_status)
+int		test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
 {
-	char		*ret;
+	if (stat(&find_var_env(env, "HOME=")[5], stats) != 0)
+		return (1);
+	else if (chdir(&find_var_env(env, "HOME=")[5]))
+		return (2);
+	else
+		return (0);
+}
+
+char	*ft_cd(t_list_cmd *args, t_list *env)
+{
 	struct stat	stats;
 
-	*exit_status = 0;
-	if (!args || !args->str)
-		chdir(&find_var_env(env, "HOME=")[5]);
+	g_glob.exit = 0;
+	if ((!args || !args->str))
+	{
+		if (chdir(&find_var_env(env, "HOME=")[5]))
+			if (find_var_env(env, "HOME=") == NULL)
+				return (error_cd("« HOME »", 3));
+			else if (find_var_env(env, "HOME=")[5] == '\0')
+				return (ft_strdup(""));
+			else if (test_cd_home(args, env, &stats))
+				return (error_cd(&find_var_env(env, "HOME=")[5],
+							test_cd_home(args, env, &stats)));
+	}
 	else if (c_lst_size(args) > 1)
-		return (error_cd(args->str, exit_status, 0));
+		return (error_cd(args->str, 0));
 	else if (!ft_strcmp(args->str, "-"))
-		return (cd_oldpwd(env, exit_status, args, &stats));
+		return (cd_oldpwd(env, args, &stats));
 	else if (stat(args->str, &stats) != 0)
-		return (error_cd(args->str, exit_status, 1));
+		return (error_cd(args->str, 1));
 	else if (chdir(args->str))
-		return (error_cd(args->str, exit_status, 2));
+		return (error_cd(args->str, 2));
 	modif_oldpwd_pwd(env);
 	return (ft_strdup(""));
 }

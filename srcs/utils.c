@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/13 15:59:09 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/18 17:23:45 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,17 @@ void	add_cmd(char *input, t_list_cmd **cmd, int size, int flags)
 {
 	char *str;
 
-	if (size <= 0)
+	if (size < 0)
 		return ;
-	while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
-	&& ft_in_charset(*input, WSP))
-		input++;
-	str = ft_strndup(input, size);
+	else if (size == 0)
+		str = ft_strdup("");
+	else
+	{
+		while (!(flags & F_SIMPLE_QUOTE) && !(flags & F_DOUBLE_QUOTE)\
+		&& ft_in_charset(*input, WSP))
+			input++;
+		str = ft_strndup(input, size);
+	}
 	c_lst_add_back(cmd, c_lst_new(str, flags));
 	free(str);
 }
@@ -60,9 +65,9 @@ int		in_quotes(t_list_cmd *cmd)
 	(cmd->flags & F_DOUBLE_QUOTE));
 }
 
-void	parse_error(char *input, t_list_line *lst_line, int *exit_status)
+void	parse_error(char *input, t_list_line *lst_line)
 {
-	*exit_status = 1;
+	g_glob.exit = 1;
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
 	l_lst_clear(lst_line);
 	free(input);
@@ -145,4 +150,15 @@ void	modif_var_env(t_list *env, char *key, char *new_value)
 		}
 		env = env->next;
 	}
+}
+
+char	*find_var_env(t_list *env, char *var)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, var, ft_strlen(var)))
+			return (env->content);
+		env = env->next;
+	}
+	return (NULL);
 }
