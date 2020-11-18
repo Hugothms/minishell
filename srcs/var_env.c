@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 14:13:33 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:27:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,34 @@ void	err_code(t_list_cmd *cmd, t_list *env, int i)
 	return ;
 }
 
-void	replace_var_env2(t_list_cmd *cmd, t_list *env, int i)
+
+void	replace_var_env(t_list_cmd *cmd, t_list *env, int *i)
 {
 	int		size;
-	int		pos_sep;
 	char	*after;
 
 	while (env)
 	{
-		pos_sep = 1;
-		while (cmd->str[pos_sep] && (ft_isalnum(cmd->str[pos_sep])))
-			pos_sep++;
-		size = ft_strlen(&(cmd->str[i]));
-		if (pos_sep && pos_sep < size)
-			size = pos_sep;
-		if (!ft_strncmp(env->content, &(cmd->str[i + 1]), size - 1) && ((char *)env->content)[size - 1] == '=')
+		size = 1;
+		while (ft_isalnum(cmd->str[*i + size]))
+			size++;
+		if (!ft_strncmp(env->content, &(cmd->str[*i + 1]), size - 1) && ((char *)env->content)[size - 1] == '=')
 		{
-			after = ft_strdup(&cmd->str[pos_sep]);
-			cmd->str[i] = '\0';
+			after = ft_strdup(&cmd->str[*i + size]);
+			cmd->str[*i] = '\0';
 			cmd->str = ft_strjoin_free(cmd->str, &((char *)env->content)[size]);
-			if (pos_sep)
-				cmd->str = ft_strjoin_free(cmd->str, after);
+			size = ft_strlen(cmd->str);
+			cmd->str = ft_strjoin_free(cmd->str, after);
+			*i = size - 1;
 			free(after);
 			return ;
 		}
 		env = env->next;
 	}
-	cmd->str[i] = '\0';
+	cmd->str[*i] = '\0';
 }
 
-int		replace_var_env(t_list_cmd *cmd, t_list *env)
+void	replace_all_var_env(t_list_cmd *cmd, t_list *env)
 {
 	int	i;
 
@@ -75,21 +73,10 @@ int		replace_var_env(t_list_cmd *cmd, t_list *env)
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env, i);
 				else
-					replace_var_env2(cmd, env, i);
+					replace_var_env(cmd, env, &i);
 			}
 			i++;
 		}
-		cmd = cmd->next;
-	}
-	return (SUCCESS);
-}
-
-void	replace_all_var_env(t_list_cmd *cmd, t_list *env)
-{
-	while (cmd)
-	{
-		if (cmd->flags & F_VAR_ENV)
-			replace_var_env(cmd, env);
 		cmd = cmd->next;
 	}
 }

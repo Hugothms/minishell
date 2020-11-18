@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 16:42:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/17 15:23:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
+int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 	char	*tmp;
@@ -52,7 +52,7 @@ int		replace_dollar_and_tild(t_list_cmd *cmd, t_list *env)
 		while (cmd->str && cmd->str[i])
 		{
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
-			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
+			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32 && !(cmd->flags & F_VAR_ENV))
 				cmd->flags += F_VAR_ENV;
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) &&\
 			!in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
@@ -138,7 +138,7 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 	cmd = NULL;
 	if (input_to_command(input, &cmd))
 		return (FAILURE);
-	replace_dollar_and_tild(cmd, env);
+	flag_dollar_and_replace_tild(cmd, env);
 
 	// ft_printf("CMD:\n-----------------\n");
 	// t_list_cmd	*copy = cmd;
