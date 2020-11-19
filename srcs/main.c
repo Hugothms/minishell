@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:26:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/19 17:13:38 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ void	print_prompt(void)
 
 	ft_putstr_fd("\xE2\x9E\xA1 ", STDOUT);
 	pwd = getcwd(NULL, 0);
-	ft_putstr_fd(pwd, STDOUT);
+	if (pwd != NULL)
+		ft_putstr_fd(pwd, STDOUT);
+	else
+		ft_putstr_fd(g_glob.path, STDOUT);
 	free(pwd);
 	ft_putstr_fd("$ ", STDOUT);
 }
@@ -340,6 +343,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		return (FAILURE);
 	}
 	g_glob.exit = 0;
+	g_glob.path = getcwd(NULL, 0);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
@@ -358,6 +362,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 	}
+	free(g_glob.path);
 	clear_env_lst(env);
 	free(input);
 	ft_printf("\n");

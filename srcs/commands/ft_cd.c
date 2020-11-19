@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/18 17:25:02 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/19 17:04:14 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,15 @@ void	modif_oldpwd_pwd(t_list *env)
 
 	pwd = getcwd(NULL, 0);
 	modif_var_env(env, "OLDPWD", &find_var_env(env, "PWD=")[4]);
+	if (!pwd)
+	{
+		free(pwd);
+		pwd = ft_strdup(&find_var_env(env, "PWD=")[4]);
+		pwd = ft_strjoin_free(pwd, "/..");
+	}
 	modif_var_env(env, "PWD", pwd);
+	free(g_glob.path);
+	g_glob.path = ft_strdup(pwd);
 	free(pwd);
 }
 
