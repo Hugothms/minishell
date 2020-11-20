@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:21:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/20 10:50:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@
 */
 # define SUCCESS		0
 # define FAILURE		-1
+
+/*
+** Exit codes
+*/
 # define CMD_NOT_FOUND	127
 # define SYNTAX_ERROR	1
 
@@ -54,18 +58,18 @@
 /*
 ** Flags cmd
 */
-# define F_NOTHING		0b00000000
-# define F_SIMPLE_QUOTE	0b00000001
-# define F_DOUBLE_QUOTE	0b00000010
-# define F_NO_SP_AFTER	0b00000100
-# define F_SEMICOLON	0b00001000
-# define F_PIPE			0b00010000
-# define F_INPUT		0b00100000
-# define F_OUTPUT		0b01000000
-# define F_APPEND		0b10000000
-# define F_REDIRS		0b11100000
-# define F_SPECIALS		0b11111000
-# define F_VAR_ENV		0b100000000
+# define F_NOTHING		0
+# define F_SIMPLE_QUOTE	1
+# define F_DOUBLE_QUOTE	2
+# define F_NO_SP_AFTER	4
+# define F_SEMICOLON	8
+# define F_PIPE			16
+# define F_INPUT		32
+# define F_OUTPUT		64
+# define F_APPEND		128
+# define F_REDIRS		F_INPUT + F_OUTPUT + F_APPEND
+# define F_SPECIALS		F_REDIRS + F_SEMICOLON +F_PIPE
+# define F_VAR_ENV		256
 
 typedef struct			s_list_cmd
 {
