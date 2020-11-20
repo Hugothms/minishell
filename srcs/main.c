@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:26:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/20 12:24:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,25 @@ void	fusion_cmd(t_list_cmd *cmd)
 	}
 }
 
+void	reparse(t_list_cmd *bla)
+{
+	t_list_cmd	*cmd;
+	char		*tmp;
+
+	cmd = bla;
+	while (cmd)
+	{
+		tmp = ft_strdup(cmd->str);
+		c_lst_clear(cmd);
+		cmd = NULL;
+		if (input_to_command(tmp, &cmd))
+			return ;
+		free(tmp);
+		cmd = cmd->next;
+	}
+	fusion_cmd(cmd);
+}
+
 void	exec_line(t_list_line *lst_line, t_list *env)
 {
 	char		*ret;
@@ -210,11 +229,10 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	start = lst_line;
 	while (lst_line)
 	{
+		// ft_printf("#####################\n");
+		// ft_print_tabstr(cmd_to_strs(lst_line->cmd));
 		replace_all_var_env(lst_line->cmd, env);
-		// split_cmd(&lst_line, lst_line->cmd, 0);
-		// delete_empty_elements(&(lst_line->cmd));
-		// ft_printf("exit:%d\n", g_glob.exit);
-		fusion_cmd(lst_line->cmd);
+		// reparse(lst_line->cmd);
 		if (delete_backslashes(lst_line->cmd, env))
 		{
 			ft_putstr_fd("minishell: syntax error\n", STDERR);
@@ -222,20 +240,20 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 		}
 		redirections(lst_line);
 
-		// char **fdpipe = lst_to_strs(lst_line->cmd);
+		// char **fdpipe = cmd_to_strs(lst_line->cmd);
 		// ft_printf("****************\n", 0);
 		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("****************flags:%d\n", lst_line->cmd->flags);
 		// ft_printf("*********************************************\n", 0);
 		// ft_free_fdpipe(fdpipe);
 
-		// fdpipe = lst_to_strs(lst_line->next->cmd);
+		// fdpipe = cmd_to_strs(lst_line->next->cmd);
 		// ft_printf("***********************************\n");
 		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->cmd->flags);
 		// ft_free_fdpipe(fdpipe);
 
-		// fdpipe = lst_to_strs(lst_line->next->next->cmd);
+		// fdpipe = cmd_to_strs(lst_line->next->next->cmd);
 		// ft_printf("***********************************\n");
 		// ft_print_fdpipestr(fdpipe);
 		// ft_printf("**************************%d\n", lst_line->next->next->cmd->flags);
