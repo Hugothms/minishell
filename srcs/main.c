@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/21 12:11:24 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/21 12:17:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ t_list_cmd	*split_add_back(t_list_cmd *cmd,  void (*del)(t_list_cmd *), t_list_c
 	return (cmd);
 }
 
-t_list_cmd	*reparse(t_list_cmd *cmd)
+t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
 {
 	t_list_cmd	*start;
 
@@ -231,7 +231,7 @@ t_list_cmd	*reparse(t_list_cmd *cmd)
 	return (start);
 }
 
-// t_list_cmd	*reparse1(t_list_cmd *cmd)
+// t_list_cmd	*reparse_var_env1(t_list_cmd *cmd)
 // {
 // 	t_list_cmd	*start;
 // 	// t_list_cmd	*tmp;
@@ -260,7 +260,7 @@ t_list_cmd	*reparse(t_list_cmd *cmd)
 // 	return (start);
 // }
 
-// t_list_cmd	*reparse2(t_list_cmd *cmd)
+// t_list_cmd	*reparse_var_env2(t_list_cmd *cmd)
 // {
 // 	t_list_cmd	*start;
 // 	t_list_cmd	*tmp;
@@ -309,7 +309,7 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 		// }
 		replace_all_var_env(lst_line->cmd, env);
 		fusion_cmd(lst_line->cmd);
-		lst_line->cmd = reparse(lst_line->cmd);
+		lst_line->cmd = reparse_var_env(lst_line->cmd);
 		if (delete_backslashes(lst_line->cmd, env))
 		{
 			ft_putstr_fd("minishell: syntax error\n", STDERR);
