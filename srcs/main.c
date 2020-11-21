@@ -6,24 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 12:24:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/21 12:11:24 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	not_found(char *cmd)
-{
-	char	*ret;
-
-	ret = ft_strdup("minishell: command not found: ");
-	ret = ft_strjoin_free(ret, cmd);
-	ret = ft_strjoin_free(ret, "\n");
-	g_glob.exit = CMD_NOT_FOUND;
-	ft_putstr_fd(ret, STDERR);
-	free(ret);
-	exit(CMD_NOT_FOUND);
-}
 
 char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 {
@@ -46,17 +33,6 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 	else if (!search_command(cmd, env))
 		not_found(cmd->str);
 	return (NULL);
-}
-
-void	print_prompt(void)
-{
-	char	*pwd;
-
-	ft_putstr_fd("\xE2\x9E\xA1 ", STDOUT);
-	pwd = getcwd(NULL, 0);
-	ft_putstr_fd(pwd, STDOUT);
-	free(pwd);
-	ft_putstr_fd("$ ", STDOUT);
 }
 
 void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
@@ -181,6 +157,28 @@ void	redirections(t_list_line *lst_line)
 	}
 }
 
+int 	add_flags(int flags1, int flags2)
+{
+	int	sum;
+	int	max;
+	int	size;
+
+	size = 0;
+	max = ft_max_int(flags1, flags2);
+	while (max)
+	{
+		max = max >> 1;
+		size++;
+	}
+	sum = 0;
+	while (size + 1)
+	{
+		sum += (flags1 >> size == 1 | flags2 >> size == 1) << size;
+		size--;
+	}
+	return (sum);
+}
+
 void	fusion_cmd(t_list_cmd *cmd)
 {
 	while (cmd)
@@ -190,30 +188,104 @@ void	fusion_cmd(t_list_cmd *cmd)
 			if (!(cmd->next->flags & F_NO_SP_AFTER))
 				cmd->flags -= F_NO_SP_AFTER;
 			cmd->str = ft_strjoin_free(cmd->str, cmd->next->str);
+			cmd->flags = add_flags(cmd->flags, cmd->next->flags);
 			c_lst_remove_next_one(cmd);
 		}
 		cmd = cmd->next;
 	}
 }
 
-void	reparse(t_list_cmd *bla)
+t_list_cmd	*split_add_back(t_list_cmd *cmd,  void (*del)(t_list_cmd *), t_list_cmd *to_del)
 {
-	t_list_cmd	*cmd;
-	char		*tmp;
+	t_list_cmd	*next;
+	char		**tab;
+	int			i;
 
-	cmd = bla;
+	next = cmd->next;
+	tab = ft_split_set(cmd->str, WSP);
+	del(to_del);
+	cmd = NULL;
+	i = 0;
+	while (tab[i])
+		c_lst_add_back(&cmd, c_lst_new(tab[i++], F_NOTHING));
+	ft_free_tab(tab);
+	c_lst_add_back(&cmd, next);
+	return (cmd);
+}
+
+t_list_cmd	*reparse(t_list_cmd *cmd)
+{
+	t_list_cmd	*start;
+
+	start = NULL;
 	while (cmd)
 	{
-		tmp = ft_strdup(cmd->str);
-		c_lst_clear(cmd);
-		cmd = NULL;
-		if (input_to_command(tmp, &cmd))
-			return ;
-		free(tmp);
+		if (cmd->flags & F_VAR_ENV)
+			cmd = split_add_back(cmd, c_lst_free_one, cmd);
+		if (cmd->next && cmd->next->flags & F_VAR_ENV)
+			cmd->next = split_add_back(cmd->next, c_lst_remove_next_one, cmd);
+		if (!start)
+			start = cmd;
 		cmd = cmd->next;
 	}
-	fusion_cmd(cmd);
+	return (start);
 }
+
+// t_list_cmd	*reparse1(t_list_cmd *cmd)
+// {
+// 	t_list_cmd	*start;
+// 	// t_list_cmd	*tmp;
+// 	start = NULL;
+// 	while (cmd)
+// 	{
+// 		if (cmd->flags & F_VAR_ENV) // or !(cmd->flags & F_DOUBLE_QUOTE && cmd->flags & F_DOUBLE_QUOTE)
+// 		{
+// 			t_list_cmd *next = cmd->next;
+// 			char **tab = ft_split_set(cmd->str, WSP);
+// 			c_lst_free_one(cmd);
+// 			cmd = NULL;
+// 			while (*tab)
+// 				c_lst_add_back(&cmd, c_lst_new(*tab++, F_NOTHING));
+// 			// tmp = NULL;
+// 			// if (input_to_command(cmd->str, &tmp))
+// 			// 	return (NULL);
+// 			// c_lst_free_one(cmd);
+// 			// cmd = tmp;
+// 			c_lst_add_back(&cmd, next);
+// 		}
+// 		if (!start)
+// 			start = cmd;
+// 		cmd = cmd->next;
+// 	}
+// 	return (start);
+// }
+
+// t_list_cmd	*reparse2(t_list_cmd *cmd)
+// {
+// 	t_list_cmd	*start;
+// 	t_list_cmd	*tmp;
+// 	char		*str;
+// 	start = NULL;
+// 	while (cmd)
+// 	{
+// 		if (cmd->flags & F_VAR_ENV) // or !(cmd->flags & F_DOUBLE_QUOTE && cmd->flags & F_DOUBLE_QUOTE)
+// 		{
+// 			t_list_cmd *next = cmd->next;
+// 			str = ft_strdup(cmd->str);
+// 			tmp = NULL;
+// 			if (input_to_command(str, &tmp))
+// 				return (NULL);
+// 			c_lst_free_one(cmd);
+// 			cmd = tmp;
+// 			c_lst_add_back(&cmd, next);
+// 			free(str);
+// 		}
+// 		if (!start)
+// 			start = cmd;
+// 		cmd = cmd->next;
+// 	}
+// 	return (start);
+// }
 
 void	exec_line(t_list_line *lst_line, t_list *env)
 {
@@ -225,14 +297,19 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
 	create_pipes_and_semicolon(lst_line, env);
-	// ft_printf("END PIPES\n");
 	start = lst_line;
 	while (lst_line)
 	{
-		// ft_printf("#####################\n");
-		// ft_print_tabstr(cmd_to_strs(lst_line->cmd));
+		// ft_printf("--------1--------\n");
+		// t_list_cmd *copy = lst_line->cmd;
+		// while (copy)
+		// {
+		// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
+		// 	copy = copy->next;
+		// }
 		replace_all_var_env(lst_line->cmd, env);
-		// reparse(lst_line->cmd);
+		fusion_cmd(lst_line->cmd);
+		lst_line->cmd = reparse(lst_line->cmd);
 		if (delete_backslashes(lst_line->cmd, env))
 		{
 			ft_putstr_fd("minishell: syntax error\n", STDERR);
@@ -240,24 +317,18 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 		}
 		redirections(lst_line);
 
-		// char **fdpipe = cmd_to_strs(lst_line->cmd);
-		// ft_printf("****************\n", 0);
-		// ft_print_fdpipestr(fdpipe);
-		// ft_printf("****************flags:%d\n", lst_line->cmd->flags);
-		// ft_printf("*********************************************\n", 0);
-		// ft_free_fdpipe(fdpipe);
 
-		// fdpipe = cmd_to_strs(lst_line->next->cmd);
+		// tab = cmd_to_strs(lst_line->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_fdpipestr(fdpipe);
+		// ft_print_tabstr(tab);
 		// ft_printf("**************************%d\n", lst_line->next->cmd->flags);
-		// ft_free_fdpipe(fdpipe);
+		// ft_free_tab(tab);
 
-		// fdpipe = cmd_to_strs(lst_line->next->next->cmd);
+		// tab = cmd_to_strs(lst_line->next->next->cmd);
 		// ft_printf("***********************************\n");
-		// ft_print_fdpipestr(fdpipe);
+		// ft_print_tabstr(tab);
 		// ft_printf("**************************%d\n", lst_line->next->next->cmd->flags);
-		// ft_free_fdpipe(fdpipe);
+		// ft_free_tab(tab);
 
 		// ft_printf("***********************************\n");
 

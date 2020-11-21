@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:12:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/20 17:40:27 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static char	*format_var_env(t_list *env, int size, int space_begin)
 	char	*tmp;
 	int		i;
 
+	if (!ft_strlen(&((char *)env->content)[size]))
+		return (ft_strdup(""));
 	ret = ft_strtrim(&((char *)env->content)[size], WSP);
 	if (space_begin && ft_in_charset(((char *)env->content)[size], WSP))
 	{

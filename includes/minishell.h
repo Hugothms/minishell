@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 12:03:58 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/20 18:29:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct			s_glob
 }						t_glob;
 
 t_glob	g_glob;
+
 /*
 ** commands.c
 */
@@ -131,6 +132,13 @@ int						parse_input(char *line, t_list_line **cmd, t_list *env);
 int						input_to_command(char *input, t_list_cmd **cmd);
 
 /*
+** print.c
+*/
+void					print_prompt(void);
+void					not_found(char *cmd);
+void					parse_error(char *input, t_list_line *lst_line);
+
+/*
 ** search_command.c
 */
 int						search_command(t_list_cmd *cmd, t_list *env);
@@ -143,7 +151,6 @@ void					add_cmd(char *input, t_list_cmd **cmd,\
 						int size, int flags);
 int						escaped(char *str, int i);
 int						in_quotes(t_list_cmd *cmd);
-void					parse_error(char *input, t_list_line *lst_line);
 int						is_separator(char *str, int i);
 int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);

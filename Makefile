@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/11/03 17:48:36 by hthomas          ###   ########.fr        #
+#    Updated: 2020/11/20 18:33:39 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS +=	srcs/list_cmd1.c		\
 		srcs/list_line2.c		\
 		srcs/parse.c			\
 		srcs/parse_quotes.c		\
+		srcs/print.c			\
 		srcs/search_command.c	\
 		srcs/utils.c			\
 		srcs/var_env.c

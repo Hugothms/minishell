@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 14:01:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/20 18:31:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int		parse_input(char *input, t_list_line **lst_line, t_list *env)
 	// }
 	// ft_printf("-----------------\n\n");
 
-	// if (delete_backslashes(cmd, env))
+	// if (delete_backslashes(cmd, env)) // moved to exec_line
 	// 	return (FAILURE);
 	// ft_printf("OK\n");
 	delete_empty_elements(&cmd);
