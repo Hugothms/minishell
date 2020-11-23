@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 18:26:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 18:12:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ void	print_prompt(void)
 	ft_putstr_fd("$ ", STDOUT);
 }
 
-void	not_found(char *cmd)
+void	not_found(char *str)
 {
 	char	*ret;
 
-	ret = ft_strdup("minishell: command not found: ");
-	ret = ft_strjoin_free(ret, cmd);
-	ret = ft_strjoin_free(ret, "\n");
+	ret = ft_strdup(str);
+	ret = ft_strjoin_free(ret, ": command not found\n");
 	g_glob.exit = CMD_NOT_FOUND;
 	ft_putstr_fd(ret, STDERR);
 	free(ret);

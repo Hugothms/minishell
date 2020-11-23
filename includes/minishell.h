@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 13:13:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 17:41:48 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@
 # define F_REDIRS		F_INPUT + F_OUTPUT + F_APPEND
 # define F_SPECIALS		F_REDIRS + F_SEMICOLON +F_PIPE
 # define F_VAR_ENV		256
+# define F_VAR_PARSED	512
 
 typedef struct			s_list_cmd
 {
