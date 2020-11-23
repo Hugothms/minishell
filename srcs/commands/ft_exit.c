@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/16 14:10:32 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/19 17:18:49 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*ft_exit(t_list_cmd *args, t_list *env)
 	int	err;
 
 	clear_env_lst(env);
+	free(g_glob.path);
 	if (args)
 	{
 		if ((err = ft_atoi_strict(args->str)))

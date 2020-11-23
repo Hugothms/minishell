@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/21 12:17:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:12:51 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,6 +429,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		return (FAILURE);
 	}
 	g_glob.exit = 0;
+	g_glob.path = getcwd(NULL, 0);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
@@ -447,6 +448,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		free(input);
 		print_prompt();
 	}
+	free(g_glob.path);
 	clear_env_lst(env);
 	free(input);
 	ft_printf("\n");

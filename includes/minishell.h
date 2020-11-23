@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 18:29:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:13:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct			s_parse
 
 typedef struct			s_glob
 {
+	char				*path;
 	pid_t				pid;
 	int					exit;
 }						t_glob;

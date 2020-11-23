@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/04 16:15:21 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/19 15:24:48 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,28 @@
 int		have_egual(char *str)
 {
 	int i;
-	int ret;
 
 	i = 0;
-	ret = 0;
 	while (str[i])
 	{
 		if (str[i] == '=')
-			ret = 1;
+			return (i);
 		i++;
 	}
-	return (ret);
+	return (0);
 }
 
 void	add_quote(char **tri)
 {
 	int		i;
 	int		j;
-
 	i = 0;
 	while (tri[i])
 	{
 		if (have_egual(tri[i]))
 		{
 			j = ft_strlen(tri[i]) - 2;
-			while (tri[i][j] != '=')
+			while (j > have_egual(tri[i]))
 			{
 				tri[i][j] = tri[i][j - 1];
 				j--;

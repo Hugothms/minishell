@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 18:26:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:11:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,4 +141,15 @@ void	modif_var_env(t_list *env, char *key, char *new_value)
 		}
 		env = env->next;
 	}
+}
+
+char	*find_var_env(t_list *env, char *var)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->content, var, ft_strlen(var)))
+			return (env->content);
+		env = env->next;
+	}
+	return (NULL);
 }

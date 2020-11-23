@@ -6,22 +6,11 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/18 16:28:25 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/19 17:04:14 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*find_var_env(t_list *env, char *var)
-{
-	while (env)
-	{
-		if (!ft_strncmp(env->content, var, ft_strlen(var)))
-			return (env->content);
-		env = env->next;
-	}
-	return (NULL);
-}
 
 void	modif_oldpwd_pwd(t_list *env)
 {
@@ -29,7 +18,15 @@ void	modif_oldpwd_pwd(t_list *env)
 
 	pwd = getcwd(NULL, 0);
 	modif_var_env(env, "OLDPWD", &find_var_env(env, "PWD=")[4]);
+	if (!pwd)
+	{
+		free(pwd);
+		pwd = ft_strdup(&find_var_env(env, "PWD=")[4]);
+		pwd = ft_strjoin_free(pwd, "/..");
+	}
 	modif_var_env(env, "PWD", pwd);
+	free(g_glob.path);
+	g_glob.path = ft_strdup(pwd);
 	free(pwd);
 }
 
@@ -49,7 +46,6 @@ char	*error_cd(char *arg, int err_status)
 		ret = ft_strjoin_free(ret, ": Not a directory");
 	else if (err_status == 3)
 		ret = ft_strjoin_free(ret, " Not set");
-
 	ret = ft_strjoin_free(ret, "\n");
 	return (ret);
 }
@@ -77,16 +73,31 @@ char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 	return (ret);
 }
 
+int		test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
+{
+	if (stat(&find_var_env(env, "HOME=")[5], stats) != 0)
+		return (1);
+	else if (chdir(&find_var_env(env, "HOME=")[5]))
+		return (2);
+	else
+		return (0);
+}
+
 char	*ft_cd(t_list_cmd *args, t_list *env)
 {
-	char		*ret;
 	struct stat	stats;
 
 	g_glob.exit = 0;
-	if (!args || !args->str)
+	if ((!args || !args->str))
 	{
 		if (chdir(&find_var_env(env, "HOME=")[5]))
-			return (error_cd("« HOME »", 3));
+			if (find_var_env(env, "HOME=") == NULL)
+				return (error_cd("« HOME »", 3));
+			else if (find_var_env(env, "HOME=")[5] == '\0')
+				return (ft_strdup(""));
+			else if (test_cd_home(args, env, &stats))
+				return (error_cd(&find_var_env(env, "HOME=")[5],
+							test_cd_home(args, env, &stats)));
 	}
 	else if (c_lst_size(args) > 1)
 		return (error_cd(args->str, 0));
