@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 13:12:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 14:34:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,22 +136,21 @@ void	redirections(t_list_line *lst_line)
 	t_list_cmd	*tmp;
 
 	cmd = lst_line->cmd;
+	if (cmd->flags & F_REDIRS)
+	{
+		open_fd(lst_line, cmd);
+		tmp = cmd;
+		lst_line->cmd = cmd->next;
+		cmd = lst_line->cmd;
+		c_lst_free_one(tmp);
+	}
 	while (cmd)
 	{
-		while (cmd->flags & (F_OUTPUT + F_INPUT))
-		{
-			open_fd(lst_line, cmd);
-			tmp = cmd;
-			lst_line->cmd = cmd->next;
-			cmd = lst_line->cmd;
-			c_lst_free_one(tmp);
-		}
-		if (cmd->next && cmd->next->flags & (F_OUTPUT + F_INPUT))
+		if (cmd->next && cmd->next->flags & F_REDIRS)
 		{
 			open_fd(lst_line, cmd->next);
-			tmp = cmd->next;
-			cmd->next = cmd->next->next;
-			c_lst_free_one(tmp);
+			c_lst_remove_next_one(cmd);
+			continue ;
 		}
 		cmd = cmd->next;
 	}
@@ -300,13 +299,6 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	start = lst_line;
 	while (lst_line)
 	{
-		// ft_printf("--------1--------\n");
-		// t_list_cmd *copy = lst_line->cmd;
-		// while (copy)
-		// {
-		// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
-		// 	copy = copy->next;
-		// }
 		replace_all_var_env(lst_line->cmd, env);
 		fusion_cmd(lst_line->cmd);
 		lst_line->cmd = reparse_var_env(lst_line->cmd);
@@ -314,6 +306,13 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 		{
 			ft_putstr_fd("minishell: syntax error\n", STDERR);
 			return (l_lst_clear(start));
+		}
+		ft_printf("--------1--------\n");
+		t_list_cmd *copy = lst_line->cmd;
+		while (copy)
+		{
+			ft_printf("F:%d\t%s\n", copy->flags, copy->str);
+			copy = copy->next;
 		}
 		redirections(lst_line);
 
