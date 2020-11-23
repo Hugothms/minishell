@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 18:36:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/23 18:39:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,7 +401,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
-	// ft_putstr(WELCOME_MSG);
+	ft_putstr(WELCOME_MSG);
 	increment_shlvl(env);
 	print_prompt();
 	while (get_next_line(&input, 0) > 0)
