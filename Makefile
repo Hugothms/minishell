@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/11/24 16:47:48 by hthomas          ###   ########.fr        #
+#    Updated: 2020/11/24 16:57:22 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,18 +31,18 @@ SRCS +=	srcs/commands/ft_cd.c		\
 		srcs/commands/ft_unset.c
 
 #----------------Others----------------#
-SRCS +=	srcs/exec_line.c		\
-		srcs/list_cmd1.c		\
-		srcs/list_cmd2.c		\
-		srcs/list_line1.c		\
-		srcs/list_line2.c		\
-		srcs/parse.c			\
-		srcs/parse_quotes.c		\
-		srcs/redirection.c		\
-		srcs/print.c			\
-		srcs/pipe.c				\
-		srcs/search_command.c	\
-		srcs/utils.c			\
+SRCS +=	srcs/exec_line.c			\
+		srcs/lists/list_cmd1.c		\
+		srcs/lists/list_cmd2.c		\
+		srcs/lists/list_line1.c		\
+		srcs/lists/list_line2.c		\
+		srcs/parse/parse.c			\
+		srcs/parse/parse_quotes.c	\
+		srcs/redirection.c			\
+		srcs/print.c				\
+		srcs/pipe.c					\
+		srcs/search_command.c		\
+		srcs/utils.c				\
 		srcs/var_env.c
 
 OBJS = $(SRCS:.c=.o)
