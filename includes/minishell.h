@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 17:41:48 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/24 16:46:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ char					*ft_exit(t_list_cmd *args, t_list *env);
 char					*find_var_env(t_list *env, char *var);
 
 /*
+** exec_line.c
+*/
+int						make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret);
+void					exec_line(t_list_line *lst_line, t_list *env);
+
+/*
 ** parse.c
 */
 int						delete_backslashes(t_list_cmd *cmd, t_list *env);
@@ -163,6 +169,21 @@ void					modif_var_env(t_list *env, char *key, char *new_value);
 void					clear_env_lst(t_list *env);
 
 /*
+** pipe.c
+*/
+void					create_pipes_and_semicolon(t_list_line *lst_line, t_list *env);
+
+/*
+** redirection.c
+*/
+int						redirections(t_list_line *lst_line);
+
+/*
+** var_env.c
+*/
+void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
+
+/*
 ** list_cmd.c
 */
 t_list_cmd				*c_lst_new(char *str, int flags);
@@ -190,10 +211,5 @@ void					l_lst_clear(t_list_line *lst);
 void					l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line				*l_lst_map(t_list_line *lst, void *(*f)(void *));
 t_list_line				*l_lst_copy_all(t_list_cmd *cmd);
-
-/*
-** var_env.c
-*/
-void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
 
 #endif
