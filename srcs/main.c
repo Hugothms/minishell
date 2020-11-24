@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 16:14:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/24 16:29:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,21 +266,21 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 			{
 				close(fdpipe[1]);
 				char	*line;
-				ft_printf("***Start parent\n");
 				wait(NULL);
-				ft_printf("***After child exits\n");
-				if (get_next_line(&line, fdpipe[0]) == -1)
-					return ;
-				ft_printf("***|%s|\n", line);
+						ft_printf("***Parent\n");
+						if (get_next_line(&line, fdpipe[0]) == -1)
+							return ;
+						ft_printf("***|%s|\n", line);
+						free(line);
 				close(fdpipe[0]);
 			}
 			else // child process
 			{
 				close(fdpipe[0]);
 				// lst_line->output = fdpipe[1];
-				if (make_and_exec_cmd(lst_line, env, &ret))
+				if (!make_and_exec_cmd(lst_line, env, &ret))
 				{
-					write(fdpipe[1], ret, strlen(ret)+1);
+					write(fdpipe[1], ret, strlen(ret) + 1);
 					free(ret);
 				}
 				else
