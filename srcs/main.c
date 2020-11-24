@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 18:39:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/24 16:14:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,78 +35,6 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 	return (NULL);
 }
 
-void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
-{
-	t_list_cmd	*cmd;
-	char		*ret;
-	t_list_line	*start;
-
-	// while (lst_line)
-	// {
-	// 	if (lst_line->pipe)
-	// 	{
-	// 		int tmp = lst_line->output;
-	// 		lst_line->output = lst_line->next->input;
-	// 		lst_line->next->input = tmp;
-	// 		ft_printf("output:%d\n", lst_line->output);
-	// 		ft_printf("input:%d\n\n", lst_line->next->input);
-	// 	}
-	// 	lst_line = lst_line->next;
-	// }
-
-	start = lst_line;
-	while (lst_line)
-	{
-		if (lst_line->pipe)
-		{
-			int		fdpipe[2]; // Used to store two ends of first pipe
-			pid_t	p;
-
-			if (pipe(fdpipe) == -1) //error
-			{
-				ft_putstr_fd("pipe: pipe failed\n", STDERR);
-				return;
-			}
-			// do something ?
-			p = fork();
-			if (p < 0) //error
-			{
-				ft_putstr_fd("pipe: fork failed\n", STDERR);
-				return;
-			}
-			else if (p > 0) //parent process
-			{
-				close(fdpipe[1]);
-				char	*line;
-				ft_printf("***Before child exits\n");
-				wait(NULL);
-				ft_printf("***After child exits\n");
-				if(get_next_line(&line, fdpipe[0]))
-					return ;
-				ft_printf("***line:%s\n***end line\n", line);
-				close(fdpipe[0]);
-			}
-			else // child process
-			{
-				close(fdpipe[0]);
-				lst_line->output = fdpipe[1];
-				if ((ret = exec_cmd(lst_line->cmd, env)))
-				{
-					write(fdpipe[1], ret, strlen(ret)+1);
-					free(ret);
-				}
-				else
-					g_glob.exit = 127;
-				close(fdpipe[1]);
-				ft_printf("***End child\n");
-				exit(0);
-			}
-			lst_line = lst_line->next;
-			break;
-		}
-		lst_line = lst_line->next;
-	}
-}
 
 int		filename_redir(t_list_cmd *cmd, char **filename)
 {
@@ -147,7 +75,7 @@ int		open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 	if (filename_redir(cmd, &filename))
 		return (FAILURE);
 	//else if (cmd->flags & F_INPUT)
-	// input = filename; //! todo
+	// lst_line->input = filename; //! todo
 	else if (cmd->flags & F_APPEND)
 		lst_line->output = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (cmd->flags & F_OUTPUT)
@@ -192,7 +120,7 @@ int		redirections(t_list_line *lst_line)
 }
 
 /*
-** add flags together, for example 011 + 001 = 011 (and not 100)
+** add flags together, for example 011 + 001 = 011 (and not 100 like addition)
 */
 
 int 	bits_per_bits_or(int flags1, int flags2)
@@ -273,6 +201,101 @@ t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
 	return (start);
 }
 
+int		make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret)
+{
+	replace_all_var_env(lst_line->cmd, env);
+	fusion_cmd(lst_line->cmd);
+	lst_line->cmd = reparse_var_env(lst_line->cmd);
+	if (delete_backslashes(lst_line->cmd, env))
+		return (FAILURE);
+				// ft_printf("--------1--------\n");
+				// t_list_cmd *copy = lst_line->cmd;
+				// while (copy)
+				// {
+				// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
+				// 	copy = copy->next;
+				// }
+	if (redirections(lst_line))
+		return (FAILURE);
+	*ret = exec_cmd(lst_line->cmd, env);
+	if (lst_line->output > 2 && close(lst_line->output) < 0)
+		ft_putstr_fd("error close\n", STDERR);
+	return (SUCCESS);
+}
+
+void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
+{
+	t_list_cmd	*cmd;
+	char		*ret;
+	t_list_line	*start;
+
+	// while (lst_line)
+	// {
+	// 	if (lst_line->pipe)
+	// 	{
+	// 		int tmp = lst_line->output;
+	// 		lst_line->output = lst_line->next->input;
+	// 		lst_line->next->input = tmp;
+	// 		ft_printf("output:%d\n", lst_line->output);
+	// 		ft_printf("input:%d\n\n", lst_line->next->input);
+	// 	}
+	// 	lst_line = lst_line->next;
+	// }
+
+	start = lst_line;
+	while (lst_line)
+	{
+		if (lst_line->pipe)
+		{
+			int		fdpipe[2]; // Used to store two ends of first pipe
+			pid_t	p;
+
+			if (pipe(fdpipe) == -1) //error
+			{
+				ft_putstr_fd("pipe: pipe failed\n", STDERR);
+				return ;
+			}
+			// do something ?
+			p = fork();
+			if (p < 0) //error
+			{
+				ft_putstr_fd("pipe: fork failed\n", STDERR);
+				return ;
+			}
+			else if (p > 0) //parent process
+			{
+				close(fdpipe[1]);
+				char	*line;
+				ft_printf("***Start parent\n");
+				wait(NULL);
+				ft_printf("***After child exits\n");
+				if (get_next_line(&line, fdpipe[0]) == -1)
+					return ;
+				ft_printf("***|%s|\n", line);
+				close(fdpipe[0]);
+			}
+			else // child process
+			{
+				close(fdpipe[0]);
+				// lst_line->output = fdpipe[1];
+				if (make_and_exec_cmd(lst_line, env, &ret))
+				{
+					write(fdpipe[1], ret, strlen(ret)+1);
+					free(ret);
+				}
+				else
+					g_glob.exit = 127;
+				close(fdpipe[1]);
+				ft_printf("***End child\n");
+				exit(0);
+			}
+			lst_line = lst_line->next; // maybe useless
+			break;
+		}
+		lst_line = lst_line->next;
+	}
+}
+
 void	exec_line(t_list_line *lst_line, t_list *env)
 {
 	char		*ret;
@@ -286,27 +309,13 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	start = lst_line;
 	while (lst_line)
 	{
-		replace_all_var_env(lst_line->cmd, env);
-		fusion_cmd(lst_line->cmd);
-		lst_line->cmd = reparse_var_env(lst_line->cmd);
-		if (delete_backslashes(lst_line->cmd, env))
-			break ;
-					// ft_printf("--------1--------\n");
-					// t_list_cmd *copy = lst_line->cmd;
-					// while (copy)
-					// {
-					// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
-					// 	copy = copy->next;
-					// }
-		if (redirections(lst_line))
-			break ;
-		if ((ret = exec_cmd(lst_line->cmd, env)))
+		if (make_and_exec_cmd(lst_line, env, &ret))
+			break;
+		if (ret)
 		{
 			ft_putstr_fd(ret, lst_line->output);
 			free(ret);
 		}
-		if (lst_line->output > 2 && close(lst_line->output) < 0)
-			ft_putstr_fd("error close\n", STDERR);
 		dup2(fd_outold, STDOUT);
 		dup2(fd_inold, STDIN);
 		lst_line = lst_line->next;
