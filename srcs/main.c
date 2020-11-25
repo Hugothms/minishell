@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 16:35:43 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/25 11:06:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int		main(const int argc, char *argv[], char *envp[])
 			parse_error(input, lst_line);
 			continue;
 		}
-		exec_line(lst_line, env);
 		free(input);
+		exec_line(lst_line, env);
 		print_prompt();
 	}
 	free(g_glob.path);

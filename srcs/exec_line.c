@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 16:39:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/25 11:19:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 			break;
 		if (ret)
 		{
-			ft_putstr_fd(ret, lst_line->output);
+			ft_putstr_fd(ret, 1/*lst_line->output*/);
 			free(ret);
 		}
 		dup2(fd_outold, STDOUT);
