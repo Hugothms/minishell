@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 18:12:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/24 14:01:19 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	not_found(char *str)
 
 void	parse_error(char *input, t_list_line *lst_line)
 {
-	g_glob.exit = 1;
+	g_glob.exit = 2;
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
+	print_prompt();
 	l_lst_clear(lst_line);
 	free(input);
-	// exit(SYNTAX_ERROR);
 }
