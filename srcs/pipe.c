@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 16:52:19 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/25 10:41:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	create_pipes_and_semicolon(t_list_line *lst_line, t_list *env)
 			{
 				close(fdpipe[0]);
 				// lst_line->output = fdpipe[1];
-				if (!make_and_exec_cmd(lst_line, env, &ret))
+				if (make_and_exec_cmd(lst_line, env, &ret))
 				{
 					write(fdpipe[1], ret, strlen(ret) + 1);
 					free(ret);
