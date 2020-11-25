@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/25 11:31:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/25 11:37:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,11 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	while (lst_line)
 	{
 		if (make_and_exec_cmd(lst_line, env, &ret))
+		{
+			dup2(fd_outold, STDOUT);
+			dup2(fd_inold, STDIN);
 			break;
+		}
 		if (ret)
 		{
 			ft_putstr_fd(ret, 1/*lst_line->output*/);
