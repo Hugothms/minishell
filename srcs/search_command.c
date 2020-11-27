@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/16 16:46:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 11:39:00 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,16 @@ void	binary_not_found(char *path, int *ret)
 	struct stat	buf;
 	int			dir;
 
+	dir = lstat(path, &buf);
 	ft_putstr_fd("minishell: ", STDERR);
 	ft_putstr_fd(path, STDERR);
-	dir = lstat(path, &buf);
-	printf(" %08x ", buf.st_mode);
 	if (dir == 0)
 	{
-		if (buf.st_mode /*== S_ISDIR*/)
-		{
-			ft_putstr_fd(": is a directory\n", STDERR);
-			g_glob.exit = 126;
-		}
+		g_glob.exit = 126;
+		if (buf.st_mode >= 32768 && buf.st_mode <= 33215)
+			ft_putstr_fd(": Permission denied\n", STDERR);
 		else
-		{
-			ft_putstr_fd(": permission denied\n", STDERR);
-			g_glob.exit = 126;
-		}
+			ft_putstr_fd(": is a directory\n", STDERR);
 	}
 	else
 	{
@@ -91,7 +85,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	char	**argv;
 
 	ret = FAILURE;
-	if (!(argv = lst_to_strs(cmd)))
+	if (!(argv = cmd_to_strs(cmd)))
 		return (FAILURE);
 	if (cmd->str[0] == '/')
 	{

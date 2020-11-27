@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:21:50 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/24 16:46:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@
 */
 # define SUCCESS		0
 # define FAILURE		-1
+
+/*
+** Exit codes
+*/
 # define CMD_NOT_FOUND	127
 # define SYNTAX_ERROR	1
 
@@ -54,18 +58,19 @@
 /*
 ** Flags cmd
 */
-# define F_NOTHING		0b00000000
-# define F_SIMPLE_QUOTE	0b00000001
-# define F_DOUBLE_QUOTE	0b00000010
-# define F_NO_SP_AFTER	0b00000100
-# define F_SEMICOLON	0b00001000
-# define F_PIPE			0b00010000
-# define F_INPUT		0b00100000
-# define F_OUTPUT		0b01000000
-# define F_APPEND		0b10000000
-# define F_REDIRS		0b11100000
-# define F_SPECIALS		0b11111000
-# define F_VAR_ENV		0b100000000
+# define F_NOTHING		0
+# define F_SIMPLE_QUOTE	1
+# define F_DOUBLE_QUOTE	2
+# define F_NO_SP_AFTER	4
+# define F_SEMICOLON	8
+# define F_PIPE			16
+# define F_INPUT		32
+# define F_OUTPUT		64
+# define F_APPEND		128
+# define F_REDIRS		F_INPUT + F_OUTPUT + F_APPEND
+# define F_SPECIALS		F_REDIRS + F_SEMICOLON +F_PIPE
+# define F_VAR_ENV		256
+# define F_VAR_PARSED	512
 
 typedef struct			s_list_cmd
 {
@@ -93,11 +98,13 @@ typedef struct			s_parse
 
 typedef struct			s_glob
 {
+	char				*path;
 	pid_t				pid;
 	int					exit;
 }						t_glob;
 
 t_glob	g_glob;
+
 /*
 ** commands.c
 */
@@ -114,6 +121,12 @@ char					*ft_exit(t_list_cmd *args, t_list *env);
 char					*find_var_env(t_list *env, char *var);
 
 /*
+** exec_line.c
+*/
+int						make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret);
+void					exec_line(t_list_line *lst_line, t_list *env);
+
+/*
 ** parse.c
 */
 int						delete_backslashes(t_list_cmd *cmd, t_list *env);
@@ -125,6 +138,13 @@ int						parse_input(char *line, t_list_line **cmd, t_list *env);
 ** parse_quotes.c
 */
 int						input_to_command(char *input, t_list_cmd **cmd);
+
+/*
+** print.c
+*/
+void					print_prompt(void);
+void					not_found(char *cmd);
+void					parse_error(char *input, t_list_line *lst_line);
 
 /*
 ** search_command.c
@@ -139,15 +159,29 @@ void					add_cmd(char *input, t_list_cmd **cmd,\
 						int size, int flags);
 int						escaped(char *str, int i);
 int						in_quotes(t_list_cmd *cmd);
-void					parse_error(char *input, t_list_line *lst_line);
 int						is_separator(char *str, int i);
 int						get_flags(char *str);
 void					cmd_plusplus_free(t_list_cmd **cmd);
-char					**lst_to_strs(t_list_cmd *cmd);
+char					**cmd_to_strs(t_list_cmd *cmd);
 char					**lst_to_chartab(t_list *env);
 void					err_code(t_list_cmd *cmd, t_list *env, int i);
 void					modif_var_env(t_list *env, char *key, char *new_value);
 void					clear_env_lst(t_list *env);
+
+/*
+** pipe.c
+*/
+void					create_pipes_and_semicolon(t_list_line *lst_line, t_list *env);
+
+/*
+** redirection.c
+*/
+int						redirections(t_list_line *lst_line);
+
+/*
+** var_env.c
+*/
+void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
 
 /*
 ** list_cmd.c
@@ -177,10 +211,5 @@ void					l_lst_clear(t_list_line *lst);
 void					l_lst_iter(t_list_line *lst, void (*f)(void *));
 t_list_line				*l_lst_map(t_list_line *lst, void *(*f)(void *));
 t_list_line				*l_lst_copy_all(t_list_cmd *cmd);
-
-/*
-** var_env.c
-*/
-void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
 
 #endif

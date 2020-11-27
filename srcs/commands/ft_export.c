@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/16 14:12:38 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/27 14:34:42 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,26 +80,6 @@ int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 	return (1);
 }
 
-int		check_identifier(char *key)
-{
-	int		i;
-
-	i = 0;
-	if (key[i] != '\0')
-	{
-		while (key[i])
-		{
-			if (!ft_isalpha(key[i]))
-				return (0);
-			i++;
-		}
-		if (key[i] == '\0')
-			return (1);
-	}
-	else
-		return (0);
-}
-
 int		set_keyval(t_list_cmd *args, char **key, char **value)
 {
 	int		i;
@@ -108,19 +88,23 @@ int		set_keyval(t_list_cmd *args, char **key, char **value)
 	while (args->str[i] && args->str[i] != '=')
 		i++;
 	*key = ft_strndup(args->str, i);
-	if (check_identifier(*key))
-	{
-		if (args->str[i] == '=')
-			*value = ft_strdup(&(args->str[i + 1]));
-		else
-			*value = ft_strdup("");
+	if (args->str[i] == '=')
+		*value = ft_strdup(&(args->str[i + 1]));
+	else
+		*value = ft_strdup("");
+	if (ft_isalpha(*key[0]))
 		return (1);
-	}
 	else
 	{
 		g_glob.exit = 1;
-		ft_printf("minishell: export: « %s » : not valid identifier\n", *key);
+		if (*key[0] == '\0' && *value[0])
+			ft_printf("minishell: export: « %s=%s » : not valid identifier\n",
+						*key, *value);
+		else
+			ft_printf("minishell: export: « %s » : not valid identifier\n",
+						*key);
 		free(*key);
+		free(*value);
 		return (0);
 	}
 }
@@ -131,7 +115,7 @@ char	*ft_export(t_list_cmd *args, t_list *env)
 	char	*value;
 
 	g_glob.exit = 0;
-	if (!args || !args->str)
+	if (!args || !args->str || (args->str[0] != '=' && args->flags == 512))
 		return (ft_export_no_arg(env));
 	while (args)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 15:37:53 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/18 17:23:45 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:11:38 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,6 @@ int		in_quotes(t_list_cmd *cmd)
 	(cmd->flags & F_DOUBLE_QUOTE));
 }
 
-void	parse_error(char *input, t_list_line *lst_line)
-{
-	g_glob.exit = 1;
-	ft_putstr_fd("minishell: syntax error\n", STDERR);
-	l_lst_clear(lst_line);
-	free(input);
-	// exit(SYNTAX_ERROR);
-}
-
 int		get_flags(char *str)
 {
 	int		flags;
@@ -103,7 +94,7 @@ void	cmd_plusplus_free(t_list_cmd **cmd)
 	c_lst_free_one(tmp);
 }
 
-char	**lst_to_strs(t_list_cmd *cmd)
+char	**cmd_to_strs(t_list_cmd *cmd)
 {
 	char	**argv;
 	int		i;

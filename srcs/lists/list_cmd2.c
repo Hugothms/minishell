@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/21 19:57:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/21 10:43:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void			c_lst_remove_next_one(t_list_cmd *lst)
 }
 
 /*
-** Deletes and frees the given element and every successor of that element,
-**  using the function ’del’ and free(3).
 ** Finally, the pointer to the list must be set to NULL.
 ** @param lst	The adress of a pointer to an element.
 ** @param del	The adress of the function used to delete the content of the
@@ -82,12 +80,9 @@ void			c_lst_iter(t_list_cmd *lst, void (*f)(void *))
 /*
 ** Iterates the list ’lst’ and applies the function ’f’ to the content of each
 **  element. Creates a newlist resulting of the successive applications of the
-**  function ’f’. The ’del’ function is used to delete the content of an
-**  element if needed.
+**  function ’f’.
 ** @param lst	The adress of a pointer to an element.
 ** @param f		The adress of the function used to iterate on the list.
-** @param del	The adress of the function used to delete the content of an
-** element if needed.
 ** @return		The new list. NULL if the allocation fails.
 */
 
