@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/18 16:24:20 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/27 14:33:52 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,19 @@ void	lst_del_next_node(t_list *env, char *var)
 	}
 }
 
-int		check_id(char *key)
-{
-	int		i;
-
-	i = 0;
-	while (key[i])
-	{
-		if (!ft_isalpha(key[i]))
-			return (0);
-		i++;
-	}
-	if (key[i] == '\0')
-		return (1);
-}
-
 char	*ft_unset(t_list_cmd *args, t_list *env)
 {
 	char	**var;
 	int		i;
 
 	g_glob.exit = 0;
-	if (!args || !args->str || (args->flags == 256 && args->str[0] == '\0'))
+	if (!args || !args->str || (args->flags == 512 && args->str[0] == '\0'))
 		return (ft_strdup(""));
 	var = catch_arg(args);
 	i = 0;
 	while (var[i])
 	{
-		if (check_id(var[i]))
+		if (ft_isalpha(var[i][0]))
 			lst_del_next_node(env, var[i]);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 14:46:39 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/27 11:39:00 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	binary_not_found(char *path, int *ret)
 	if (dir == 0)
 	{
 		g_glob.exit = 126;
-		if (buf.st_mode > 32768 && buf.st_mode < 33215)
+		if (buf.st_mode >= 32768 && buf.st_mode <= 33215)
 			ft_putstr_fd(": Permission denied\n", STDERR);
 		else
 			ft_putstr_fd(": is a directory\n", STDERR);

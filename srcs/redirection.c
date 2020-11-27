@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:39:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/25 11:34:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 12:19:56 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		get_filename_redir(t_list_cmd *cmd, char **filename)
 	{
 		ft_putstr_fd("minishell: : No such file or directory\n", STDERR);
 		g_glob.exit = 1;
-	}	
+	}
 	else if (cmd->next->flags & F_VAR_PARSED)
 	{
 		if (cmd->next->flags & F_DOUBLE_QUOTE)
@@ -88,7 +88,7 @@ int		redirections(t_list_line *lst_line)
 		cmd = lst_line->cmd;
 		c_lst_free_one(tmp);
 	}
-	while (cmd->next)
+	while (cmd && cmd->next)
 	{
 		if (cmd->next->flags & F_REDIRS)
 		{
