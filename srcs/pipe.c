@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 12:13:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 12:37:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		create_pipe(t_list_line **lst_line, t_list *env)
 				// (*lst_line)->output = fdpipe[1];
 				if (!make_and_exec_cmd((*lst_line), env, &ret))
 				{
+					ft_printf("pipe:(%s)\n", ret);
 					write(fdpipe[1], ret, strlen(ret) + 1);
 					free(ret);
 				}

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 10:39:16 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 14:11:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ int		make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret)
 	if (redirections(lst_line))
 		return (FAILURE);
 	*ret = exec_cmd(lst_line->cmd, env);
+	ft_printf("cmd:|%s|\n", ft_strjoin_sep(c_lst_size(lst_line->cmd), cmd_to_strs(lst_line->cmd), " "));
+	ft_printf("make_and_exec_cmd:|%s|\n", *ret);
 	if (lst_line->output > 2 && close(lst_line->output) < 0)
 		ft_putstr_fd("error close output\n", STDERR);
 	if (lst_line->input > 2 && close(lst_line->input) < 0)
