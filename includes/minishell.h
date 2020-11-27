@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 10:39:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 18:11:16 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char					*find_var_env(t_list *env, char *var);
 /*
 ** exec_line.c
 */
-int						make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret);
+int						make_and_exec_cmd(t_list_line *lst_line, t_list *env);
 void					exec_line(t_list_line *lst_line, t_list *env);
 
 /*
