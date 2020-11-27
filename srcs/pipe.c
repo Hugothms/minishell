@@ -6,31 +6,31 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/25 16:58:07 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 10:40:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		create_pipe(t_list_line *lst_line, t_list *env)
+int		create_pipe(t_list_line **lst_line, t_list *env)
 {
 	t_list_cmd	*cmd;
 	char		*ret;
 
-	// while (lst_line)
+	// while ((*lst_line))
 	// {
-	// 	if (lst_line->pipe)
+	// 	if ((*lst_line)->pipe)
 	// 	{
-	// 		int tmp = lst_line->output;
-	// 		lst_line->output = lst_line->next->input;
-	// 		lst_line->next->input = tmp;
-	// 		ft_printf("output:%d\n", lst_line->output);
-	// 		ft_printf("input:%d\n\n", lst_line->next->input);
+	// 		int tmp = (*lst_line)->output;
+	// 		(*lst_line)->output = (*lst_line)->next->input;
+	// 		(*lst_line)->next->input = tmp;
+	// 		ft_printf("output:%d\n", (*lst_line)->output);
+	// 		ft_printf("input:%d\n\n", (*lst_line)->next->input);
 	// 	}
-	// 	lst_line = lst_line->next;
+	// 	(*lst_line) = (*lst_line)->next;
 	// }
 
-		if (lst_line->pipe)
+		if ((*lst_line)->pipe)
 		{
 			int		fdpipe[2]; // Used to store two ends of first pipe
 			pid_t	p;
@@ -56,15 +56,16 @@ int		create_pipe(t_list_line *lst_line, t_list *env)
 							return (FAILURE);
 						ft_printf("***|%s|\n", line);
 						free(line);
-				lst_line->next->input = fdpipe[0];
-				dup2(lst_line->next->input, STDIN);
+				*lst_line = (*lst_line)->next;
+				(*lst_line)->input = fdpipe[0];
+				dup2((*lst_line)->input, STDIN);
 				// close(fdpipe[0]);
 			}
 			else // child process
 			{
 				close(fdpipe[0]);
-				// lst_line->output = fdpipe[1];
-				if (!make_and_exec_cmd(lst_line, env, &ret))
+				// (*lst_line)->output = fdpipe[1];
+				if (!make_and_exec_cmd((*lst_line), env, &ret))
 				{
 					write(fdpipe[1], ret, strlen(ret) + 1);
 					free(ret);
@@ -74,9 +75,8 @@ int		create_pipe(t_list_line *lst_line, t_list *env)
 				close(fdpipe[1]);
 				exit(0);
 			}
-			// lst_line = lst_line->next; // maybe useless
+			// (*lst_line) = (*lst_line)->next; // maybe useless
 			// break;
-			return (SUCCESS);
 		}
-		return (FAILURE);
+		return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/25 16:57:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 10:39:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void					clear_env_lst(t_list *env);
 /*
 ** pipe.c
 */
-int						create_pipe(t_list_line *lst_line, t_list *env);
+int						create_pipe(t_list_line **lst_line, t_list *env);
 
 /*
 ** redirection.c
