@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 10:40:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 12:13:46 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int		create_pipe(t_list_line **lst_line, t_list *env)
 				close(fdpipe[1]);
 				char	*line;
 				wait(NULL);
-						if (get_next_line(&line, fdpipe[0]) == -1)
-							return (FAILURE);
-						ft_printf("***|%s|\n", line);
-						free(line);
+						// if (get_next_line(&line, fdpipe[0]) == -1)
+						// 	return (FAILURE);
+						// ft_printf("***|%s|\n", line);
+						// free(line);
 				*lst_line = (*lst_line)->next;
 				(*lst_line)->input = fdpipe[0];
 				dup2((*lst_line)->input, STDIN);
