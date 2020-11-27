@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 12:14:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 16:14:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,14 @@ void	sighandler(int signum)
 	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", STDOUT);
-		print_prompt();
 		g_glob.exit = 130;
 	}
 	else if (signum == SIGQUIT)
 	{
 		ft_putstr_fd("Quit (core dumped)\n", STDOUT);
-		print_prompt();
 		g_glob.exit = 131;
 	}
+	print_prompt();
 }
 
 int		main(const int argc, char *argv[], char *envp[])
@@ -99,7 +98,7 @@ int		main(const int argc, char *argv[], char *envp[])
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, &env);
-	ft_putstr(WELCOME_MSG);
+	// ft_putstr(WELCOME_MSG);
 	increment_shlvl(env);
 	print_prompt();
 	while (get_next_line(&input, 0) > 0)

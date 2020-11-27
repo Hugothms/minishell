@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/24 14:01:19 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/27 11:33:58 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	print_prompt(void)
 
 	ft_putstr_fd("\xE2\x9E\xA1 ", STDOUT);
 	pwd = getcwd(NULL, 0);
-	ft_putstr_fd(pwd, STDOUT);
+	if (!pwd)
+		ft_putstr_fd(g_glob.path, STDOUT);
+	else
+		ft_putstr_fd(pwd, STDOUT);
 	free(pwd);
 	ft_putstr_fd("$ ", STDOUT);
 }

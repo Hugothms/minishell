@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:39:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 12:19:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 14:45:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		get_filename_redir(t_list_cmd *cmd, char **filename)
 	{
 		ft_putstr_fd("minishell: : No such file or directory\n", STDERR);
 		g_glob.exit = 1;
-	}	
+	}
 	else if (cmd->next->flags & F_VAR_PARSED)
 	{
 		if (cmd->next->flags & F_DOUBLE_QUOTE)

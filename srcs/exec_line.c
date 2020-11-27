@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 14:11:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/27 16:31:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,26 @@ int		make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret)
 				// }
 	if (redirections(lst_line))
 		return (FAILURE);
+	// ft_putnbr(lst_line->output);
+	// ft_putstr("$\n");
 	*ret = exec_cmd(lst_line->cmd, env);
-	ft_printf("cmd:|%s|\n", ft_strjoin_sep(c_lst_size(lst_line->cmd), cmd_to_strs(lst_line->cmd), " "));
-	ft_printf("make_and_exec_cmd:|%s|\n", *ret);
+	// {
+	// 	ft_putstr_fd("|", lst_line->output);
+	// 	ft_putstr_fd(*ret, lst_line->output);
+	// 	ft_putstr_fd("|\n", lst_line->output);
+	// 	free(*ret);
+	// }
+			// char **strs = cmd_to_strs(lst_line->cmd);
+			// char *str = ft_strjoin_sep(c_lst_size(lst_line->cmd), strs, " ");
+			// ft_putstr("cmd:\t\t|");
+			// ft_putstr(str);
+			// ft_putstr("|\n");
+			// free(str);
+			// ft_free_tab(strs);
+				// if (get_next_line(ret, lst_line->input) == -1)
+				// 	return (FAILURE);
+				// ft_printf("ret in make:\t|%s|\n", *ret);
+				// free(*ret);
 	if (lst_line->output > 2 && close(lst_line->output) < 0)
 		ft_putstr_fd("error close output\n", STDERR);
 	if (lst_line->input > 2 && close(lst_line->input) < 0)
