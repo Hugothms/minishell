@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 15:55:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/28 19:39:10 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 			if (cmd->str[i] == '\\')
 			{
 				if ((cmd->flags & F_SIMPLE_QUOTE ||\
-				(cmd->flags & F_DOUBLE_QUOTE)) && (ft_isalpha(cmd->str[i + 1]) || cmd->str[i+ 1] == '\''))
+				(cmd->flags & F_DOUBLE_QUOTE)) &&\
+				(!ft_in_charset(cmd->str[i + 1], "\\\"" )))
 				{
 					i++;
 					continue;
@@ -33,6 +34,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
 				{
+					g_glob.exit = 2;
 					ft_putstr_fd("minishell: syntax error\n", STDERR);
 					return (FAILURE);
 				}
