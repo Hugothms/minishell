@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/20 17:40:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/28 20:01:30 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env, i);
 				else
+				{
 					test_var_env(cmd, env, &i);
+					continue ;
+				}
 			}
 			i++;
 		}
