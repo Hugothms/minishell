@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 12:19:57 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 16:15:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_unset(t_list_cmd *args, t_list *env)
 		else
 		{
 			g_glob.exit = 1;
-			ft_putstr_fd("minishell: unset: «", STDERR);
+			ft_putstr_fd("minishell: export: « ", STDERR);
 			ft_putstr_fd(var[i], STDERR);
 			ft_putstr_fd(" » : not valid identifier\n", STDERR);
 		}

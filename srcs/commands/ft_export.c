@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 10:54:07 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 13:55:43 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int		set_keyval(t_list_cmd *args, char **key, char **value)
 		*value = ft_strdup(&(args->str[i + 1]));
 	else
 		*value = ft_strdup("");
-	if (ft_isalpha(*key[0]))
-		return (1);
+	if (ft_isalpha(*key[0]) || *key[0] == '_')
+			return (1);
 	else
 	{
 		g_glob.exit = 1;
@@ -103,7 +103,7 @@ int		set_keyval(t_list_cmd *args, char **key, char **value)
 			ft_putstr_fd(*key, STDERR);
 			ft_putstr_fd("=", STDERR);
 			ft_putstr_fd(*value, STDERR);
-			ft_putstr_fd("%s=%s » : not valid identifier\n", STDERR);
+			ft_putstr_fd(" » : not valid identifier\n", STDERR);
 		}
 		else
 		{
@@ -122,8 +122,10 @@ char	*ft_export(t_list_cmd *args, t_list *env)
 	char	*value;
 
 	g_glob.exit = 0;
-	if (!args || !args->str || (args->str[0] != '=' && args->flags == 512))
+	if (!args || !args->str)
 		return (ft_export_no_arg(env));
+	if (args->str[0] == '\0' && !have_egual(args->str) && args->flags == 512)
+		return (ft_strdup("PASS\n"));
 	while (args)
 	{
 		if (set_keyval(args, &key, &value))
