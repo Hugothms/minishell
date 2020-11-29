@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 16:13:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 18:57:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,8 @@ char	*ft_exit(t_list_cmd *args, t_list *env)
 
 	clear_env_lst(env);
 	free(g_glob.path);
-	if (args)
-	{
-		if ((err = ft_atoi_strict(args->str)))
-		{
-			g_glob.exit = err;
-			exit(g_glob.exit);
-		}
-	}
+	if (args && (err = ft_atoi_strict(args->str)))
+		g_glob.exit = err;
 	exit(g_glob.exit);
 	return (NULL);
 }
