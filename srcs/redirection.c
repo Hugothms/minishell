@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:39:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 12:19:56 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 11:02:41 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 		ft_putstr_fd("minishell: ", STDERR);
 		ft_putstr_fd(filename, STDERR);
 		ft_putstr_fd(": No such file or directory\n", STDERR);
+		g_glob.exit = 1;
 		return (FAILURE);
 	}
 	if (lst_line->output < 0)

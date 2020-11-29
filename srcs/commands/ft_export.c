@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/27 14:34:42 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 10:54:07 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,19 @@ int		set_keyval(t_list_cmd *args, char **key, char **value)
 	else
 	{
 		g_glob.exit = 1;
+		ft_putstr_fd("minishell: export: « ", STDERR);
 		if (*key[0] == '\0' && *value[0])
-			ft_printf("minishell: export: « %s=%s » : not valid identifier\n",
-						*key, *value);
+		{
+			ft_putstr_fd(*key, STDERR);
+			ft_putstr_fd("=", STDERR);
+			ft_putstr_fd(*value, STDERR);
+			ft_putstr_fd("%s=%s » : not valid identifier\n", STDERR);
+		}
 		else
-			ft_printf("minishell: export: « %s » : not valid identifier\n",
-						*key);
+		{
+			ft_putstr_fd(*key, STDERR);
+			ft_putstr_fd(" » : not valid identifier\n", STDERR);
+		}
 		free(*key);
 		free(*value);
 		return (0);
