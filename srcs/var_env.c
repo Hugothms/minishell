@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/29 10:45:27 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 18:12:00 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		test_var_env(t_list_cmd *cmd, t_list *env, int *i)
 	{
 		size = 1;
 		// while (cmd->str[*i + size] && !ft_in_charset(cmd->str[*i + size], "\\\"`$"))
-		while (ft_isalnum(cmd->str[*i + size]))
+		while (ft_isalnum(cmd->str[*i + size]) || cmd->str[*i + size] == '_')
 			size++;
 		if (!ft_strncmp(env->content, &(cmd->str[*i + 1]), size - 1) &&\
 		((char *)env->content)[size - 1] == '=')
@@ -103,7 +103,8 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 		while (cmd->str && cmd->str[i])
 		{
 			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
-			!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32)
+			!(cmd->flags & F_SIMPLE_QUOTE) && (cmd->str[i + 1] > '$' ||\
+			(!cmd->str[i + 1] && cmd->flags & F_NO_SP_AFTER)))
 			{
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env, i);
