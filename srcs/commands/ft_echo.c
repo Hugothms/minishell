@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/16 14:12:37 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 14:06:50 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char	*ft_echo(t_list_cmd *args)
 	while (args)
 	{
 		ret = ft_strjoin_free(ret, args->str);
-		if (args->next && !(args->flags & F_NO_SP_AFTER))
+		if (args->str[0] != '\0' && args->next &&
+				args->next->str[0] != '\0' && !(args->flags & F_NO_SP_AFTER))
 			ret = ft_strjoin_free(ret, " ");
 		args = args->next;
 	}
