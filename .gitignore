@@ -9,3 +9,5 @@ libft/libft.a
 minishell
 # libft/Makefile
 # Makefile
+mini_tester
+minishell-tester
