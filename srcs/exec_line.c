@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 18:13:45 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 12:35:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ int		make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 	lst_line->cmd = reparse_var_env(lst_line->cmd);
 	if (delete_backslashes(lst_line->cmd, env))
 		return (FAILURE);
+	delete_empty_elements(&(lst_line->cmd));
+
 				// ft_printf("--------1--------\n");
 				// t_list_cmd *copy = lst_line->cmd;
 				// while (copy)
