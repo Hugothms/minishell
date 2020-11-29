@@ -6,7 +6,7 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/11/24 16:57:22 by hthomas          ###   ########.fr        #
+#    Updated: 2020/11/29 12:01:49 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = gcc
 CFLAGS += -Wall -Werror -Wextra
-LDFLAGS += -g3 -fsanitize=address
+LDFLAGS += #-g3 -fsanitize=address
 
 #-----------------Main-----------------#
 
