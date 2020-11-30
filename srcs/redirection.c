@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:39:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/29 11:02:41 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 16:21:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		redirections(t_list_line *lst_line)
 	t_list_cmd	*tmp;
 
 	cmd = lst_line->cmd;
-	if (cmd->flags & F_REDIRS)
+	if (cmd && cmd->flags & F_REDIRS)
 	{
 		if (open_fd(lst_line, cmd))
 			return (FAILURE);

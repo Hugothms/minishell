@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2020/11/29 14:12:54 by vmoreau          ###   ########.fr       */
+=======
+/*   Updated: 2020/11/29 18:57:17 by hthomas          ###   ########.fr       */
+>>>>>>> 8bb4b3d7bd7a7798f02a6202b541442667359e40
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +33,7 @@ char	*ft_exit(t_list_cmd *args, t_list *env)
 
 	clear_env_lst(env);
 	free(g_glob.path);
+<<<<<<< HEAD
 	if (args)
 	{
 		if ((err = ft_atoi_strict(args->str)))
@@ -37,6 +42,10 @@ char	*ft_exit(t_list_cmd *args, t_list *env)
 			exit(g_glob.exit);
 		}
 	}
+=======
+	if (args && (err = ft_atoi_strict(args->str)))
+		g_glob.exit = err;
+>>>>>>> 8bb4b3d7bd7a7798f02a6202b541442667359e40
 	exit(g_glob.exit);
 	return (NULL);
 }
