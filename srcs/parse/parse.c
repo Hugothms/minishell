@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/01 15:48:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/01 16:03:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	delete_empty_elements(t_list_cmd **cmd)
 	t_list_cmd	*next_one;
 
 	tmp = *cmd;
-	while (!ft_strlen(tmp->str) && !in_quotes(tmp))
+	while (tmp && !ft_strlen(tmp->str) && !in_quotes(tmp))
 	{
 		next_one = tmp->next;
 		c_lst_free_one(tmp);

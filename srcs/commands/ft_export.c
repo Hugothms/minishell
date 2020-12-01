@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 13:55:43 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/01 16:08:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char	*ft_export(t_list_cmd *args, t_list *env)
 	if (!args || !args->str)
 		return (ft_export_no_arg(env));
 	if (args->str[0] == '\0' && !have_egual(args->str) && args->flags == 512)
-		return (ft_strdup("PASS\n"));
+		return (ft_export_no_arg(env));
 	while (args)
 	{
 		if (set_keyval(args, &key, &value))
