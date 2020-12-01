@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/19 17:18:49 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/30 13:45:30 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,56 @@ void	clear_env_lst(t_list *env)
 	env = NULL;
 }
 
+void	print_err(int err_code)
+{
+	if (err_code == 1 || err_code == 3)
+	{
+		g_glob.exit = 2;
+		ft_putstr_fd("minishell: exit: nurmeric argument needed\n", STDERR);
+	}
+	if (err_code == 2)
+	{
+		g_glob.exit = 1;
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR);
+	}
+}
+
+int		check_args(t_list_cmd *args)
+{
+	int ret;
+	int i;
+
+	i = 0;
+	ret = 0;
+	if (!args)
+		return (0);
+	while (args->str[i])
+	{
+		if (!ft_isdigit(args->str[i]))
+			ret = 1;
+		i++;
+	}
+	if (c_lst_size(args) > 1)
+		ret += 2;
+	print_err(ret);
+	if (ret == 2)
+		ret = -1;
+	return (ret);
+}
+
 char	*ft_exit(t_list_cmd *args, t_list *env)
 {
-	int	err;
+	int		err;
 
-	clear_env_lst(env);
-	free(g_glob.path);
-	if (args)
+	err = check_args(args);
+	if (err >= 0)
 	{
-		if ((err = ft_atoi_strict(args->str)))
-		{
-			g_glob.exit = err;
-			exit(err);
-		}
+		clear_env_lst(env);
+		free(g_glob.path);
+		if (!err)
+			if (args && (err = ft_atoi_strict(args->str)))
+				g_glob.exit = err;
+		exit(g_glob.exit);
 	}
-	g_glob.exit = 0;
-	exit(0);
 	return (NULL);
 }

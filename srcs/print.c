@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 11:33:58 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 11:11:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	print_prompt(void)
 {
 	char	*pwd;
 
-	ft_putstr_fd("\xE2\x9E\xA1 ", STDOUT);
+	ft_putstr_fd("\xE2\x9E\xA1 ", STDERR);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		ft_putstr_fd(g_glob.path, STDOUT);
+		ft_putstr_fd(g_glob.path, STDERR);
 	else
-		ft_putstr_fd(pwd, STDOUT);
+		ft_putstr_fd(pwd, STDERR);
 	free(pwd);
-	ft_putstr_fd("$ ", STDOUT);
+	ft_putstr_fd("$ ", STDERR);
 }
 
 void	not_found(char *str)

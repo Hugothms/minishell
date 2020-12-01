@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/19 15:24:48 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 13:00:14 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int		have_egual(char *str)
 	while (str[i])
 	{
 		if (str[i] == '=')
-			return (i);
+			if (i == 0)
+				return (1);
+			else
+				return (i);
 		i++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/19 17:04:14 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 10:47:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ char	*error_cd(char *arg, int err_status)
 	else if (err_status == 3)
 		ret = ft_strjoin_free(ret, " Not set");
 	ret = ft_strjoin_free(ret, "\n");
-	return (ret);
+	ft_putstr_fd(ret, STDERR);
+	free(ret);
+	return (NULL);
 }
 
 char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)

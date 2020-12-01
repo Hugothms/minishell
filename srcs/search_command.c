@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/27 11:39:00 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/11/29 10:56:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	binary_not_found(char *path, int *ret)
 	else
 	{
 		ft_putstr_fd(": no such file or directory\n", STDERR);
-		g_glob.exit = 127;
+		g_glob.exit = CMD_NOT_FOUND;
 	}
 	*ret = FAILURE;
 }

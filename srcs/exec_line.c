@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/25 11:37:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/11/29 17:50:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,11 @@ t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
 	return (start);
 }
 
-int		make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret)
+int		make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 {
+	char	*ret;
+
 	replace_all_var_env(lst_line->cmd, env);
-	fusion_cmd(lst_line->cmd);
-	lst_line->cmd = reparse_var_env(lst_line->cmd);
-	if (delete_backslashes(lst_line->cmd, env))
-		return (FAILURE);
 				// ft_printf("--------1--------\n");
 				// t_list_cmd *copy = lst_line->cmd;
 				// while (copy)
@@ -131,9 +129,34 @@ int		make_and_exec_cmd(t_list_line *lst_line, t_list *env, char **ret)
 				// 	ft_printf("F:%d\t%s\n", copy->flags, copy->str);
 				// 	copy = copy->next;
 				// }
+	fusion_cmd(lst_line->cmd);
+	lst_line->cmd = reparse_var_env(lst_line->cmd);
+	if (delete_backslashes(lst_line->cmd, env))
+		return (FAILURE);
+	delete_empty_elements(&(lst_line->cmd));
+
 	if (redirections(lst_line))
 		return (FAILURE);
-	*ret = exec_cmd(lst_line->cmd, env);
+	// ft_putnbr(lst_line->output);
+	// ft_putstr("$\n");
+	if (ret = exec_cmd(lst_line->cmd, env))
+	{
+		// ft_putstr_fd("|", lst_line->output);
+		ft_putstr_fd(ret, lst_line->output);
+		// ft_putstr_fd("|\n", lst_line->output);
+		free(ret);
+	}
+			// char **strs = cmd_to_strs(lst_line->cmd);
+			// char *str = ft_strjoin_sep(c_lst_size(lst_line->cmd), strs, " ");
+			// ft_putstr("cmd:\t\t|");
+			// ft_putstr(str);
+			// ft_putstr("|\n");
+			// free(str);
+			// ft_free_tab(strs);
+				// if (get_next_line(ret, lst_line->input) == -1)
+				// 	return (FAILURE);
+				// ft_printf("ret in make:\t|%s|\n", ret);
+				// free(ret);
 	if (lst_line->output > 2 && close(lst_line->output) < 0)
 		ft_putstr_fd("error close output\n", STDERR);
 	if (lst_line->input > 2 && close(lst_line->input) < 0)
@@ -150,21 +173,24 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	int		fd_inold;
 	fd_outold = dup(STDOUT);
 	fd_inold = dup(STDIN);
-	create_pipes_and_semicolon(lst_line, env);
 	start = lst_line;
 	while (lst_line)
 	{
-		if (make_and_exec_cmd(lst_line, env, &ret))
+		if (create_pipe(&lst_line, env))
+			break ;
+		// if (lst_line->pipe)
+		// 	ft_printf("%d\n", lst_line->next->input);
+		if (make_and_exec_cmd(lst_line, env))
 		{
 			dup2(fd_outold, STDOUT);
 			dup2(fd_inold, STDIN);
 			break;
 		}
-		if (ret)
-		{
-			ft_putstr_fd(ret, 1/*lst_line->output*/);
-			free(ret);
-		}
+		// if (ret)
+		// {
+		// 	ft_putstr_fd(ret, 1/*lst_line->output*/);
+		// 	free(ret);
+		// }
 		dup2(fd_outold, STDOUT);
 		dup2(fd_inold, STDIN);
 		lst_line = lst_line->next;

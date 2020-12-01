@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/23 15:55:14 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/01 16:03:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 			if (cmd->str[i] == '\\')
 			{
 				if ((cmd->flags & F_SIMPLE_QUOTE ||\
-				(cmd->flags & F_DOUBLE_QUOTE)) && (ft_isalpha(cmd->str[i + 1]) || cmd->str[i+ 1] == '\''))
+				(cmd->flags & F_DOUBLE_QUOTE)) &&\
+				(!ft_in_charset(cmd->str[i + 1], "\\\"`$" )))
 				{
 					i++;
 					continue;
@@ -33,6 +34,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
 				else
 				{
+					g_glob.exit = 2;
 					ft_putstr_fd("minishell: syntax error\n", STDERR);
 					return (FAILURE);
 				}
@@ -74,22 +76,24 @@ int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 void	delete_empty_elements(t_list_cmd **cmd)
 {
 	t_list_cmd	*tmp;
+	t_list_cmd	*next_one;
 
 	tmp = *cmd;
-	while (tmp)
+	while (tmp && !ft_strlen(tmp->str) && !in_quotes(tmp))
 	{
-		if (tmp->next)
+		next_one = tmp->next;
+		c_lst_free_one(tmp);
+		*cmd = next_one;
+		tmp = next_one;
+	}
+	while (tmp && tmp->next)
+	{
+		if (!ft_strlen(tmp->next->str) && !in_quotes(tmp->next))
 		{
-			if (!ft_strlen(tmp->next->str) && !in_quotes(tmp->next))
-				c_lst_remove_next_one(tmp);
+			c_lst_remove_next_one(tmp);
+			continue ;
 		}
-		else if (!ft_strlen(tmp->str) && !in_quotes(tmp))
-		{
-			c_lst_free_one(tmp);
-			*cmd = NULL;
-			return ;
-		}
-		(tmp) = (tmp)->next;
+		tmp = tmp->next;
 	}
 }
 
