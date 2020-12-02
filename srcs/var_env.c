@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/01 15:46:42 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/02 09:36:31 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void		test_var_env(t_list_cmd *cmd, t_list *env, int *i)
 {
 	int		size;
 
+	if (ft_isdigit(cmd->str[*i + 1]))
+	{
+		ft_strcpy(&cmd->str[*i], &cmd->str[*i + 2]);
+		return ;
+	}
 	while (env)
 	{
 		size = 1;
