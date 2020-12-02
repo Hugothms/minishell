@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/29 17:50:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/02 10:59:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,6 @@ char	*exec_cmd(t_list_cmd *cmd, t_list *env)
 	return (NULL);
 }
 
-/*
-** add flags together, for example 011 + 001 = 011 (and not 100 like addition)
-*/
-
-int 	bits_per_bits_or(int flags1, int flags2)
-{
-	int	sum;
-	int	max;
-	int	size;
-
-	size = 0;
-	max = ft_max_int(flags1, flags2);
-	while (max)
-	{
-		max = max >> 1;
-		size++;
-	}
-	sum = 0;
-	while (size + 1)
-	{
-		sum += (flags1 >> size == 1 | flags2 >> size == 1) << size;
-		size--;
-	}
-	return (sum);
-}
-
 void	fusion_cmd(t_list_cmd *cmd)
 {
 	while (cmd)
@@ -70,7 +44,7 @@ void	fusion_cmd(t_list_cmd *cmd)
 			if (!(cmd->next->flags & F_NO_SP_AFTER))
 				cmd->flags -= F_NO_SP_AFTER;
 			cmd->str = ft_strjoin_free(cmd->str, cmd->next->str);
-			cmd->flags = bits_per_bits_or(cmd->flags, cmd->next->flags);
+			cmd->flags = cmd->flags | cmd->next->flags;
 			c_lst_remove_next_one(cmd);
 		}
 		cmd = cmd->next;
@@ -106,9 +80,9 @@ t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
 	start = NULL;
 	while (cmd)
 	{
-		if (cmd->flags & F_VAR_ENV)
+		if (cmd->flags & F_VAR_ENV && !(cmd->flags & F_DOUBLE_QUOTE))
 			cmd = split_add_back(cmd, c_lst_free_one, cmd);
-		if (cmd->next && cmd->next->flags & F_VAR_ENV)
+		if (cmd->next && cmd->next->flags & F_VAR_ENV && !(cmd->next->flags & F_DOUBLE_QUOTE))
 			cmd->next = split_add_back(cmd->next, c_lst_remove_next_one, cmd);
 		if (!start)
 			start = cmd;
@@ -137,26 +111,11 @@ int		make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 
 	if (redirections(lst_line))
 		return (FAILURE);
-	// ft_putnbr(lst_line->output);
-	// ft_putstr("$\n");
 	if (ret = exec_cmd(lst_line->cmd, env))
 	{
-		// ft_putstr_fd("|", lst_line->output);
 		ft_putstr_fd(ret, lst_line->output);
-		// ft_putstr_fd("|\n", lst_line->output);
 		free(ret);
 	}
-			// char **strs = cmd_to_strs(lst_line->cmd);
-			// char *str = ft_strjoin_sep(c_lst_size(lst_line->cmd), strs, " ");
-			// ft_putstr("cmd:\t\t|");
-			// ft_putstr(str);
-			// ft_putstr("|\n");
-			// free(str);
-			// ft_free_tab(strs);
-				// if (get_next_line(ret, lst_line->input) == -1)
-				// 	return (FAILURE);
-				// ft_printf("ret in make:\t|%s|\n", ret);
-				// free(ret);
 	if (lst_line->output > 2 && close(lst_line->output) < 0)
 		ft_putstr_fd("error close output\n", STDERR);
 	if (lst_line->input > 2 && close(lst_line->input) < 0)
@@ -178,19 +137,12 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	{
 		if (create_pipe(&lst_line, env))
 			break ;
-		// if (lst_line->pipe)
-		// 	ft_printf("%d\n", lst_line->next->input);
 		if (make_and_exec_cmd(lst_line, env))
 		{
 			dup2(fd_outold, STDOUT);
 			dup2(fd_inold, STDIN);
 			break;
 		}
-		// if (ret)
-		// {
-		// 	ft_putstr_fd(ret, 1/*lst_line->output*/);
-		// 	free(ret);
-		// }
 		dup2(fd_outold, STDOUT);
 		dup2(fd_inold, STDIN);
 		lst_line = lst_line->next;

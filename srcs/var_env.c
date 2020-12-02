@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/02 09:36:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/02 10:59:58 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,28 @@ void		err_code(t_list_cmd *cmd, t_list *env, int i)
 	free(after);
 }
 
-static char	*format_var_env(t_list *env, int size, int space_begin)
+void	remove_double_char(char *str, char *charset)
+{
+	int	i;
+
+	i = 0;
+	if (!str[i] || !str[i + 1])
+		return ;
+	while (str[i])
+	{
+		// ft_printf("%d:%c,%c\n", i , str[i], str[ i + 1]);
+		if (ft_in_charset(str[i], charset) && ft_in_charset(str[i + 1], charset))
+		{
+			// ft_printf("ok\n");
+			ft_strcpy(&str[i], &str[i + 1]);
+			// ft_printf("%s\n", str);
+			continue;
+		}
+		i++;
+	}
+}
+
+static char	*format_var_env(t_list *env, int size, int space_begin, int flags)
 {
 	char	*ret;
 	char	*tmp;
@@ -39,23 +60,21 @@ static char	*format_var_env(t_list *env, int size, int space_begin)
 
 	if (!ft_strlen(&((char *)env->content)[size]))
 		return (ft_strdup(""));
-	ret = ft_strtrim(&((char *)env->content)[size], WSP);
+	if (flags & F_DOUBLE_QUOTE)
+		ret = ft_strdup(&((char *)env->content)[size]);
+	else
+		ret = ft_strtrim(&((char *)env->content)[size], WSP);
 	if (space_begin && ft_in_charset(((char *)env->content)[size], WSP))
 	{
 		tmp = ft_strjoin(" ", ret);
 		free(ret);
 		ret = tmp;
 	}
-	i = 1;
-	while (ret[i])
-	{
-		if (ft_in_charset(ret[i - 1], WSP) && ft_in_charset(ret[i], WSP))
-		{
-			ft_strcpy(&ret[i - 1], &ret[i]);
-			i--;
-		}
-		i++;
-	}
+	// ft_putstr("|");
+	// ft_putstr(ret);
+	// ft_putstr("|\n");
+	if (!(flags & F_DOUBLE_QUOTE))
+		remove_double_char(ret, WSP);	
 	return (ret);
 }
 
@@ -66,7 +85,7 @@ static void	replace_var_env(t_list_cmd *cmd, t_list *env, int *i, int size)
 
 	after = ft_strdup(&cmd->str[*i + size]);
 	cmd->str[*i] = '\0';
-	tmp = format_var_env(env ,size, *i);
+	tmp = format_var_env(env, size, *i, cmd->flags);
 	cmd->str = ft_strjoin_free(cmd->str, tmp);
 	free(tmp);
 	size = ft_strlen(cmd->str);
