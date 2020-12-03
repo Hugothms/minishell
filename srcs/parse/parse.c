@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/01 16:03:20 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/03 18:30:57 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 				}
 				else if (cmd->str[i + 1])
 					ft_strcpy(&cmd->str[i], &cmd->str[i + 1]);
-				else
+				else if (cmd->flags != 512)
 				{
 					g_glob.exit = 2;
 					ft_putstr_fd("minishell: syntax error\n", STDERR);

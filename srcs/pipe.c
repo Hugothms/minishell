@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 16:42:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/03 19:25:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int		create_pipe(t_list_line **lst_line, t_list *env)
 		if ((*lst_line)->pipe)
 		{
 			int		fdpipe[2]; // Used to store two ends of first pipe
-			pid_t	pid;
 
 			if (pipe(fdpipe) == -1) //error
 			{
@@ -41,13 +40,13 @@ int		create_pipe(t_list_line **lst_line, t_list *env)
 				return (FAILURE);
 			}
 			// do something ?
-			pid = fork();
-			if (pid < 0) //error
+			g_glob.pid = fork();
+			if (g_glob.pid < 0) //error
 			{
 				ft_putstr_fd("pipe: fork failed\n", STDERR);
 				return (FAILURE);
 			}
-			else if (pid > 0) //parent process
+			else if (g_glob.pid > 0) //parent process
 			{
 				close(fdpipe[1]);
 				char	*line;
