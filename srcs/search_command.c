@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/29 10:56:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/03 17:17:02 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,12 @@ int		search_command(t_list_cmd *cmd, t_list *env)
 {
 	int		ret;
 	int		status;
-	pid_t	pid;
 	char	**envp;
 
 	ret = SUCCESS;
-	pid = fork();
+	g_glob.pid = fork();
 	envp = lst_to_chartab(env);
-	if (pid == 0)
+	if (g_glob.pid == 0)
 	{
 		if (try_path(cmd, envp))
 			exit(g_glob.exit);

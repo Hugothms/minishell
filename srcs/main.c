@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/11/29 11:10:31 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/03 17:50:52 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,25 @@ void	increment_shlvl(t_list *env)
 
 void	sighandler(int signum)
 {
-	if (signum == SIGINT)
+	if (g_glob.pid && signum == SIGINT)
 	{
-		ft_putstr_fd("\n", STDOUT);
+		kill(g_glob.pid, signum);
+		ft_putstr_fd("\n", STDERR);
 		g_glob.exit = 130;
+		g_glob.pid = 0;
 	}
-	else if (signum == SIGQUIT)
+	else if (g_glob.pid && signum == SIGQUIT)
 	{
-		ft_putstr_fd("Quit (core dumped)\n", STDOUT);
+		kill(g_glob.pid, signum);
+		ft_putstr_fd("Quit (core dumped)\n", STDERR);
 		g_glob.exit = 131;
+		g_glob.pid = 0;
 	}
-	print_prompt();
+	else
+	{
+		ft_putstr_fd("\n", STDERR);
+		print_prompt();
+	}
 }
 
 int		main(const int argc, char *argv[], char *envp[])
