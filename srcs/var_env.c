@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/02 10:59:58 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/03 16:43:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && cmd->str[i + 1] != '\\' && !escaped(cmd->str, i) &&\
+			if (cmd->str[i] == '$' && cmd->str[i + 1] != '\\' && cmd->str[i + 1] != '%' && !escaped(cmd->str, i) &&\
 			!(cmd->flags & F_SIMPLE_QUOTE) && (cmd->str[i + 1] > '$' ||\
 			(!cmd->str[i + 1] && cmd->flags & F_NO_SP_AFTER)))
 			{
