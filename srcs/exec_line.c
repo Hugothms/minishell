@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/02 10:59:06 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/06 15:39:58 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,13 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	start = lst_line;
 	while (lst_line)
 	{
-		if (create_pipe(&lst_line, env))
-			break ;
+		// ft_printf("str  :%s\npipe: %d\n", lst_line->cmd->str, lst_line->pipe);
+		while (lst_line->pipe)
+		{
+			if (create_pipe(&lst_line, env))
+				break ;
+		}
+		// ft_putstr("end pipe\n");
 		if (make_and_exec_cmd(lst_line, env))
 		{
 			dup2(fd_outold, STDOUT);
