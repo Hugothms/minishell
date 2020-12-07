@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 12:58:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:59:21 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	while (lst_line)
 	{
 		// ft_printf("str  :%s\npipe :%d\n", lst_line->cmd->str, lst_line->pipe);
-		// ft_printf("exit?:%d\nnext²:%d\n", !ft_strncmp(lst_line->next->cmd->str, "exit", 5), lst_line->next->next);
+		// ft_printf("exit?:%d\nnext²:%d\n", !ft_strncmp(lst_line->next->cmd->str, "exit", 5), !lst_line->next->next);
 		if (lst_line->pipe && !ft_strncmp(lst_line->next->cmd->str, "exit", 5) && !(lst_line->next->next))
 			break;
 		while (lst_line->pipe)
@@ -157,5 +157,3 @@ void	exec_line(t_list_line *lst_line, t_list *env)
 	}
 	l_lst_clear(start);
 }
-
-// fini par "| exit" ne doit pas exit
