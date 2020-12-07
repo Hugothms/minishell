@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/28 15:10:26 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 13:57:52 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	int end;
 
-	// ft_printf("separator !!!\n");
-	while (input[par->pos] && ft_in_charset(input[par->pos], WSP)) // or  input[par->pos] <= 32) because this is causing segfaults/leaks when only arrows are pressed
+	while (input[par->pos] && ft_in_charset(input[par->pos], WSP))
 		par->pos++;
 	end = par->pos;
 	if (!ft_in_charset(input[par->pos], SYMBOLS))
@@ -63,29 +62,9 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 	if (input[par->pos + 1] == '>')
 		par->i++;
 	add_cmd(&input[end], cmd, par->i - end + 1, get_flags(&input[end]));
-	// ft_printf("input:%s\tsep:%d\n", &input[end], get_flags(&input[end]));
 	par->pos = end + 1;
 	if (!ft_strncmp(&input[end], ">>", 2))
 		par->pos++;
-}
-
-void	word(char *input, t_list_cmd **cmd, t_parse *par)
-{
-	while (input[par->pos] && ((ft_in_charset(input[par->pos], WSP)))) // or  input[par->pos] <= 32) because this is causing leaks when only arrows are pressed
-		par->pos++;
-	if (input[par->i + 1] && !ft_in_charset(input[par->i + 1], WSP))
-		add_cmd(&input[par->pos], cmd, par->i - par->pos + 1, F_NO_SP_AFTER);
-	else
-		add_cmd(&input[par->pos], cmd, par->i - par->pos + 1, F_NOTHING);
-	par->pos = par->i + 1;
-}
-
-int		is_in_word(char *input, t_parse *par)
-{
-	return (((!ft_in_charset(input[par->i], WSP) ||\
-	escaped(input, par->i)) ||\
-	(!ft_in_charset(input[par->i], "\'\"") || escaped(input, par->i)))\
-	&& !par->in_simple && !par->in_double);
 }
 
 int		next_is_outside_word(char *input, t_parse *par)
@@ -112,11 +91,9 @@ int		input_to_command(char *input, t_list_cmd **cmd)
 		else if (is_separator(input, par.i) && !escaped(input, par.i) &&\
 		!par.in_simple && !par.in_double)
 			separator(input, cmd, &par);
-		// si je suis sur un mot et hors de quotes
 		else if (is_in_word(input, &par) && next_is_outside_word(input, &par))
 			word(input, cmd, &par);
 		par.i++;
 	}
-	// ft_putnbr(par.in_simple || par.in_double);
 	return (par.in_simple || par.in_double);
 }

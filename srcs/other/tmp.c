@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   tmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/22 16:16:38 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 12:42:52 by vmoreau          ###   ########.fr       */
+/*   Created: 2020/12/07 15:11:59 by vmoreau           #+#    #+#             */
+/*   Updated: 2020/12/07 15:12:21 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_pwd(void)
+void			free_cmd(void *lst)
 {
-	char	*ret;
+	t_list_cmd	*tmp;
 
-	g_glob.exit = 0;
-	ret = getcwd(NULL, 0);
-	ret = ft_strjoin_free(ret, "\n");
-	return (ret);
+	tmp = lst;
+	free(tmp->str);
+	free(tmp);
+}
+
+void			ft_lstremove_next_one(t_list *lst, void (*del)(void*))
+{
+	t_list	*tmp;
+
+	if (!lst || !lst->next)
+		return ;
+	tmp = lst->next->next;
+	del(lst->next);
+	lst->next = tmp;
 }

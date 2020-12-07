@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 19:25:56 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 15:20:11 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,6 @@ void		err_code(t_list_cmd *cmd, t_list *env, int i)
 	free(after);
 }
 
-void	remove_double_char(char *str, char *charset)
-{
-	int	i;
-
-	i = 0;
-	if (!str[i] || !str[i + 1])
-		return ;
-	while (str[i])
-	{
-		// ft_printf("%d:%c,%c\n", i , str[i], str[ i + 1]);
-		if (ft_in_charset(str[i], charset) && ft_in_charset(str[i + 1], charset))
-		{
-			// ft_printf("ok\n");
-			ft_strcpy(&str[i], &str[i + 1]);
-			// ft_printf("%s\n", str);
-			continue;
-		}
-		i++;
-	}
-}
-
 static char	*format_var_env(t_list *env, int size, int space_begin, int flags)
 {
 	char	*ret;
@@ -70,9 +49,6 @@ static char	*format_var_env(t_list *env, int size, int space_begin, int flags)
 		free(ret);
 		ret = tmp;
 	}
-	// ft_putstr("|");
-	// ft_putstr(ret);
-	// ft_putstr("|\n");
 	if (!(flags & F_DOUBLE_QUOTE))
 		remove_double_char(ret, WSP);
 	return (ret);
@@ -106,10 +82,9 @@ void		test_var_env(t_list_cmd *cmd, t_list *env, int *i)
 	while (env)
 	{
 		size = 1;
-		// while (cmd->str[*i + size] && !ft_in_charset(cmd->str[*i + size], "\\\"`$"))
 		while (ft_isalnum(cmd->str[*i + size]) || cmd->str[*i + size] == '_')
 			size++;
-		if (!ft_strncmp(env->content, &(cmd->str[*i + 1]), size - 1) &&\
+		if (!ft_strncmp(env->content, &(cmd->str[*i + 1]), size - 1) &&
 		((char *)env->content)[size - 1] == '=')
 			return (replace_var_env(cmd, env, i, size));
 		env = env->next;
@@ -126,8 +101,9 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && cmd->str[i + 1] != '\\' && cmd->str[i + 1] != '%' && !escaped(cmd->str, i) &&\
-			!(cmd->flags & F_SIMPLE_QUOTE) && (cmd->str[i + 1] > '$' ||\
+			if (cmd->str[i] == '$' && cmd->str[i + 1] != '\\' &&
+				cmd->str[i + 1] != '%' && !escaped(cmd->str, i) &&
+				!(cmd->flags & F_SIMPLE_QUOTE) && (cmd->str[i + 1] > '$' ||
 			(!cmd->str[i + 1] && cmd->flags & F_NO_SP_AFTER)))
 			{
 				if (cmd->str[i + 1] == '?')

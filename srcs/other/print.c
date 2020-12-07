@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 17:42:37 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 14:19:25 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,16 @@ void	not_found(char *str)
 	exit(CMD_NOT_FOUND);
 }
 
-void	parse_error(char *input, t_list_line *lst_line)
+int		print_synt_err(void)
 {
 	g_glob.exit = 2;
 	ft_putstr_fd("minishell: syntax error\n", STDERR);
+	return (-1);
+}
+
+void	parse_error(char *input, t_list_line *lst_line)
+{
+	print_synt_err();
 	print_prompt();
 	l_lst_clear(lst_line);
 	free(input);

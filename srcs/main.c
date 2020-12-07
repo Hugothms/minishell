@@ -6,46 +6,11 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 17:50:52 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 14:49:48 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	fill_env(t_list **env)
-{
-	char	*keyval;
-	char	*pwd;
-
-	keyval = ft_strdup("SHLVL=0");
-	ft_lstadd_back(env, ft_lstnew(keyval));
-	pwd = getcwd(NULL, 0);
-	keyval = ft_strjoin("PWD=", pwd);
-	free(pwd);
-	ft_lstadd_back(env, ft_lstnew(keyval));
-	keyval = ft_strdup("OLDPWD=");
-	ft_lstadd_back(env, ft_lstnew(keyval));
-}
-
-void	set_env(char **envp, t_list **env)
-{
-	int		i;
-	char	*keyval;
-
-	i = 0;
-	*env = NULL;
-	if (envp[i])
-	{
-		while (envp[i])
-		{
-			keyval = ft_strdup(envp[i]);
-			ft_lstadd_back(env, ft_lstnew(keyval));
-			i++;
-		}
-	}
-	else
-		fill_env(env);
-}
 
 void	increment_shlvl(t_list *env)
 {
@@ -90,6 +55,26 @@ void	sighandler(int signum)
 	}
 }
 
+void	init_main(t_list **env, char **envp)
+{
+	g_glob.exit = 0;
+	g_glob.path = getcwd(NULL, 0);
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, sighandler);
+	set_env(envp, env);
+	ft_putstr_fd(WELCOME_MSG, STDERR);
+	increment_shlvl(*env);
+	print_prompt();
+}
+
+void	free_main(t_list *env, char *input)
+{
+	free(g_glob.path);
+	clear_env_lst(env);
+	free(input);
+	ft_putstr_fd("\n", STDERR);
+}
+
 int		main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
@@ -101,14 +86,7 @@ int		main(const int argc, char *argv[], char *envp[])
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
 		return (FAILURE);
 	}
-	g_glob.exit = 0;
-	g_glob.path = getcwd(NULL, 0);
-	signal(SIGINT, sighandler);
-	signal(SIGQUIT, sighandler);
-	set_env(envp, &env);
-	ft_putstr_fd(WELCOME_MSG, STDERR);
-	increment_shlvl(env);
-	print_prompt();
+	init_main(&env, envp);
 	while (get_next_line(&input, 0) > 0)
 	{
 		lst_line = NULL;
@@ -121,9 +99,6 @@ int		main(const int argc, char *argv[], char *envp[])
 		exec_line(lst_line, env);
 		print_prompt();
 	}
-	free(g_glob.path);
-	clear_env_lst(env);
-	free(input);
-	ft_putstr_fd("\n", STDERR);
+	free_main(env, input);
 	return (g_glob.exit);
 }
