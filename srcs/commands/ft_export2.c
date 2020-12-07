@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 12:42:29 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:05:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		have_egual(char *str)
+int			have_equal(char *str)
 {
 	int i;
 
@@ -29,7 +29,7 @@ int		have_egual(char *str)
 	return (0);
 }
 
-void	add_quote(char **tri)
+void		add_quote(char **tri)
 {
 	int		i;
 	int		j;
@@ -37,10 +37,10 @@ void	add_quote(char **tri)
 	i = 0;
 	while (tri[i])
 	{
-		if (have_egual(tri[i]))
+		if (have_equal(tri[i]))
 		{
 			j = ft_strlen(tri[i]) - 2;
-			while (j > have_egual(tri[i]))
+			while (j > have_equal(tri[i]))
 			{
 				tri[i][j] = tri[i][j - 1];
 				j--;
@@ -51,7 +51,7 @@ void	add_quote(char **tri)
 	}
 }
 
-int		ft_strcmp_ex(const char *s1, const char *s2)
+static int	ft_strcmp_ex(const char *s1, const char *s2)
 {
 	unsigned int	i;
 
@@ -68,7 +68,7 @@ int		ft_strcmp_ex(const char *s1, const char *s2)
 		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void	sort(char **tri)
+void		sort(char **tri)
 {
 	char	*tmp;
 	int		i;
@@ -97,7 +97,7 @@ void	sort(char **tri)
 	}
 }
 
-void	print_exp_err(char **key, char **value)
+void		print_exp_err(char **key, char **value)
 {
 	g_glob.exit = 1;
 	ft_putstr_fd("minishell: export: « ", STDERR);

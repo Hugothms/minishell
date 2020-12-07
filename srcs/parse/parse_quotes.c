@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 01:10:40 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 13:57:52 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:52:28 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
+static void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	if (!par->in_simple && par->i && !ft_in_charset(input[par->i - 1], WSP))
 		add_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SP_AFTER);
@@ -28,7 +28,7 @@ void	simple_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	par->in_simple += (par->in_simple == 0 ? 1 : -1);
 }
 
-void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
+static void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	if (!par->in_double && par->i && !ft_in_charset(input[par->i - 1], WSP))
 		add_cmd(&input[par->pos], cmd, par->i - par->pos - 1, F_NO_SP_AFTER);
@@ -44,7 +44,7 @@ void	double_quotes(char *input, t_list_cmd **cmd, t_parse *par)
 	par->in_double += (par->in_double == 0 ? 1 : -1);
 }
 
-void	separator(char *input, t_list_cmd **cmd, t_parse *par)
+static void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 {
 	int end;
 
@@ -67,7 +67,7 @@ void	separator(char *input, t_list_cmd **cmd, t_parse *par)
 		par->pos++;
 }
 
-int		next_is_outside_word(char *input, t_parse *par)
+static int	next_is_outside_word(char *input, t_parse *par)
 {
 	return (!input[par->i + 1] ||\
 	(ft_in_charset(input[par->i + 1], WSP) && !escaped(input, par->i + 1)) ||\
@@ -75,7 +75,7 @@ int		next_is_outside_word(char *input, t_parse *par)
 	(!escaped(input, par->i + 1) || par->in_simple)));
 }
 
-int		input_to_command(char *input, t_list_cmd **cmd)
+int			input_to_command(char *input, t_list_cmd **cmd)
 {
 	t_parse		par;
 

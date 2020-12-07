@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:19:43 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:58:31 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		delete_backslashes(t_list_cmd *cmd, t_list *env)
+int			delete_backslashes(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 
@@ -40,7 +40,7 @@ int		delete_backslashes(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
+static int	flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 {
 	int		i;
 	char	*tmp;
@@ -68,8 +68,8 @@ int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-void	split_cmd2(t_list_cmd **cmd, t_list_cmd *tmp, t_list_cmd *nxt_sta,\
-int i)
+static void	split_cmd2(t_list_cmd **cmd, t_list_cmd *tmp,\
+t_list_cmd *nxt_sta, int i)
 {
 	while (i--)
 		tmp = tmp->next;
@@ -78,7 +78,7 @@ int i)
 	*cmd = nxt_sta;
 }
 
-int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
+int			split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 {
 	t_list_cmd	*next_start;
 	t_list_cmd	*tmp;
@@ -105,7 +105,7 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 	return (SUCCESS);
 }
 
-int		parse_input(char *input, t_list_line **lst_line, t_list *env)
+int			parse_input(char *input, t_list_line **lst_line, t_list *env)
 {
 	t_list_cmd	*cmd;
 

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:31:32 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:07:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *env);
 void					add_quote(char **tri);
 void					sort(char **tri);
-int						have_egual(char *str);
+int						have_equal(char *str);
 void					print_exp_err(char **key, char **value);
 char					*ft_unset(t_list_cmd *args, t_list *env);
 char					*ft_env(t_list *env);
@@ -177,7 +177,7 @@ t_list_cmd				*split_add_back(t_list_cmd *cmd,
 ** var_env.c
 */
 void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
-void					err_code(t_list_cmd *cmd, t_list *env, int i);
+// void					err_code(t_list_cmd *cmd, t_list *env, int i);
 
 /*
 ** set_env.c
