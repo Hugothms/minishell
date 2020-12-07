@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:29 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 16:18:39 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:58:14 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		check_nflag(char *str)
+static int	check_nflag(char *str)
 {
 	int i;
 
@@ -30,7 +30,7 @@ int		check_nflag(char *str)
 		return (0);
 }
 
-char	*ft_echo(t_list_cmd *args)
+char		*ft_echo(t_list_cmd *args)
 {
 	int		nflag;
 	char	*ret;

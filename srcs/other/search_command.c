@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   search_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 17:17:02 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:44:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_paths(char **envp)
+static char	**get_paths(char **envp)
 {
 	int		i;
 	char	**path;
@@ -26,7 +26,7 @@ char	**get_paths(char **envp)
 	return (path);
 }
 
-void	binary_not_found(char *path, int *ret)
+static void	binary_not_found(char *path, int *ret)
 {
 	struct stat	buf;
 	int			dir;
@@ -50,7 +50,7 @@ void	binary_not_found(char *path, int *ret)
 	*ret = FAILURE;
 }
 
-void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
+static void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 {
 	int		i;
 	int		cpt;
@@ -79,7 +79,7 @@ void	try_path2(t_list_cmd *cmd, char **envp, char **argv, int *ret)
 		binary_not_found(cmd->str, ret);
 }
 
-int		try_path(t_list_cmd *cmd, char **envp)
+static int	try_path(t_list_cmd *cmd, char **envp)
 {
 	int		ret;
 	char	**argv;
@@ -103,7 +103,7 @@ int		try_path(t_list_cmd *cmd, char **envp)
 	return (ret);
 }
 
-int		search_command(t_list_cmd *cmd, t_list *env)
+int			search_command(t_list_cmd *cmd, t_list *env)
 {
 	int		ret;
 	int		status;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 14:49:48 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:20:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	increment_shlvl(t_list *env)
+static void	increment_shlvl(t_list *env)
 {
 	t_list_cmd	*args;
 	char		*tmp;
@@ -32,7 +32,7 @@ void	increment_shlvl(t_list *env)
 	c_lst_clear(args);
 }
 
-void	sighandler(int signum)
+static void	sighandler(int signum)
 {
 	if (g_glob.pid && signum == SIGINT)
 	{
@@ -55,19 +55,19 @@ void	sighandler(int signum)
 	}
 }
 
-void	init_main(t_list **env, char **envp)
+static void	init_main(t_list **env, char **envp)
 {
 	g_glob.exit = 0;
 	g_glob.path = getcwd(NULL, 0);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, env);
-	ft_putstr_fd(WELCOME_MSG, STDERR);
+	print_welcome_msg();
 	increment_shlvl(*env);
 	print_prompt();
 }
 
-void	free_main(t_list *env, char *input)
+static void	free_main(t_list *env, char *input)
 {
 	free(g_glob.path);
 	clear_env_lst(env);
@@ -75,7 +75,7 @@ void	free_main(t_list *env, char *input)
 	ft_putstr_fd("\n", STDERR);
 }
 
-int		main(const int argc, char *argv[], char *envp[])
+int			main(const int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_list_line	*lst_line;

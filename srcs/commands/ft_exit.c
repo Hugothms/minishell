@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/30 13:45:30 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:10:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	clear_env_lst(t_list *env)
+void		clear_env_lst(t_list *env)
 {
 	if (!env)
 		return ;
@@ -23,12 +23,14 @@ void	clear_env_lst(t_list *env)
 	env = NULL;
 }
 
-void	print_err(int err_code)
+static void	print_err(int err_code, t_list_cmd *args)
 {
 	if (err_code == 1 || err_code == 3)
 	{
 		g_glob.exit = 2;
-		ft_putstr_fd("minishell: exit: nurmeric argument needed\n", STDERR);
+		ft_putstr_fd("minishell: exit: ", STDERR);
+		ft_putstr_fd(args->str, STDERR);
+		ft_putstr_fd(": nurmeric argument needed\n", STDERR);
 	}
 	if (err_code == 2)
 	{
@@ -37,7 +39,7 @@ void	print_err(int err_code)
 	}
 }
 
-int		check_args(t_list_cmd *args)
+static int	check_args(t_list_cmd *args)
 {
 	int ret;
 	int i;
@@ -46,6 +48,8 @@ int		check_args(t_list_cmd *args)
 	ret = 0;
 	if (!args)
 		return (0);
+	if (args->str[0] == '-')
+		i++;
 	while (args->str[i])
 	{
 		if (!ft_isdigit(args->str[i]))
@@ -54,13 +58,13 @@ int		check_args(t_list_cmd *args)
 	}
 	if (c_lst_size(args) > 1)
 		ret += 2;
-	print_err(ret);
+	print_err(ret, args);
 	if (ret == 2)
 		ret = -1;
 	return (ret);
 }
 
-char	*ft_exit(t_list_cmd *args, t_list *env)
+char		*ft_exit(t_list_cmd *args, t_list *env)
 {
 	int		err;
 

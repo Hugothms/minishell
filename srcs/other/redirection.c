@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:39:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 16:20:10 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:44:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_redir_err(char *filename)
+static void	print_redir_err(char *filename)
 {
 	if (filename == NULL)
 		ft_putstr_fd("minishell: : No such file or directory\n", STDERR);
@@ -25,7 +25,7 @@ void	print_redir_err(char *filename)
 	g_glob.exit = 1;
 }
 
-int		get_filename_redir(t_list_cmd *cmd, char **filename)
+static int	get_filename_redir(t_list_cmd *cmd, char **filename)
 {
 	if (!cmd->next)
 	{
@@ -52,7 +52,7 @@ int		get_filename_redir(t_list_cmd *cmd, char **filename)
 	return (SUCCESS);
 }
 
-int		open_fd(t_list_line *lst_line, t_list_cmd *cmd)
+static int	open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 {
 	char	*filename;
 
@@ -79,7 +79,7 @@ int		open_fd(t_list_line *lst_line, t_list_cmd *cmd)
 	return (SUCCESS);
 }
 
-int		redirections(t_list_line *lst_line)
+int			redirections(t_list_line *lst_line)
 {
 	t_list_cmd	*cmd;
 	t_list_cmd	*tmp;

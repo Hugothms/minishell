@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 10:47:03 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:57:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	modif_oldpwd_pwd(t_list *env)
+static void	modif_oldpwd_pwd(t_list *env)
 {
 	char *pwd;
 
@@ -30,7 +30,7 @@ void	modif_oldpwd_pwd(t_list *env)
 	free(pwd);
 }
 
-char	*error_cd(char *arg, int err_status)
+static char	*error_cd(char *arg, int err_status)
 {
 	char *ret;
 
@@ -52,7 +52,7 @@ char	*error_cd(char *arg, int err_status)
 	return (NULL);
 }
 
-char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
+static char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 {
 	char *path;
 	char *ret;
@@ -75,7 +75,7 @@ char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 	return (ret);
 }
 
-int		test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
+static int	test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
 {
 	if (stat(&find_var_env(env, "HOME=")[5], stats) != 0)
 		return (1);
@@ -85,7 +85,7 @@ int		test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
 		return (0);
 }
 
-char	*ft_cd(t_list_cmd *args, t_list *env)
+char		*ft_cd(t_list_cmd *args, t_list *env)
 {
 	struct stat	stats;
 

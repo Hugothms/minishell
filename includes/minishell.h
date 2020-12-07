@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 15:56:53 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:20:30 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <signal.h>
 # include <stdio.h>
 # include "../libft/includes/libft.h"
-# include "welcome_message.h"
 
 /*
 ** Charsets
@@ -112,7 +111,7 @@ char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *env);
 void					add_quote(char **tri);
 void					sort(char **tri);
-int						have_egual(char *str);
+int						have_equal(char *str);
 void					print_exp_err(char **key, char **value);
 char					*ft_unset(t_list_cmd *args, t_list *env);
 char					*ft_env(t_list *env);
@@ -143,6 +142,7 @@ void					remove_double_char(char *str, char *charset);
 char					**lst_to_chartab(t_list *env);
 void					modif_var_env(t_list *env, char *key, char *new_value);
 char					*find_var_env(t_list *env, char *var);
+void					print_welcome_msg(void);
 
 /*
 ** Parse
@@ -170,7 +170,6 @@ void					exec_line(t_list_line *lst_line, t_list *env);
 t_list_cmd				*reparse_var_env(t_list_cmd *cmd);
 char					*exec_cmd(t_list_cmd *cmd, t_list *env);
 int						make_and_exec_cmd(t_list_line *lst_line, t_list *env);
-void					fusion_cmd(t_list_cmd *cmd);
 t_list_cmd				*split_add_back(t_list_cmd *cmd,
 								void (*del)(t_list_cmd *), t_list_cmd *to_del);
 
@@ -178,7 +177,6 @@ t_list_cmd				*split_add_back(t_list_cmd *cmd,
 ** var_env.c
 */
 void					replace_all_var_env(t_list_cmd *cmd, t_list *env);
-void					err_code(t_list_cmd *cmd, t_list *env, int i);
 
 /*
 ** set_env.c
@@ -188,7 +186,8 @@ void					set_env(char **envp, t_list **env);
 /*
 ** pipe.c
 */
-int						create_pipe(t_list_line **lst_line, t_list *env);
+int						create_pipe(t_list_line **lst_line, t_list \
+						*env, int fd_inold);
 
 /*
 ** redirection.c

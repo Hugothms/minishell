@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 12:43:11 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:02:23 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
 
-char	**catch_arg(t_list_cmd *args)
+static char	**catch_arg(t_list_cmd *args)
 {
 	char	**ret;
 	int		i;
@@ -31,7 +31,7 @@ char	**catch_arg(t_list_cmd *args)
 	return (ret);
 }
 
-void	lst_del_next_node(t_list *env, char *var)
+static void	lst_del_next_node(t_list *env, char *var)
 {
 	t_list	*tmp;
 
@@ -52,7 +52,7 @@ void	lst_del_next_node(t_list *env, char *var)
 	}
 }
 
-char	*ft_unset(t_list_cmd *args, t_list *env)
+char		*ft_unset(t_list_cmd *args, t_list *env)
 {
 	char	**var;
 	int		i;

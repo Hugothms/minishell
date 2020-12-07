@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 15:20:11 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:51:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void		err_code(t_list_cmd *cmd, t_list *env, int i)
+static void	err_code(t_list_cmd *cmd, t_list *env, int i)
 {
 	int		size;
 	int		pos_sep;
@@ -70,7 +70,7 @@ static void	replace_var_env(t_list_cmd *cmd, t_list *env, int *i, int size)
 	free(after);
 }
 
-void		test_var_env(t_list_cmd *cmd, t_list *env, int *i)
+static void	test_var_env(t_list_cmd *cmd, t_list *env, int *i)
 {
 	int		size;
 

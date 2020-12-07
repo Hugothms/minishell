@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 14:46:21 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 14:46:34 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:54:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	fill_env(t_list **env)
+static void	fill_env(t_list **env)
 {
 	char	*keyval;
 	char	*pwd;
@@ -27,7 +27,7 @@ void	fill_env(t_list **env)
 	ft_lstadd_back(env, ft_lstnew(keyval));
 }
 
-void	set_env(char **envp, t_list **env)
+void		set_env(char **envp, t_list **env)
 {
 	int		i;
 	char	*keyval;

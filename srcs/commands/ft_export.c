@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 12:37:23 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:07:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**dup_lst(t_list *env)
+static char	**dup_lst(t_list *env)
 {
 	char	**dubtab;
 	int		i;
@@ -24,7 +24,7 @@ char	**dup_lst(t_list *env)
 	{
 		dubtab[i] = malloc(sizeof(char) * (ft_strlen(env->content) + 3));
 		ft_strcpy(dubtab[i], env->content);
-		if (have_egual(env->content))
+		if (have_equal(env->content))
 			dubtab[i][ft_strlen(env->content)] = '#';
 		else
 			dubtab[i][ft_strlen(env->content)] = '\0';
@@ -37,7 +37,7 @@ char	**dup_lst(t_list *env)
 	return (dubtab);
 }
 
-char	*ft_export_no_arg(t_list *env)
+static char	*ft_export_no_arg(t_list *env)
 {
 	char	*ret;
 	char	**tri;
@@ -58,7 +58,7 @@ char	*ft_export_no_arg(t_list *env)
 	return (ret);
 }
 
-int		modif_var_exp(char egual, t_list *env, char *key, char *value)
+static int	modif_var_exp(char egual, t_list *env, char *key, char *value)
 {
 	while (env)
 	{
@@ -80,7 +80,7 @@ int		modif_var_exp(char egual, t_list *env, char *key, char *value)
 	return (1);
 }
 
-int		set_keyval(t_list_cmd *args, char **key, char **value)
+static int	set_keyval(t_list_cmd *args, char **key, char **value)
 {
 	int		i;
 
@@ -101,7 +101,7 @@ int		set_keyval(t_list_cmd *args, char **key, char **value)
 	}
 }
 
-char	*ft_export(t_list_cmd *args, t_list *env)
+char		*ft_export(t_list_cmd *args, t_list *env)
 {
 	char	*key;
 	char	*value;
@@ -109,7 +109,7 @@ char	*ft_export(t_list_cmd *args, t_list *env)
 	g_glob.exit = 0;
 	if (!args || !args->str)
 		return (ft_export_no_arg(env));
-	if (args->str[0] == '\0' && !have_egual(args->str) && args->flags == 512)
+	if (args->str[0] == '\0' && !have_equal(args->str) && args->flags == 512)
 		return (ft_export_no_arg(env));
 	while (args)
 	{
