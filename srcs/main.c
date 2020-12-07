@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 19:01:44 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:20:36 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	init_main(t_list **env, char **envp)
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	set_env(envp, env);
-	ft_putstr_fd(WELCOME_MSG, STDERR);
+	print_welcome_msg();
 	increment_shlvl(*env);
 	print_prompt();
 }
