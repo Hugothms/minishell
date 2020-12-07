@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/03 18:30:57 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/06 15:40:21 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,25 +112,23 @@ int		split_cmd(t_list_line **lst_line, t_list_cmd *cmd, int i)
 		if (cmd->next && (cmd->next->flags & (F_PIPE + F_SEMICOLON)))
 		{
 			//(*lst_line)->cmd->flags = get_flags(cmd->next->str);
-			// ft_printf("\nsplit:%s\n", cmd->next->str);
+			if (!(next_start = cmd->next->next))
+				return (FAILURE);
+			if (cmd->next->flags & F_PIPE)
+				(*lst_line)->pipe = 1;
+			l_lst_add_back(lst_line, l_lst_new(next_start));
+			// ft_printf("split:%s\n", cmd->next->str);
+			// ft_printf("pipe :%d\n", (*lst_line)->pipe);
+			// ft_printf("flags:%d\n\n", (*lst_line)->cmd->flags);
+			tmp = (*lst_line)->cmd;
+			while (i--)
+				tmp = tmp->next;
+			// ft_printf("tmp:%s\n", tmp->str);
+			c_lst_remove_next_one(tmp);
+			tmp->next = NULL;
+			cmd = next_start;
 			// ft_printf("flags:%d\n", (*lst_line)->cmd->flags);
-			if (cmd->next->flags & F_SEMICOLON || cmd->next->flags & F_PIPE)
-			{
-				if (!(next_start = cmd->next->next))
-					return (FAILURE);
-				if (cmd->next->flags & F_PIPE)
-					(*lst_line)->pipe = 1;
-				l_lst_add_back(lst_line, l_lst_new(next_start));
-				tmp = (*lst_line)->cmd;
-				while (i--)
-					tmp = tmp->next;
-				// ft_printf("tmp:%s\n", tmp->str);
-				c_lst_remove_next_one(tmp);
-				tmp->next = NULL;
-				cmd = next_start;
-				// ft_printf("flags:%d\n", (*lst_line)->cmd->flags);
-				return (split_cmd(&((*lst_line)->next), cmd, 0));
-			}
+			return (split_cmd(&((*lst_line)->next), cmd, 0));
 		}
 		i++;
 		cmd = cmd->next;
