@@ -3,21 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 15:06:18 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:24:49 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env)
+static int	last_pipe_exit(t_list_line **lst_line, int fd_inold)
+{
+	dup2(fd_inold, STDIN);
+	l_lst_remove_next_one(*lst_line);
+	*lst_line = (*lst_line)->next;
+	return (42);
+}
+
+static int	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env,\
+int fd_inold)
 {
 	if (g_glob.pid > 0)
 	{
 		close(fdpipe[1]);
 		wait(NULL);
+		if ((*lst_line)->pipe && !((*lst_line)->next->next) &&\
+		!ft_strncmp((*lst_line)->next->cmd->str, "exit", 5))
+			return (last_pipe_exit(lst_line, fd_inold));
 		*lst_line = (*lst_line)->next;
 		(*lst_line)->input = fdpipe[0];
 		dup2((*lst_line)->input, STDIN);
@@ -32,9 +44,10 @@ void	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env)
 		close(fdpipe[1]);
 		exit(0);
 	}
+	return (SUCCESS);
 }
 
-int		create_pipe(t_list_line **lst_line, t_list *env)
+int			create_pipe(t_list_line **lst_line, t_list *env, int fd_inold)
 {
 	t_list_cmd	*cmd;
 	int			fdpipe[2];
@@ -53,6 +66,5 @@ int		create_pipe(t_list_line **lst_line, t_list *env)
 		return (FAILURE);
 	}
 	else
-		create_pipe2(fdpipe, lst_line, env);
-	return (SUCCESS);
+		return (create_pipe2(fdpipe, lst_line, env, fd_inold));
 }

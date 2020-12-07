@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:00:01 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:36:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,18 @@ t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
 	return (start);
 }
 
-void		init_exec(int *fd_outold, int *fd_inold, t_list_line **start,
+static void	init_exec(int *fd_outold, int *fd_inold, t_list_line **start,
 					t_list_line **lst_line)
 {
 	*fd_outold = dup(STDOUT);
 	*fd_inold = dup(STDIN);
 	*start = *lst_line;
+}
+
+static void	reset_fds(int fd_outold, int fd_inold)
+{
+	dup2(fd_outold, STDOUT);
+	dup2(fd_inold, STDIN);
 }
 
 void		exec_line(t_list_line *lst_line, t_list *env)
@@ -68,24 +74,24 @@ void		exec_line(t_list_line *lst_line, t_list *env)
 	t_list_line	*start;
 	int			fd_outold;
 	int			fd_inold;
+	int			i;
 
 	init_exec(&fd_outold, &fd_inold, &start, &lst_line);
 	while (lst_line)
 	{
-		if (lst_line->pipe && !ft_strncmp(lst_line->next->cmd->str, "exit", 5)
-				&& !(lst_line->next->next))
-			break ;
-		while (lst_line->pipe)
-			if (create_pipe(&lst_line, env))
+		while (lst_line && lst_line->pipe)
+		{
+			if ((i = create_pipe(&lst_line, env, fd_inold)) == 42)
+				return (l_lst_clear(start));
+			else if (i)
 				break ;
+		}
 		if (make_and_exec_cmd(lst_line, env))
 		{
-			dup2(fd_outold, STDOUT);
-			dup2(fd_inold, STDIN);
+			reset_fds(fd_outold, fd_inold);
 			break ;
 		}
-		dup2(fd_outold, STDOUT);
-		dup2(fd_inold, STDIN);
+		reset_fds(fd_outold, fd_inold);
 		lst_line = lst_line->next;
 	}
 	l_lst_clear(start);

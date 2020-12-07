@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 17:28:03 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:19:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int		flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-void	split_cmd2(t_list_cmd **cmd, t_list_cmd *tmp, t_list_cmd *nxt_sta, int i)
+void	split_cmd2(t_list_cmd **cmd, t_list_cmd *tmp, t_list_cmd *nxt_sta,\
+int i)
 {
 	while (i--)
 		tmp = tmp->next;

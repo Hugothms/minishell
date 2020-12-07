@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_line2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 16:17:02 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:26:12 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void		fusion_cmd(t_list_cmd *cmd)
+static void	fusion_cmd(t_list_cmd *cmd)
 {
 	while (cmd)
 	{

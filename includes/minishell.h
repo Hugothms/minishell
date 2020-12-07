@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 15:56:53 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:31:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ void					exec_line(t_list_line *lst_line, t_list *env);
 t_list_cmd				*reparse_var_env(t_list_cmd *cmd);
 char					*exec_cmd(t_list_cmd *cmd, t_list *env);
 int						make_and_exec_cmd(t_list_line *lst_line, t_list *env);
-void					fusion_cmd(t_list_cmd *cmd);
 t_list_cmd				*split_add_back(t_list_cmd *cmd,
 								void (*del)(t_list_cmd *), t_list_cmd *to_del);
 
@@ -188,7 +187,7 @@ void					set_env(char **envp, t_list **env);
 /*
 ** pipe.c
 */
-int						create_pipe(t_list_line **lst_line, t_list *env);
+int						create_pipe(t_list_line **lst_line, t_list *env, int fd_inold);
 
 /*
 ** redirection.c
