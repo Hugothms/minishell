@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/30 13:49:36 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:43:11 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	lst_del_next_node(t_list *env, char *var)
 			env->next = tmp;
 			break ;
 		}
-	env = env->next;
+		env = env->next;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_line2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/26 11:06:46 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:47:01 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,63 +58,6 @@ void			l_lst_clear(t_list_line *lst)
 	l_lst_free_one(lst);
 	lst = NULL;
 }
-
-/*
-** Iterates the list ’lst’ and applies the function ’f’ to the content of each
-**  element.
-** @param lst	The adress of a pointer to an element.
-** @param f		The adress of the function used to iterate on the list.
-*/
-
-// void			l_lst_iter(t_list_line *lst, void (*f)(void *))
-// {
-// 	t_list_line	*tmp;
-
-// 	if (!lst)
-// 		return ;
-// 	tmp = lst;
-// 	while (tmp->next)
-// 	{
-// 		f(tmp->str);
-// 		tmp = tmp->next;
-// 	}
-// 	f(tmp->str);
-// }
-
-/*
-** Iterates the list ’lst’ and applies the function ’f’ to the content of each
-**  element. Creates a newlist resulting of the successive applications of the
-**  function ’f’. The ’del’ function is used to delete the content of an
-**  element if needed.
-** @param lst	The adress of a pointer to an element.
-** @param f		The adress of the function used to iterate on the list.
-** @param del	The adress of the function used to delete the content of an
-** element if needed.
-** @return		The new list. NULL if the allocation fails.
-*/
-
-// t_list_line	*l_lst_map(t_list_line *lst, void *(*f)(void *),\
-// 							void (*l_lst_free_one)(void *))
-// {
-// 	t_list_line	*tmp;
-// 	t_list_line	*new;
-// 	t_list_line	*mapedlst;
-
-// 	if (!lst || !f || !l_lst_free_one)
-// 		return (NULL);
-// 	tmp = lst;
-// 	if (!(mapedlst = l_lst_new(f(tmp->str), tmp->flags)))
-// 		l_lst_clear(&mapedlst, l_lst_free_one);
-// 	tmp = tmp->next;
-// 	while (tmp)
-// 	{
-// 		if (!(new = l_lst_new(f(tmp->str), tmp->flags)))
-// 			l_lst_clear(&mapedlst, l_lst_free_one);
-// 		l_lst_add_back(&mapedlst, new);
-// 		tmp = tmp->next;
-// 	}
-// 	return (mapedlst);
-// }
 
 t_list_line		*l_lst_copy_all(t_list_cmd *cmd)
 {

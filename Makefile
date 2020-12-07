@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/11/29 16:22:14 by hthomas          ###   ########.fr        #
+#    Updated: 2020/12/07 18:07:07 by vmoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ CFLAGS += -Wall -Werror -Wextra
 LDFLAGS += #-g3 -fsanitize=address
 
 #-----------------Main-----------------#
-
 SRCS += srcs/main.c
+
 #---------------Commands---------------#
 
 SRCS +=	srcs/commands/ft_cd.c		\
@@ -30,20 +30,31 @@ SRCS +=	srcs/commands/ft_cd.c		\
 		srcs/commands/ft_pwd.c		\
 		srcs/commands/ft_unset.c
 
-#----------------Others----------------#
-SRCS +=	srcs/exec_line.c			\
-		srcs/lists/list_cmd1.c		\
+#----------------Parse-----------------#
+SRCS +=	srcs/parse/parse.c			\
+		srcs/parse/parse_quotes.c	\
+		srcs/parse/parse_utils.c
+
+#----------------List------------------#
+SRCS +=	srcs/lists/list_cmd1.c		\
 		srcs/lists/list_cmd2.c		\
 		srcs/lists/list_line1.c		\
-		srcs/lists/list_line2.c		\
-		srcs/parse/parse.c			\
-		srcs/parse/parse_quotes.c	\
-		srcs/redirection.c			\
-		srcs/print.c				\
-		srcs/pipe.c					\
-		srcs/search_command.c		\
-		srcs/utils.c				\
-		srcs/var_env.c
+		srcs/lists/list_line2.c
+
+#----------------Utils-----------------#
+SRCS +=	srcs/utils/utils.c			\
+		srcs/utils/utils2.c			\
+		srcs/utils/utils3.c
+
+#----------------Others----------------#
+SRCS +=	srcs/other/exec_line.c		\
+		srcs/other/exec_line2.c		\
+		srcs/other/redirection.c	\
+		srcs/other/print.c			\
+		srcs/other/pipe.c			\
+		srcs/other/search_command.c	\
+		srcs/other/var_env.c		\
+		srcs/other/set_env.c
 
 OBJS = $(SRCS:.c=.o)
 INCL = includes/
@@ -73,7 +84,7 @@ complib:
 
 
 ###########################CLEAN
-clean: echoCLEAN 
+clean: echoCLEAN
 	$(MAKE) -C $(LIBFTDIR) clean
 	rm -f $(OBJS)
 

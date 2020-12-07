@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/11/29 13:00:14 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:42:29 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	add_quote(char **tri)
 {
 	int		i;
 	int		j;
+
 	i = 0;
 	while (tri[i])
 	{
@@ -83,16 +84,35 @@ void	sort(char **tri)
 			{
 				tmp = tri[j];
 				tri[j] = tri[i];
-					tri[i] = tmp;
-			j = i + 1;
+				tri[i] = tmp;
+				j = i;
 			}
-				else if (tri[j + 1] == NULL)
-		{
-					i++;
-				j = i + 1;
-		}
-			else
-				j++;
+			else if (tri[j + 1] == NULL)
+			{
+				i++;
+				j = i;
+			}
+			j++;
 		}
 	}
+}
+
+void	print_exp_err(char **key, char **value)
+{
+	g_glob.exit = 1;
+	ft_putstr_fd("minishell: export: « ", STDERR);
+	if (*key[0] == '\0' && *value[0])
+	{
+		ft_putstr_fd(*key, STDERR);
+		ft_putstr_fd("=", STDERR);
+		ft_putstr_fd(*value, STDERR);
+		ft_putstr_fd(" » : not valid identifier\n", STDERR);
+	}
+	else
+	{
+		ft_putstr_fd(*key, STDERR);
+		ft_putstr_fd(" » : not valid identifier\n", STDERR);
+	}
+	free(*key);
+	free(*value);
 }
