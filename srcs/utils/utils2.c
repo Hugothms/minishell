@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 15:13:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 19:18:58 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/07 20:01:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,23 @@ void	remove_double_char(char *str, char *charset)
 
 void	print_welcome_msg(void)
 {
-	ft_putstr("            ▄███████████████▄           \n");
-	ft_putstr("         ██████▀   ██   ▀███████        \n");
-	ft_putstr("      ███   ▀███   ██   ███▀   ███      \n");
-	ft_putstr("     ██████   ██   ██   ██   ██████     \n");
-	ft_putstr("     ██   ██   ██  ██  ██   ██   ██     \n");
-	ft_putstr("    ███    ██  ██  ██  ██  ██    ███    \n");
-	ft_putstr("    ██ ██   ██  █  ██  █  ██   ██ ██    \n");
-	ft_putstr("    ██  ███  ██ ██ ██ ██ ██  ███  ██    \n");
-	ft_putstr("    ██    ██  ██ █ ██ █ ██  ██    ██    \n");
-	ft_putstr("    ████▄   ██ █  █  █  █ ██   ▄████    \n");
-	ft_putstr("       ████   █          █   ████       \n");
-	ft_putstr("          ██                ██          \n");
-	ft_putstr("          ████████▄  ▄████████          \n");
-	ft_putstr("                  ▀██▀                  \n");
-	ft_putstr("           _       _     _          _ _\n");
-	ft_putstr(" _ __ ___ (_)_ __ (_)___| |__   ___| | |\n");
-	ft_putstr("| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n");
-	ft_putstr("| | | | | | | | | | \\__ \\ | | |  __/ | |\n");
-	ft_putstr("|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n\n");
+	ft_putstr_fd("            ▄███████████████▄           \n", STDERR);
+	ft_putstr_fd("         ██████▀   ██   ▀███████        \n", STDERR);
+	ft_putstr_fd("      ███   ▀███   ██   ███▀   ███      \n", STDERR);
+	ft_putstr_fd("     ██████   ██   ██   ██   ██████     \n", STDERR);
+	ft_putstr_fd("     ██   ██   ██  ██  ██   ██   ██     \n", STDERR);
+	ft_putstr_fd("    ███    ██  ██  ██  ██  ██    ███    \n", STDERR);
+	ft_putstr_fd("    ██ ██   ██  █  ██  █  ██   ██ ██    \n", STDERR);
+	ft_putstr_fd("    ██  ███  ██ ██ ██ ██ ██  ███  ██    \n", STDERR);
+	ft_putstr_fd("    ██    ██  ██ █ ██ █ ██  ██    ██    \n", STDERR);
+	ft_putstr_fd("    ████▄   ██ █  █  █  █ ██   ▄████    \n", STDERR);
+	ft_putstr_fd("       ████   █          █   ████       \n", STDERR);
+	ft_putstr_fd("          ██                ██          \n", STDERR);
+	ft_putstr_fd("          ████████▄  ▄████████          \n", STDERR);
+	ft_putstr_fd("                  ▀██▀                  \n", STDERR);
+	ft_putstr_fd("           _       _     _          _ _\n", STDERR);
+	ft_putstr_fd(" _ __ ___ (_)_ __ (_)___| |__   ___| | |\n", STDERR);
+	ft_putstr_fd("| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n", STDERR);
+	ft_putstr_fd("| | | | | | | | | | \\__ \\ | | |  __/ | |\n", STDERR);
+	ft_putstr_fd("|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n\n", STDERR);
 }
