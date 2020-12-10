@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:27:01 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/10 17:47:43 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,14 @@ void			exec_line(t_list_line *lst_line, t_list *env)
 	int			fd_outold;
 	int			fd_inold;
 	int			i;
+	int 		nb_wait = 0;
 
 	init_exec(&fd_outold, &fd_inold, &start, &lst_line);
 	while (lst_line)
 	{
 		while (lst_line && lst_line->pipe)
 		{
-			if ((i = create_pipe(&lst_line, env, fd_inold)) == 42)
+			if ((i = create_pipe(&lst_line, env, fd_inold, &nb_wait)) == 42)
 				return (l_lst_clear(start));
 			else if (i)
 				break ;
@@ -95,5 +96,7 @@ void			exec_line(t_list_line *lst_line, t_list *env)
 		reset_fds(fd_outold, fd_inold);
 		lst_line = lst_line->next;
 	}
+	while (nb_wait--)
+		wait(NULL);
 	l_lst_clear(start);
 }
