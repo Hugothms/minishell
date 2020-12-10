@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 14:19:25 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:14:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ void	print_prompt(void)
 	ft_putstr_fd("\033[0m$ ", STDERR);
 }
 
-void	not_found(char *str)
+void	not_found(t_list_line *lst_line)
 {
 	char	*ret;
 
-	ret = ft_strdup(str);
+	ret = ft_strdup(lst_line->cmd->str);
 	ret = ft_strjoin_free(ret, ": command not found\n");
 	g_glob.exit = CMD_NOT_FOUND;
 	ft_putstr_fd(ret, STDERR);
 	free(ret);
+	l_lst_clear(lst_line);
 	exit(CMD_NOT_FOUND);
 }
 

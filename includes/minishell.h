@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 15:49:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:09:19 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void					delete_empty_elements(t_list_cmd **cmd);
 void					parse_error(char *input, t_list_line *lst_line);
 int						print_synt_err(void);
 void					print_prompt(void);
-void					not_found(char *cmd);
+void					not_found(t_list_line *lst_line);
 
 /*
 ** exec_line.c
