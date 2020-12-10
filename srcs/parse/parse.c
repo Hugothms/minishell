@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:52:09 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/08 10:19:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 15:27:41 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static int	flag_dollar_and_replace_tild(t_list_cmd *cmd, t_list *env)
 		i = 0;
 		while (cmd->str && cmd->str[i])
 		{
-			if (cmd->str[i] == '$' && !escaped(cmd->str, i) &&\
-				!(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32 &&
-				!(cmd->flags & F_VAR_ENV))
+			if (cmd->str[i] == '$' && !escaped(cmd->str, i)
+					&& !(cmd->flags & F_SIMPLE_QUOTE) && cmd->str[i + 1] > 32
+					&& !(cmd->flags & F_VAR_ENV))
 				cmd->flags += F_VAR_ENV;
 			else if (cmd->str[i] == '~' && !escaped(cmd->str, i) &&\
 			!in_quotes(cmd) && (!cmd->str[i + 1] || cmd->str[i + 1] == '/'))
