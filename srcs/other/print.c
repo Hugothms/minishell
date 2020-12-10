@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:14:33 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:19:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_prompt(void)
 	ft_putstr_fd("\033[0m$ ", STDERR);
 }
 
-void	not_found(t_list_line *lst_line)
+void	not_found(t_list_line *lst_line, t_list *env)
 {
 	char	*ret;
 
@@ -35,6 +35,7 @@ void	not_found(t_list_line *lst_line)
 	g_glob.exit = CMD_NOT_FOUND;
 	ft_putstr_fd(ret, STDERR);
 	free(ret);
+	ft_free_tab(env);
 	l_lst_clear(lst_line);
 	exit(CMD_NOT_FOUND);
 }
