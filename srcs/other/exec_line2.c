@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:26:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 15:46:52 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 	delete_empty_elements(&(lst_line->cmd));
 	if (redirections(lst_line))
 		return (FAILURE);
-	if (ret = exec_cmd(lst_line->cmd, env))
+	if (ret = exec_cmd(lst_line, env))
 	{
 		ft_putstr_fd(ret, lst_line->output);
 		free(ret);
