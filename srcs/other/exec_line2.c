@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 15:46:52 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 17:25:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int			make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 		return (FAILURE);
 	if (ret = exec_cmd(lst_line, env))
 	{
-		ft_putstr_fd(ret, lst_line->output);
+		ft_putstr(ret);
 		free(ret);
 	}
 	if (lst_line->output > 2 && close(lst_line->output) < 0)

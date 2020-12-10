@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:20:12 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 17:49:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void					set_env(char **envp, t_list **env);
 ** pipe.c
 */
 int						create_pipe(t_list_line **lst_line, t_list \
-						*env, int fd_inold);
+						*env, int fd_inold, int *nb_wait);
 
 /*
 ** redirection.c
