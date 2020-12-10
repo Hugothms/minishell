@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:24:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:50:53 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ int fd_inold)
 		(*lst_line)->input = fdpipe[0];
 		dup2((*lst_line)->input, STDIN);
 	}
-	else
+	else if (g_glob.pid == 0)
 	{
 		close(fdpipe[0]);
 		(*lst_line)->output = fdpipe[1];
 		dup2((*lst_line)->output, STDOUT);
+		g_glob.pid = 0;
 		if (make_and_exec_cmd((*lst_line), env))
 			g_glob.exit = CMD_NOT_FOUND;
 		close(fdpipe[1]);
