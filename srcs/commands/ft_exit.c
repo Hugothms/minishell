@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/10 15:53:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:35:05 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char		*ft_exit(t_list_line *lst_line, t_list *env)
 		clear_env_lst(env);
 		free(g_glob.path);
 		if (!err)
-			if (lst_line->cmd->next && (err = ft_atoi_strict(lst_line->cmd->next->str)))
+			if (lst_line->cmd->next &&
+					(err = ft_atoi_strict(lst_line->cmd->next->str)))
 				g_glob.exit = err;
 		l_lst_clear(lst_line);
 		exit(g_glob.exit);

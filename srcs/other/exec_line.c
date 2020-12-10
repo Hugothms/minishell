@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:20:00 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:27:01 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char			*exec_cmd(t_list_line *lst_line, t_list *env)
 		return (ft_exit(lst_line, env));
 	else if (!search_command(lst_line->cmd, env))
 		not_found(lst_line, env);
+	g_glob.pid = 0;
 	return (NULL);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:19:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:22:01 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	not_found(t_list_line *lst_line, t_list *env)
 	g_glob.exit = CMD_NOT_FOUND;
 	ft_putstr_fd(ret, STDERR);
 	free(ret);
-	ft_free_tab(env);
+	clear_env_lst(env);
 	l_lst_clear(lst_line);
+	free(g_glob.path);
 	exit(CMD_NOT_FOUND);
 }
 

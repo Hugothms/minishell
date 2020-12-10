@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 15:55:49 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/10 16:34:57 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 			{
 				if (cmd->str[i + 1] == '?')
 					err_code(cmd, env, i);
-				else if (cmd->str[i + 1] != '/' && cmd->flags != 5 && cmd->flags != 6)
+				else if (cmd->str[i + 1] != '/' &&
+						cmd->flags != 5 && cmd->flags != 6)
 				{
 					test_var_env(cmd, env, &i);
 					continue ;
