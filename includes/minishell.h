@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 19:20:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 15:49:22 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int						have_equal(char *str);
 void					print_exp_err(char **key, char **value);
 char					*ft_unset(t_list_cmd *args, t_list *env);
 char					*ft_env(t_list *env);
-char					*ft_exit(t_list_cmd *args, t_list *env);
+char					*ft_exit(t_list_line *lst_line, t_list *env);
 void					clear_env_lst(t_list *env);
 
 /*
@@ -168,7 +168,7 @@ void					not_found(char *cmd);
 */
 void					exec_line(t_list_line *lst_line, t_list *env);
 t_list_cmd				*reparse_var_env(t_list_cmd *cmd);
-char					*exec_cmd(t_list_cmd *cmd, t_list *env);
+char					*exec_cmd(t_list_line *lst_line, t_list *env);
 int						make_and_exec_cmd(t_list_line *lst_line, t_list *env);
 t_list_cmd				*split_add_back(t_list_cmd *cmd,
 								void (*del)(t_list_cmd *), t_list_cmd *to_del);

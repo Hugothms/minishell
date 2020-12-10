@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/12/07 18:07:07 by vmoreau          ###   ########.fr        #
+#    Updated: 2020/12/10 15:40:01 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ fclean: clean echoFCLEAN
 
 re:			fclean all
 
-.PHONY:		clean fclean
+.PHONY:		all re clean fclean
 .SILENT:
 
 ###########################COLOR

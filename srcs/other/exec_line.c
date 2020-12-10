@@ -6,32 +6,32 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:41:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 15:47:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char			*exec_cmd(t_list_cmd *cmd, t_list *env)
+char			*exec_cmd(t_list_line *lst_line, t_list *env)
 {
-	if (!cmd)
+	if (!lst_line->cmd)
 		return (NULL);
-	else if (!ft_strcmp(cmd->str, "echo"))
-		return (ft_echo(cmd->next));
-	else if (!ft_strcmp(cmd->str, "cd"))
-		return (ft_cd(cmd->next, env));
-	else if (!ft_strcmp(cmd->str, "pwd"))
+	else if (!ft_strcmp(lst_line->cmd->str, "echo"))
+		return (ft_echo(lst_line->cmd->next));
+	else if (!ft_strcmp(lst_line->cmd->str, "cd"))
+		return (ft_cd(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "pwd"))
 		return (ft_pwd());
-	else if (!ft_strcmp(cmd->str, "export"))
-		return (ft_export(cmd->next, env));
-	else if (!ft_strcmp(cmd->str, "unset"))
-		return (ft_unset(cmd->next, env));
-	else if (!ft_strcmp(cmd->str, "env"))
+	else if (!ft_strcmp(lst_line->cmd->str, "export"))
+		return (ft_export(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "unset"))
+		return (ft_unset(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "env"))
 		return (ft_env(env));
-	else if (!ft_strcmp(cmd->str, "exit"))
-		return (ft_exit(cmd->next, env));
-	else if (!search_command(cmd, env))
-		not_found(cmd->str);
+	else if (!ft_strcmp(lst_line->cmd->str, "exit"))
+		return (ft_exit(lst_line, env));
+	else if (!search_command(lst_line->cmd, env))
+		not_found(lst_line->cmd->str);
 	return (NULL);
 }
 

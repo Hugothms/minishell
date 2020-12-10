@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:34 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 19:10:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 15:53:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,19 @@ static int	check_args(t_list_cmd *args)
 	return (ret);
 }
 
-char		*ft_exit(t_list_cmd *args, t_list *env)
+char		*ft_exit(t_list_line *lst_line, t_list *env)
 {
 	int		err;
 
-	err = check_args(args);
+	err = check_args(lst_line->cmd->next);
 	if (err >= 0)
 	{
 		clear_env_lst(env);
 		free(g_glob.path);
 		if (!err)
-			if (args && (err = ft_atoi_strict(args->str)))
+			if (lst_line->cmd->next && (err = ft_atoi_strict(lst_line->cmd->next->str)))
 				g_glob.exit = err;
+		l_lst_clear(lst_line);
 		exit(g_glob.exit);
 	}
 	return (NULL);
