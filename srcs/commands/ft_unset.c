@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 19:02:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/11 16:14:17 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char		*ft_unset(t_list_cmd *args, t_list *env)
 		else
 		{
 			g_glob.exit = 1;
-			ft_putstr_fd("minishell: export: « ", STDERR);
+			ft_putstr_fd("minishell: unset: « ", STDERR);
 			ft_putstr_fd(var[i], STDERR);
 			ft_putstr_fd(" » : not valid identifier\n", STDERR);
 		}
