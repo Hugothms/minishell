@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 17:47:43 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/10 18:30:01 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ void			exec_line(t_list_line *lst_line, t_list *env)
 	int			fd_outold;
 	int			fd_inold;
 	int			i;
-	int 		nb_wait = 0;
+	int 		nb_wait;
+	int			tmp;
 
+	nb_wait = 0;
 	init_exec(&fd_outold, &fd_inold, &start, &lst_line);
 	while (lst_line)
 	{
@@ -97,6 +99,7 @@ void			exec_line(t_list_line *lst_line, t_list *env)
 		lst_line = lst_line->next;
 	}
 	while (nb_wait--)
-		wait(NULL);
+	 	if ((tmp = wait(&g_glob.exit) == g_glob.pid))
+			g_glob.exit = __WEXITSTATUS(g_glob.exit);
 	l_lst_clear(start);
 }
