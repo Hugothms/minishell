@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 18:57:59 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/11 13:55:21 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	modif_oldpwd_pwd(t_list *env)
 	modif_var_env(env, "OLDPWD", &find_var_env(env, "PWD=")[4]);
 	if (!pwd)
 	{
+		ft_putstr_fd("No such file or directory\n", STDERR);
 		free(pwd);
 		pwd = ft_strdup(&find_var_env(env, "PWD=")[4]);
 		pwd = ft_strjoin_free(pwd, "/..");

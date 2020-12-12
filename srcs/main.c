@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 19:20:36 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/11 16:32:54 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,12 @@ static void	sighandler(int signum)
 	{
 		kill(g_glob.pid, signum);
 		ft_putstr_fd("\n", STDERR);
-		g_glob.exit = 130;
 		g_glob.pid = 0;
 	}
 	else if (g_glob.pid && signum == SIGQUIT)
 	{
 		kill(g_glob.pid, signum);
 		ft_putstr_fd("Quit (core dumped)\n", STDERR);
-		g_glob.exit = 131;
 		g_glob.pid = 0;
 	}
 	else
@@ -53,6 +51,10 @@ static void	sighandler(int signum)
 		ft_putstr_fd("\n", STDERR);
 		print_prompt();
 	}
+	if (signum == SIGINT)
+		g_glob.exit = 130;
+	if (signum == SIGQUIT)
+		g_glob.exit = 131;
 }
 
 static void	init_main(t_list **env, char **envp)
