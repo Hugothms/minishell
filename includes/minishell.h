@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 17:49:04 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/12 10:02:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int						redirections(t_list_line *lst_line);
 /*
 ** searche_command.c
 */
-int						search_command(t_list_cmd *cmd, t_list *env);
+int						search_command(t_list_line *lst_line, t_list *env);
 
 /*
 ** List

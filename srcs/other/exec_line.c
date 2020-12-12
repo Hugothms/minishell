@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 18:30:01 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/12 09:56:13 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char			*exec_cmd(t_list_line *lst_line, t_list *env)
 		return (ft_env(env));
 	else if (!ft_strcmp(lst_line->cmd->str, "exit"))
 		return (ft_exit(lst_line, env));
-	else if (!search_command(lst_line->cmd, env))
+	else if (!search_command(lst_line, env))
 		not_found(lst_line, env);
 	g_glob.pid = 0;
 	return (NULL);
