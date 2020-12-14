@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 17:49:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/14 13:13:39 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int fd_inold)
 	if (g_glob.pid > 0)
 	{
 		close(fdpipe[1]);
-		// wait(NULL);
 		if ((*lst_line)->pipe && !((*lst_line)->next->next) &&\
 		!ft_strncmp((*lst_line)->next->cmd->str, "exit", 5))
 			return (last_pipe_exit(lst_line, fd_inold));
@@ -39,7 +38,6 @@ int fd_inold)
 		close(fdpipe[0]);
 		(*lst_line)->output = fdpipe[1];
 		dup2((*lst_line)->output, STDOUT);
-		// g_glob.pid = 0;
 		if (make_and_exec_cmd((*lst_line), env))
 			g_glob.exit = CMD_NOT_FOUND;
 		close(fdpipe[1]);
@@ -48,7 +46,8 @@ int fd_inold)
 	return (SUCCESS);
 }
 
-int			create_pipe(t_list_line **lst_line, t_list *env, int fd_inold, int *nb_wait)
+int			create_pipe(t_list_line **lst_line, t_list *env,
+							int fd_inold, int *nb_wait)
 {
 	t_list_cmd	*cmd;
 	int			fdpipe[2];
