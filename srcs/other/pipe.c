@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/14 13:13:39 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/15 11:31:32 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	last_pipe_exit(t_list_line **lst_line, int fd_inold)
 	return (42);
 }
 
-static int	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env,\
+static int	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env,
 int fd_inold)
 {
 	if (g_glob.pid > 0)
@@ -32,6 +32,7 @@ int fd_inold)
 		*lst_line = (*lst_line)->next;
 		(*lst_line)->input = fdpipe[0];
 		dup2((*lst_line)->input, STDIN);
+		close(fdpipe[0]);
 	}
 	else if (g_glob.pid == 0)
 	{
