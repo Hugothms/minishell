@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/11 16:14:17 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/15 21:49:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 
 static char	**catch_arg(t_list_cmd *args)
 {
@@ -44,7 +43,7 @@ static void	lst_del_next_node(t_list *env, char *var)
 			tmp = env->next->next;
 			free(env->next->content);
 			free(env->next);
-			env->next == NULL;
+			env->next = NULL;
 			env->next = tmp;
 			break ;
 		}

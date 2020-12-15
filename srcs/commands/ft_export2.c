@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:36 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 19:05:39 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 21:48:32 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ int			have_equal(char *str)
 	while (str[i])
 	{
 		if (str[i] == '=')
+		{
 			if (i == 0)
 				return (1);
 			else
 				return (i);
+		}
 		i++;
 	}
 	return (0);

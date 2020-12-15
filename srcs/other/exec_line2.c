@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_line2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/15 11:31:28 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/15 22:04:11 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			make_and_exec_cmd(t_list_line *lst_line, t_list *env)
 	delete_empty_elements(&(lst_line->cmd));
 	if (redirections(lst_line))
 		return (FAILURE);
-	if (ret = exec_cmd(lst_line, env))
+	if ((ret = exec_cmd(lst_line, env)))
 	{
 		ft_putstr(ret);
 		free(ret);

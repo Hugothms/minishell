@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/12 10:02:47 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 22:20:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ t_glob	g_glob;
 */
 char					*ft_echo(t_list_cmd *args);
 char					*ft_cd(t_list_cmd *args, t_list *env);
+char					*ft_cd2(t_list_cmd *args, t_list *env,
+						struct stat *stats);
+char					*error_cd(char *arg, int err_status);
+int						test_cd_home(t_list_cmd *args, t_list *env,
+						struct stat	*stats);
 char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *env);
 void					add_quote(char **tri);

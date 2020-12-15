@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/12 09:56:13 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 21:59:20 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,6 @@ void			exec_line(t_list_line *lst_line, t_list *env)
 	}
 	while (nb_wait--)
 	 	if ((tmp = wait(&g_glob.exit) == g_glob.pid))
-			g_glob.exit = __WEXITSTATUS(g_glob.exit);
+			g_glob.exit = WEXITSTATUS(g_glob.exit);
 	l_lst_clear(start);
 }

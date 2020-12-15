@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/11 13:55:21 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/15 22:20:37 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	modif_oldpwd_pwd(t_list *env)
 	free(pwd);
 }
 
-static char	*error_cd(char *arg, int err_status)
+char		*error_cd(char *arg, int err_status)
 {
 	char *ret;
 
@@ -76,7 +76,7 @@ static char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 	return (ret);
 }
 
-static int	test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
+int			test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
 {
 	if (stat(&find_var_env(env, "HOME=")[5], stats) != 0)
 		return (1);
@@ -89,18 +89,13 @@ static int	test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
 char		*ft_cd(t_list_cmd *args, t_list *env)
 {
 	struct stat	stats;
+	char		*ret;
 
 	g_glob.exit = 0;
 	if ((!args || !args->str))
 	{
-		if (chdir(&find_var_env(env, "HOME=")[5]))
-			if (find_var_env(env, "HOME=") == NULL)
-				return (error_cd("« HOME »", 3));
-			else if (find_var_env(env, "HOME=")[5] == '\0')
-				return (ft_strdup(""));
-			else if (test_cd_home(args, env, &stats))
-				return (error_cd(&find_var_env(env, "HOME=")[5],
-							test_cd_home(args, env, &stats)));
+		if ((ret = ft_cd2(args, env, &stats)))
+			return (ret);
 	}
 	else if (c_lst_size(args) > 1)
 		return (error_cd(args->str, 0));
