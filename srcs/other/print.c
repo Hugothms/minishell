@@ -6,7 +6,7 @@
 /*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:23:14 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:22:01 by vmoreau          ###   ########.fr       */
+/*   Updated: 2020/12/16 10:59:37 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	print_prompt(void)
 {
 	char	*pwd;
 
-	ft_putstr_fd("\033[1;32m➜ \033[1;36m", STDERR);
+	if (g_glob.exit == 0)
+		ft_putstr_fd("\033[1;32m➜ \033[1;36m", STDERR);
+	else
+		ft_putstr_fd("\033[1;31m➜ \033[1;36m", STDERR);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		ft_putstr_fd(g_glob.path, STDERR);
