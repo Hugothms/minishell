@@ -6,12 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:41 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/07 19:02:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 21:49:42 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 
 static char	**catch_arg(t_list_cmd *args)
 {
@@ -44,7 +43,7 @@ static void	lst_del_next_node(t_list *env, char *var)
 			tmp = env->next->next;
 			free(env->next->content);
 			free(env->next);
-			env->next == NULL;
+			env->next = NULL;
 			env->next = tmp;
 			break ;
 		}
@@ -69,7 +68,7 @@ char		*ft_unset(t_list_cmd *args, t_list *env)
 		else
 		{
 			g_glob.exit = 1;
-			ft_putstr_fd("minishell: export: « ", STDERR);
+			ft_putstr_fd("minishell: unset: « ", STDERR);
 			ft_putstr_fd(var[i], STDERR);
 			ft_putstr_fd(" » : not valid identifier\n", STDERR);
 		}

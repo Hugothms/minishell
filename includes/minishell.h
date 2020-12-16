@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 19:20:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 22:20:29 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ t_glob	g_glob;
 */
 char					*ft_echo(t_list_cmd *args);
 char					*ft_cd(t_list_cmd *args, t_list *env);
+char					*ft_cd2(t_list_cmd *args, t_list *env,
+						struct stat *stats);
+char					*error_cd(char *arg, int err_status);
+int						test_cd_home(t_list_cmd *args, t_list *env,
+						struct stat	*stats);
 char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *env);
 void					add_quote(char **tri);
@@ -115,7 +120,7 @@ int						have_equal(char *str);
 void					print_exp_err(char **key, char **value);
 char					*ft_unset(t_list_cmd *args, t_list *env);
 char					*ft_env(t_list *env);
-char					*ft_exit(t_list_cmd *args, t_list *env);
+char					*ft_exit(t_list_line *lst_line, t_list *env);
 void					clear_env_lst(t_list *env);
 
 /*
@@ -161,14 +166,14 @@ void					delete_empty_elements(t_list_cmd **cmd);
 void					parse_error(char *input, t_list_line *lst_line);
 int						print_synt_err(void);
 void					print_prompt(void);
-void					not_found(char *cmd);
+void					not_found(t_list_line *lst_line, t_list *env);
 
 /*
 ** exec_line.c
 */
 void					exec_line(t_list_line *lst_line, t_list *env);
 t_list_cmd				*reparse_var_env(t_list_cmd *cmd);
-char					*exec_cmd(t_list_cmd *cmd, t_list *env);
+char					*exec_cmd(t_list_line *lst_line, t_list *env);
 int						make_and_exec_cmd(t_list_line *lst_line, t_list *env);
 t_list_cmd				*split_add_back(t_list_cmd *cmd,
 								void (*del)(t_list_cmd *), t_list_cmd *to_del);
@@ -187,7 +192,7 @@ void					set_env(char **envp, t_list **env);
 ** pipe.c
 */
 int						create_pipe(t_list_line **lst_line, t_list \
-						*env, int fd_inold);
+						*env, int fd_inold, int *nb_wait);
 
 /*
 ** redirection.c
@@ -197,7 +202,7 @@ int						redirections(t_list_line *lst_line);
 /*
 ** searche_command.c
 */
-int						search_command(t_list_cmd *cmd, t_list *env);
+int						search_command(t_list_line *lst_line, t_list *env);
 
 /*
 ** List

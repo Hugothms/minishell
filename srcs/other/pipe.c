@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:24:49 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 11:31:32 by vmoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,21 @@ static int	last_pipe_exit(t_list_line **lst_line, int fd_inold)
 	return (42);
 }
 
-static int	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env,\
+static int	create_pipe2(int fdpipe[2], t_list_line **lst_line, t_list *env,
 int fd_inold)
 {
 	if (g_glob.pid > 0)
 	{
 		close(fdpipe[1]);
-		wait(NULL);
 		if ((*lst_line)->pipe && !((*lst_line)->next->next) &&\
 		!ft_strncmp((*lst_line)->next->cmd->str, "exit", 5))
 			return (last_pipe_exit(lst_line, fd_inold));
 		*lst_line = (*lst_line)->next;
 		(*lst_line)->input = fdpipe[0];
 		dup2((*lst_line)->input, STDIN);
+		close(fdpipe[0]);
 	}
-	else
+	else if (g_glob.pid == 0)
 	{
 		close(fdpipe[0]);
 		(*lst_line)->output = fdpipe[1];
@@ -47,7 +47,8 @@ int fd_inold)
 	return (SUCCESS);
 }
 
-int			create_pipe(t_list_line **lst_line, t_list *env, int fd_inold)
+int			create_pipe(t_list_line **lst_line, t_list *env,
+							int fd_inold, int *nb_wait)
 {
 	t_list_cmd	*cmd;
 	int			fdpipe[2];
@@ -59,6 +60,7 @@ int			create_pipe(t_list_line **lst_line, t_list *env, int fd_inold)
 		ft_putstr_fd("pipe: pipe failed\n", STDERR);
 		return (FAILURE);
 	}
+	(*nb_wait)++;
 	g_glob.pid = fork();
 	if (g_glob.pid < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/07 18:44:55 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/15 21:59:15 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	try_path(t_list_cmd *cmd, char **envp)
 	return (ret);
 }
 
-int			search_command(t_list_cmd *cmd, t_list *env)
+int			search_command(t_list_line *lst_line, t_list *env)
 {
 	int		ret;
 	int		status;
@@ -114,13 +114,15 @@ int			search_command(t_list_cmd *cmd, t_list *env)
 	envp = lst_to_chartab(env);
 	if (g_glob.pid == 0)
 	{
-		if (try_path(cmd, envp))
+		if (lst_line->output > 2 && close(lst_line->output) < 0)
+			ft_putstr_fd("error close output\n", STDERR);
+		if (try_path(lst_line->cmd, envp))
 			exit(g_glob.exit);
 	}
 	else
 	{
 		wait(&g_glob.exit);
-		g_glob.exit = g_glob.exit >> 8;
+		g_glob.exit = WEXITSTATUS(g_glob.exit);
 		ret = FAILURE;
 	}
 	ft_free_tab(envp);
