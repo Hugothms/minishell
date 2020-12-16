@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:36:04 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/15 22:04:11 by hthomas          ###   ########.fr       */
+/*   Updated: 2020/12/16 10:54:56 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,49 @@ t_list_cmd	*split_add_back(t_list_cmd *cmd, void (*del)(t_list_cmd *),\
 	c_lst_add_back(&cmd, next);
 	ft_free_tab(tab);
 	return (cmd);
+}
+
+t_list_cmd	*reparse_var_env(t_list_cmd *cmd)
+{
+	t_list_cmd	*start;
+
+	start = NULL;
+	while (cmd)
+	{
+		if (cmd->flags & F_VAR_ENV && !(cmd->flags & F_DOUBLE_QUOTE))
+			cmd = split_add_back(cmd, c_lst_free_one, cmd);
+		if (cmd->next && cmd->next->flags & F_VAR_ENV &&
+				!(cmd->next->flags & F_DOUBLE_QUOTE))
+			cmd->next = split_add_back(cmd->next, c_lst_remove_next_one, cmd);
+		if (!start)
+			start = cmd;
+		cmd = cmd->next;
+	}
+	return (start);
+}
+
+char		*exec_cmd(t_list_line *lst_line, t_list *env)
+{
+	if (!lst_line->cmd)
+		return (NULL);
+	else if (!ft_strcmp(lst_line->cmd->str, "echo"))
+		return (ft_echo(lst_line->cmd->next));
+	else if (!ft_strcmp(lst_line->cmd->str, "cd"))
+		return (ft_cd(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "pwd"))
+		return (ft_pwd());
+	else if (!ft_strcmp(lst_line->cmd->str, "export"))
+		return (ft_export(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "unset"))
+		return (ft_unset(lst_line->cmd->next, env));
+	else if (!ft_strcmp(lst_line->cmd->str, "env"))
+		return (ft_env(env));
+	else if (!ft_strcmp(lst_line->cmd->str, "exit"))
+		return (ft_exit(lst_line, env));
+	else if (!search_command(lst_line, env))
+		not_found(lst_line, env);
+	g_glob.pid = 0;
+	return (NULL);
 }
 
 int			make_and_exec_cmd(t_list_line *lst_line, t_list *env)
