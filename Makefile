@@ -6,15 +6,15 @@
 #    By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 20:30:49 by hthomas           #+#    #+#              #
-#    Updated: 2020/12/15 22:18:39 by hthomas          ###   ########.fr        #
+#    Updated: 2021/05/03 11:42:36 by hthomas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME =		minishell
 
-CC = gcc
-CFLAGS += -Wall -Werror -Wextra
-LDFLAGS += #-g3 -fsanitize=address
+CC =		gcc
+CFLAGS +=	-Wall -Werror -Wextra
+LDFLAGS +=	#-g3 -fsanitize=address
 
 #-----------------Main-----------------#
 SRCS += srcs/main.c
@@ -57,20 +57,20 @@ SRCS +=	srcs/other/exec_line.c		\
 		srcs/other/var_env.c		\
 		srcs/other/set_env.c
 
-OBJS = $(SRCS:.c=.o)
-INCL = includes/
-HEADER = $(INCL)minishell.h
+OBJS =		$(SRCS:.c=.o)
+INCL =		includes/
+HEADER =	$(INCL)minishell.h
 
-LIBFT = libft.a
-LIBFTDIR = libft/
-LIBFTLINK = -L $(LIBFTDIR) -lft
+LIBFT =		libft.a
+LIBFTDIR =	libft/
+LIBFTLINK =	-L $(LIBFTDIR) -lft
 
 
 ###########################ALL
 all:		$(NAME)
 
 $(NAME):	complib echoCL $(OBJS) echoOK echoCS
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBFTLINK)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(LIBFTLINK) -o $@ $(OBJS)
 
 
 ###########################LIBS
@@ -80,7 +80,7 @@ complib:
 
 ###########################OBJECTS
 %.o:		%.c $(HEADER)
-	$(CC) -c $(LDFLAGS) -I $(INCL) -o $@ $<
+	$(CC) $(CFLAGS) $(LDFLAGS) -I $(INCL) -c $< -o $@
 	printf "$(GREEN)██"
 
 
