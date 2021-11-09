@@ -2,10 +2,13 @@
 
 [![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
 
-
 Summary: The objective of this project is to create a simple shell like bash or zsh 
 
-**✅ It supports:** 
+## Usage
+`make && ./minishell any-command | you-may ; want "to-test"`
+
+## Features
+### ✅ It supports:
 * all bash commands
 * `'` and `"` like in bash
 * `;` to separate the commands
@@ -14,6 +17,9 @@ Summary: The objective of this project is to create a simple shell like bash or 
 * `$` to replace by the assiociated environment variable
 * `ctrl-C`, `ctrl-D` and `ctrl-\` have the same result as in bash
 
-**❌ It doesn't support:**
+### ❌ It doesn't support:
 * multi lines commands
 * many other things 🤷🏻‍♂️
+
+## Collaborators
+This project was developed in team with @Dicayne (Victor Moreau)
