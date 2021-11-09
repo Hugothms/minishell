@@ -5,7 +5,7 @@
 Summary: The objective of this project is to create a simple shell like bash or zsh 
 
 ## Usage
-`make && ./minishell any-command | you-may ; want "to-test"`
+    make && ./minishell any-command | you-may ; want "to-test"
 
 ## Features
 ### ✅ It supports:
