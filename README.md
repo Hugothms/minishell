@@ -1,8 +1,8 @@
 # minishell
 
-[![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
+The objective of this project is to create a simple shell like bash or zsh 
 
-Summary: The objective of this project is to create a simple shell like bash or zsh 
+[![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
 
 ## Usage
 
