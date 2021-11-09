@@ -126,5 +126,5 @@ echoFCLEAN :
 	echo "$(PURPLE)===> Cleanning Exec & Lib$(NC)\n"
 
 ###########################TEST
-test:		$(NAME)
+run:		$(NAME)
 	./$<
