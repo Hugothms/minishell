@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 22:17:31 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/16 10:01:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:03:04 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_cd2(t_list_cmd *args, t_list *env, struct stat *stats)
+char	*ft_cd2(t_list *env, struct stat *stats)
 {
 	if (chdir(&find_var_env(env, "HOME=")[5]))
 	{
@@ -20,9 +20,9 @@ char	*ft_cd2(t_list_cmd *args, t_list *env, struct stat *stats)
 			return (error_cd("« HOME »", 3));
 		else if (find_var_env(env, "HOME=")[5] == '\0')
 			return (ft_strdup(""));
-		else if (test_cd_home(args, env, stats))
+		else if (test_cd_home(env, stats))
 			return (error_cd(&find_var_env(env, "HOME=")[5],
-						test_cd_home(args, env, stats)));
+						test_cd_home(env, stats)));
 	}
 	return (NULL);
 }

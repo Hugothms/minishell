@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/11 16:32:54 by vmoreau          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:56:35 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int			main(const int argc, char *argv[], char *envp[])
 	t_list_line	*lst_line;
 	t_list		*env;
 
+	(void) argv;
 	if (argc != 1)
 	{
 		ft_putstr_fd("ERROR: Too many argument\n", STDERR);

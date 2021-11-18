@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 09:33:37 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/15 22:20:29 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:04:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,9 @@ t_glob	g_glob;
 */
 char					*ft_echo(t_list_cmd *args);
 char					*ft_cd(t_list_cmd *args, t_list *env);
-char					*ft_cd2(t_list_cmd *args, t_list *env,
-						struct stat *stats);
+char					*ft_cd2(t_list *env, struct stat *stats);
 char					*error_cd(char *arg, int err_status);
-int						test_cd_home(t_list_cmd *args, t_list *env,
-						struct stat	*stats);
+int						test_cd_home(t_list *env, struct stat *stats);
 char					*ft_pwd(void);
 char					*ft_export(t_list_cmd *args, t_list *env);
 void					add_quote(char **tri);
@@ -154,7 +152,7 @@ void					print_welcome_msg(void);
 */
 int						parse_input(char *line, t_list_line **cmd, t_list *env);
 int						input_to_command(char *input, t_list_cmd **cmd);
-int						delete_backslashes(t_list_cmd *cmd, t_list *env);
+int						delete_backslashes(t_list_cmd *cmd);
 int						check_del_backslash(t_list_cmd *cmd, int i);
 int						is_in_word(char *input, t_parse *par);
 void					word(char *input, t_list_cmd **cmd, t_parse *par);

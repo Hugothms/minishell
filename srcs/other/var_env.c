@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:46:52 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/10 16:34:57 by vmoreau          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:06:02 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	err_code(t_list_cmd *cmd, t_list *env, int i)
+static void	err_code(t_list_cmd *cmd, int i)
 {
 	int		size;
-	int		pos_sep;
 	char	*after;
 	char	*var;
 
@@ -35,7 +34,6 @@ static char	*format_var_env(t_list *env, int size, int space_begin, int flags)
 {
 	char	*ret;
 	char	*tmp;
-	int		i;
 
 	if (!ft_strlen(&((char *)env->content)[size]))
 		return (ft_strdup(""));
@@ -107,7 +105,7 @@ void		replace_all_var_env(t_list_cmd *cmd, t_list *env)
 				(!cmd->str[i + 1] && cmd->flags & F_NO_SP_AFTER)))
 			{
 				if (cmd->str[i + 1] == '?')
-					err_code(cmd, env, i);
+					err_code(cmd, i);
 				else if (cmd->str[i + 1] != '/' &&
 						cmd->flags != 5 && cmd->flags != 6)
 				{

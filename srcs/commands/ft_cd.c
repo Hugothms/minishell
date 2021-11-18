@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:16:24 by vmoreau           #+#    #+#             */
-/*   Updated: 2020/12/15 22:20:37 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:03:33 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char		*error_cd(char *arg, int err_status)
 	return (NULL);
 }
 
-static char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
+static char	*cd_oldpwd(t_list *env, struct stat *stats)
 {
 	char *path;
 	char *ret;
@@ -76,7 +76,7 @@ static char	*cd_oldpwd(t_list *env, t_list_cmd *arg, struct stat *stats)
 	return (ret);
 }
 
-int			test_cd_home(t_list_cmd *args, t_list *env, struct stat	*stats)
+int			test_cd_home(t_list *env, struct stat	*stats)
 {
 	if (stat(&find_var_env(env, "HOME=")[5], stats) != 0)
 		return (1);
@@ -94,13 +94,13 @@ char		*ft_cd(t_list_cmd *args, t_list *env)
 	g_glob.exit = 0;
 	if ((!args || !args->str))
 	{
-		if ((ret = ft_cd2(args, env, &stats)))
+		if ((ret = ft_cd2(env, &stats)))
 			return (ret);
 	}
 	else if (c_lst_size(args) > 1)
 		return (error_cd(args->str, 0));
 	else if (!ft_strcmp(args->str, "-"))
-		return (cd_oldpwd(env, args, &stats));
+		return (cd_oldpwd(env, &stats));
 	else if (stat(args->str, &stats) != 0)
 		return (error_cd(args->str, 1));
 	else if (chdir(args->str))

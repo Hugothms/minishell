@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoreau <vmoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 16:38:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/15 11:31:32 by vmoreau          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:04:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int fd_inold)
 int			create_pipe(t_list_line **lst_line, t_list *env,
 							int fd_inold, int *nb_wait)
 {
-	t_list_cmd	*cmd;
 	int			fdpipe[2];
 
 	if (!(*lst_line)->pipe)

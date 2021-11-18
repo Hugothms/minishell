@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 13:04:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/12/15 21:59:15 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:24:25 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ static int	try_path(t_list_cmd *cmd, char **envp)
 int			search_command(t_list_line *lst_line, t_list *env)
 {
 	int		ret;
-	int		status;
 	char	**envp;
 
 	ret = SUCCESS;
