@@ -26,4 +26,6 @@ Or, more conveniently:
 * many other things 🤷🏻‍♂️
 
 ## Collaborators
-This project was developed in team with @Dicayne (Victor Moreau)
+This project was developed in team with [@Dicayne][1] (Victor Moreau)
+
+[1]: https://github.com/Dicayne
