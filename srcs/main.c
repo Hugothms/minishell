@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:21:43 by hthomas           #+#    #+#             */
-/*   Updated: 2021/11/18 11:56:35 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/12/23 09:27:40 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int			main(const int argc, char *argv[], char *envp[])
 	(void) argv;
 	if (argc != 1)
 	{
-		ft_putstr_fd("ERROR: Too many argument\n", STDERR);
+		ft_putstr_fd("ERROR: Too many arguments\n", STDERR);
 		return (FAILURE);
 	}
 	init_main(&env, envp);
