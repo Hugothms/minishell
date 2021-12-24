@@ -2,6 +2,9 @@
 
 The objective of this project is to create a simple shell like bash or zsh 
 
+
+![Minishell-gif][minishell-gif]
+
 [![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
 
 ## Usage
@@ -26,6 +29,8 @@ Or, more conveniently:
 * many other things 🤷🏻‍♂️
 
 ## Collaborators
-This project was developed in team with [@Dicayne][1] (Victor Moreau)
+This project was developed in team with [@Dicayne][dicayne] (Victor Moreau)
 
-[1]: https://github.com/Dicayne
+[dicayne]: https://github.com/Dicayne
+[minishell-gif]: https://github.com/Hugothms/minishell/blob/master/minishell.gif
+
