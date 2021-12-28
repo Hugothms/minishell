@@ -32,5 +32,5 @@ Or, more conveniently:
 This project was developed in team with [@Dicayne][dicayne] (Victor Moreau)
 
 [dicayne]: https://github.com/Dicayne
-[minishell-gif]: https://github.com/Hugothms/minishell/blob/master/minishell.gif
+[minishell-gif]: https://github.com/Hugothms/minishell/blob/master/demo-minishell.gif
 
