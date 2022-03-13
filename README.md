@@ -8,6 +8,10 @@ The objective of this project is to create a simple shell like bash or zsh
 [![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
 
 ## Usage
+First clone the repository and the git submodules:
+
+    git clone --recurse-submodules git@github.com:Hugothms/minishell.git   
+Then make and run the executable:
 
     make && ./minishell
 Or, more conveniently:
