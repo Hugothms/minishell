@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:26:35 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:53:34 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	fill_str(char *str, int n, int i)
 	str[i] = '\0';
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*str;
 	int		i;
@@ -61,7 +61,8 @@ char		*ft_itoa(int n)
 
 	i = 0;
 	nblen = ft_nbrlen(n);
-	if (!(str = malloc((nblen + 1) * sizeof(char))))
+	str = malloc((nblen + 1) * sizeof(char));
+	if (!str)
 		return (NULL);
 	if (n == -2147483648)
 	{

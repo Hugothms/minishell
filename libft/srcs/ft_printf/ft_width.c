@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 15:26:20 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:10:51 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:34:47 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ char	*ft_cat(int after, char *str, int width, char c)
 	int		i;
 	int		len;
 
-	if ((len = width - ft_strlen(str)) > 0)
+	len = width - ft_strlen(str);
+	if (len > 0)
 	{
-		if (!(justification = malloc((len + 1) * sizeof(char))))
+		justification = malloc((len + 1) * sizeof(char));
+		if (!justification)
 			return (NULL);
 		i = 0;
 		while (i < len)

@@ -6,28 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 17:49:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:29:30 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 15:01:03 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_printf.h"
-
-char	*precision_sign(char *str, t_f *f)
-{
-	if (f->space || f->plus)
-	{
-		free(str);
-		if (!(str = ft_chardup(f->space ? '\0' : '\0')))
-			return (NULL);
-	}
-	else
-	{
-		free(str);
-		if (!(str = ft_chardup('\0')))
-			return (NULL);
-	}
-	return (str);
-}
 
 char	*precision_integer(char *str, t_sp *sp, t_f *f)
 {
@@ -36,17 +19,20 @@ char	*precision_integer(char *str, t_sp *sp, t_f *f)
 	len = ft_strlen(str);
 	if (!sp->i && !f->pr)
 	{
-		if (!(str = precision_sign(str, f)))
+		str = precision_sign(str, f);
+		if (!str)
 			return (NULL);
 	}
 	else if (f->precision && f->pr >= len)
 	{
-		if (!(str = ft_cat(0, str, f->pr, '0')))
+		str = ft_cat(0, str, f->pr, '0');
+		if (!str)
 			return (NULL);
 	}
 	else
 	{
-		if (!(str = ft_cat(0, str, f->pr, '0')))
+		str = ft_cat(0, str, f->pr, '0');
+		if (!str)
 			return (NULL);
 	}
 	return (str);
@@ -60,11 +46,18 @@ char	*ft_add_sign(char *str, t_sp *sp, t_f *f)
 
 	if (sp->i < 0 || f->plus || f->space)
 	{
-		positive = f->space ? ' ' : '+';
+		positive = '+';
+		if (f->space)
+			positive = ' ';
 		tmp = str;
-		if (!(tmpchar = ft_chardup(sp->i >= 0 ? positive : '-')))
+		if (sp->i >= 0)
+			tmpchar = ft_chardup(positive);
+		else
+			tmpchar = ft_chardup('-');
+		if (!tmpchar)
 			return (NULL);
-		if (!(str = ft_strjoin(tmpchar, str)))
+		str = ft_strjoin(tmpchar, str);
+		if (!str)
 			return (NULL);
 		free(tmp);
 		free(tmpchar);
@@ -77,12 +70,32 @@ char	*width_integer(char *str, t_sp *sp, t_f *f)
 	(void)sp;
 	if (f->width)
 	{
-		if (!(str = ft_cat(f->minus, str, f->width - ((sp->i < 0)
-		&& (f->zero && !f->precision)),
-		f->zero && !f->precision ? '0' : ' ')))
+		if (f->zero && !f->precision)
+			str = ft_cat(f->minus, str, f->width - ((sp->i < 0)
+						&& (f->zero && !f->precision)), '0');
+		else
+			str = ft_cat(f->minus, str, f->width - ((sp->i < 0)
+						&& (f->zero && !f->precision)), ' ');
+		if (!str)
 			return (NULL);
 	}
 	return (str);
+}
+
+static int	keep_position_sign2(char *str, int condition, int *fdf)
+{
+	int		idf;
+
+	idf = 0;
+	while (idf < (int)ft_strlen(str) && !*fdf)
+	{
+		if (condition)
+			*fdf = ft_in_charset(str[idf], "+");
+		else
+			*fdf = ft_in_charset(str[idf], "-");
+		idf++;
+	}
+	return (idf);
 }
 
 char	*keep_position_sign(char *str, int condition)
@@ -91,22 +104,23 @@ char	*keep_position_sign(char *str, int condition)
 	int		idf;
 	int		fds;
 	int		fdf;
-	char	c;
 
 	is = 0;
-	idf = 0;
-	while (idf < (int)ft_strlen(str) &&
-	!(fdf = ft_in_charset(str[idf], condition ? "+" : "-")))
-		idf++;
-	while (is < (int)ft_strlen(str) && !(fds = ft_in_charset(str[is], "0")))
+	fds = 0;
+	idf = keep_position_sign2(str, condition, &fdf);
+	while (is < (int)ft_strlen(str) && !fds)
+	{
+		fds = ft_in_charset(str[is], "0");
 		is++;
-	is = condition ? (int)ft_strlen(str) - 1 : is;
-	fds = condition ? 1 : fds;
+	}
+	if (condition)
+	{
+		is = (int)ft_strlen(str) - 1;
+		fds = 1;
+	}
 	if (fds && fdf)
 	{
-		c = str[is];
-		str[is] = str[idf];
-		str[idf] = c;
+		ft_swap(&str[is], &str[idf]);
 		return (str);
 	}
 	return (str);

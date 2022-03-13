@@ -6,20 +6,20 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 13:12:56 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 17:18:28 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 15:04:44 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-char	*recurs(int depth, int *ret, int fd)
+static char	*recurs(int depth, int *ret, int fd)
 {
 	char	buff[1];
 	char	*out;
 	int		test;
 
 	test = read(fd, buff, 1);
-	if (test == 0)
+	if (!test)
 		buff[0] = 0;
 	if (buff[0] == '\n' || buff[0] == 0)
 	{
@@ -38,11 +38,37 @@ char	*recurs(int depth, int *ret, int fd)
 	return (out);
 }
 
-int		get_next_line(char **out, int fd)
+int	get_next_line(char **out, int fd)
 {
-	int ret;
+	int	ret;
 
 	ret = 1;
 	*out = recurs(0, &ret, fd);
 	return (ret);
+}
+
+int	main_gnl(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+	int		ret;
+
+	if (argc == 2)
+		fd = open((argv[1]), O_RDONLY);
+	else
+		fd = 0;
+	ret = get_next_line(&line, fd);
+	while (ret == 1)
+	{
+		ft_printf("\nret: %d\nline = |%s|\n", ret, line);
+		free(line);
+		ret = get_next_line(&line, fd);
+	}
+	if (ret == 0)
+		ft_printf("\nret: %d\nline = |%s|\n", ret, line);
+	else if (ret == -1)
+		ft_printf("\nret: %d\nline = |%s|\n", ret, line);
+	free(line);
+	close(fd);
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/27 13:42:33 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/14 17:15:58 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 15:02:18 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_printf.h"
 
-void	fill_ftab(t_fptr *ftab)
+static void	fill_ftab(t_fptr *ftab)
 {
 	ftab[0] = &ft_char;
 	ftab[1] = &ft_string;
@@ -26,7 +26,7 @@ void	fill_ftab(t_fptr *ftab)
 	ftab[9] = &ft_flag_n;
 }
 
-char	*ft_conversion(const char *fmt, va_list arg, t_sp *sp, t_f *f)
+static char	*ft_conversion(const char *fmt, va_list arg, t_sp *sp, t_f *f)
 {
 	t_fptr	ftab[NB_CONV];
 	char	*conversions;
@@ -49,7 +49,7 @@ char	*ft_conversion(const char *fmt, va_list arg, t_sp *sp, t_f *f)
 	return (NULL);
 }
 
-int		ft_printf_continue(const char *fmt, va_list arg, t_sp *sp)
+static int	ft_printf3(const char *fmt, va_list arg, t_sp *sp)
 {
 	t_f				*f;
 	char			*str;
@@ -59,7 +59,8 @@ int		ft_printf_continue(const char *fmt, va_list arg, t_sp *sp)
 	ft_get_flags(fmt, sp, f);
 	ft_get_width(fmt, sp, f, arg);
 	ft_get_precision(fmt, sp, f, arg);
-	if (!(str = ft_conversion(fmt, arg, sp, f)))
+	str = ft_conversion(fmt, arg, sp, f);
+	if (!str)
 		return (ERR);
 	sp->len += ft_strlen(str);
 	ft_putstr(str);
@@ -68,12 +69,12 @@ int		ft_printf_continue(const char *fmt, va_list arg, t_sp *sp)
 	return (OK);
 }
 
-int		function(const char *fmt, va_list arg, t_sp *sp)
+static int	ft_printf2(const char *fmt, va_list arg, t_sp *sp)
 {
 	reset_sp(sp);
 	if (fmt[sp->index] == '%')
 	{
-		if (ft_printf_continue(fmt, arg, sp))
+		if (ft_printf3(fmt, arg, sp))
 			return (ERR);
 	}
 	else
@@ -84,18 +85,19 @@ int		function(const char *fmt, va_list arg, t_sp *sp)
 	return (OK);
 }
 
-int		ft_printf(const char *fmt, ...)
+int	ft_printf(const char *fmt, ...)
 {
 	va_list	arg;
 	t_sp	*sp;
 	int		len;
 
 	va_start(arg, fmt);
-	if (!(sp = init_sp()))
+	sp = init_sp();
+	if (!sp)
 		return (ERR);
 	while (fmt[sp->index])
 	{
-		if (function(fmt, arg, sp))
+		if (ft_printf2(fmt, arg, sp))
 			return (ERR);
 		sp->index++;
 	}

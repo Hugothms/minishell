@@ -6,11 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 16:43:12 by hthomas           #+#    #+#             */
-/*   Updated: 2020/06/07 11:53:33 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:12:54 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_max_int(int a, int b)
 {
-	return (a > b ? a : b);
+	if (a > b)
+		return (a);
+	return (b);
 }

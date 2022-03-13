@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 20:09:44 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 03:27:57 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	char	*aiguile;
 
 	i = 0;
-	meule_de_foin = (char*)haystack;
-	aiguile = (char*)needle;
+	meule_de_foin = (char *)haystack;
+	aiguile = (char *)needle;
 	if (!aiguile[i])
 		return (meule_de_foin);
 	while (meule_de_foin[i])

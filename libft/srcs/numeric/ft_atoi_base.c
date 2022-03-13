@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 18:12:12 by hthomas           #+#    #+#             */
-/*   Updated: 2020/06/07 10:03:38 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:20:08 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	ft_atoi_base(char *str, char *base)
 		str++;
 	while (*str == '+' || *str == '-')
 	{
-		if (*str++ == '-')
-			sign = (sign == -1 ? 1 : -1);
+		if (*str++ == '-' && sign == -1)
+			sign *= -1;
 	}
 	return (sign * cacul_res(str, base, size_base));
 }

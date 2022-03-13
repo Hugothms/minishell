@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:29:00 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:34:09 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,23 @@ void	ft_puthex(unsigned int hex, int upper)
 {
 	char	c;
 
-	c = (upper ? 'A' : 'a');
+	if (upper)
+		c = 'A';
+	else
+		c = 'a';
 	if (hex < 16)
-		ft_putchar(hex + ((hex < 10) ? '0' : c - 10));
+	{
+		if (hex < 10)
+			ft_putchar(hex + '0');
+		else
+			ft_putchar(hex + c - 10);
+	}
 	else
 	{
 		ft_puthex(hex / 16, upper);
-		ft_putchar(hex % 16 + (hex % 16 < 10 ? '0' : c - 10));
+		if (hex % 16 < 10)
+			ft_putchar(hex % 16 + '0');
+		else
+			ft_putchar(hex % 16 + c - 10);
 	}
 }

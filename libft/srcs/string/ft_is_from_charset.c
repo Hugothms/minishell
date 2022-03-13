@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 16:59:06 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:55:50 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 ** @param set	set of chars
 ** @return		1 if there are only chars from charset in str, 0 otherwise
 */
-
-int		ft_is_from_charset(const char *str, const char *charset)
+int	ft_is_from_charset(const char *str, const char *charset)
 {
 	int	i;
 	int	j;

@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 16:50:47 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/03 17:15:23 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:54:55 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 /*
 ** Iterates the list ’lst’ and applies the function ’f’ to the content of each
-**  element.
-** @param lst	The adress of a pointer to an element.
+**  node.
+** @param lst	The adress of a pointer to an node.
 ** @param f		The adress of the function used to iterate on the list.
 */
-
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
 	t_list	*tmp;

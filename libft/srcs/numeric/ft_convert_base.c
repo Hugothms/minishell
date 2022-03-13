@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:15:50 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:15:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-char			*fill_positivenbr_base(long nbr, char *base, char *res, int i)
+char	*fill_positivenbr_base(long nbr, char *base, char *res, int i)
 {
 	int			size;
 
@@ -27,7 +27,7 @@ char			*fill_positivenbr_base(long nbr, char *base, char *res, int i)
 	return (res);
 }
 
-char			*fill_nbr_base(char *res, long nbr, char *base, int sign)
+char	*fill_nbr_base(char *res, long nbr, char *base, int sign)
 {
 	int			i;
 	int			size;
@@ -45,13 +45,15 @@ char			*fill_nbr_base(char *res, long nbr, char *base, int sign)
 	return (res);
 }
 
-char			*ft_strrev_minus_1(char *res)
+char	*ft_strrev_minus_1(char *res)
 {
 	int			i;
 	char		c;
 	int			len;
 
-	i = (res[0] == '-' ? 1 : 0);
+	i = 0;
+	if (res[0] == '-')
+		i = 1;
 	len = ft_strlen(res) - 1;
 	while (i < len)
 	{
@@ -62,7 +64,7 @@ char			*ft_strrev_minus_1(char *res)
 	return (res);
 }
 
-char			*ft_convert_base(char *nbr, char *base_from, char *base_to)
+char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 {
 	char		*res;
 	long		nb;
@@ -77,7 +79,8 @@ char			*ft_convert_base(char *nbr, char *base_from, char *base_to)
 		nb *= -1;
 		sign = -1;
 	}
-	if (!(res = malloc((ft_nbrlen(nb) + 1) * sizeof(char))))
+	res = malloc((ft_nbrlen(nb) + 1) * sizeof(char));
+	if (!res)
 		return (0);
 	fill_nbr_base(res, nb, base_to, sign);
 	return (ft_strrev_minus_1(res));

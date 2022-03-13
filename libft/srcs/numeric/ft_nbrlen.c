@@ -6,11 +6,11 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/01 16:53:02 by hthomas           #+#    #+#             */
-/*   Updated: 2020/02/06 15:59:22 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:10:59 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int			ft_nbrlen(int n)
+int	ft_nbrlen(int n)
 {
 	int	res;
 

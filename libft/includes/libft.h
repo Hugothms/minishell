@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:02:45 by hthomas           #+#    #+#             */
-/*   Updated: 2020/10/08 12:27:58 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:52:06 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,25 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 # include "ft_printf.h"
 # include "get_next_line.h"
 
-typedef struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_dlist
+{
+	void			*content;
+	struct s_dlist	*prev;
+	struct s_dlist	*next;
+}					t_dlist;
 
 /*
 ** io
@@ -58,7 +68,24 @@ void				ft_lstdelone(t_list *lst, void (*del)(void*));
 void				ft_lstclear(t_list **alst, void (*del)(void*));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
-					void (*del)(void *));
+						void (*del)(void *));
+t_list				*ft_lstremove_one(t_list **alst, t_list *lst);
+
+/*
+** linked-list-doubly
+*/
+t_dlist				*ft_dlstnew(void *content);
+void				ft_dlstadd_front(t_dlist **adlst, t_dlist *new);
+int					ft_dlstsize(t_dlist *dlst);
+t_dlist				*ft_dlstlast(t_dlist *dlst);
+void				ft_dlstadd_back(t_dlist **adlst, t_dlist *new);
+void				ft_dlstdelone(t_dlist *dlst, void (*del)(void*));
+void				ft_dlstclear(t_dlist **adlst, t_dlist *dlst,
+						void (*del)(void*));
+void				ft_dlstiter(t_dlist *dlst, void (*f)(void *));
+t_dlist				*ft_dlstmap(t_dlist *dlst, void *(*f)(void *),
+						void (*del)(void *));
+t_dlist				*ft_dlstremove_one(t_dlist **adlst, t_dlist *dlst);
 
 /*
 ** memory
@@ -99,7 +126,7 @@ int					ft_min_int(int a, int b);
 float				ft_min_float(float a, float b);
 int					check_base(char *base);
 char				*fill_positivenbr_base(long nbr, char *base,
-					char *res, int i);
+						char *res, int i);
 char				*fill_nbr_base(char *res, long nbr, char *base, int sign);
 
 /*
@@ -129,7 +156,7 @@ char				*ft_strjoin_free(char *s1, const char *s2);
 char				*ft_strtrim(char const *str, char const *set);
 char				*ft_strstr(const char *str, const char *to_find);
 char				*ft_strnstr(const char *str, const char *to_find,
-					size_t len);
+						size_t len);
 int					ft_isprint(int c);
 int					ft_islower(int c);
 int					ft_isupper(int c);
@@ -142,5 +169,11 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_in_charset(char c, char const *charset);
 char				**ft_split(char const *s, char c1);
+
+/*
+** tabs
+*/
+void				sort_int(int *tab, int size);
+void				sort_str(char *tabstr[], int size);
 
 #endif

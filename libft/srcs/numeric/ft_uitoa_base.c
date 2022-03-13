@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:15:50 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:53:17 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-int				ft_count_len_nbr_ui(unsigned int n, char *base_to)
+int	ft_count_len_nbr_ui(unsigned int n, char *base_to)
 {
 	int		res;
 
@@ -27,7 +27,7 @@ int				ft_count_len_nbr_ui(unsigned int n, char *base_to)
 	return (res);
 }
 
-char			*fill_base_ui(unsigned int nbr, char *base, char *res, int i)
+char	*fill_base_ui(unsigned int nbr, char *base, char *res, int i)
 {
 	int		size;
 
@@ -42,7 +42,7 @@ char			*fill_base_ui(unsigned int nbr, char *base, char *res, int i)
 	return (res);
 }
 
-char			*fill_nbr_base_ui(char *res, unsigned int nbr, char *base)
+char	*fill_nbr_base_ui(char *res, unsigned int nbr, char *base)
 {
 	int		i;
 
@@ -54,7 +54,7 @@ char			*fill_nbr_base_ui(char *res, unsigned int nbr, char *base)
 	return (res);
 }
 
-char			*ft_strrev_minus_ui(char *res)
+char	*ft_strrev_minus_ui(char *res)
 {
 	int			i;
 	char		c;
@@ -71,13 +71,14 @@ char			*ft_strrev_minus_ui(char *res)
 	return (res);
 }
 
-char			*ft_uitoa_base(unsigned int nb, char *base_to)
+char	*ft_uitoa_base(unsigned int nb, char *base_to)
 {
 	char		*res;
 
 	if (!check_base(base_to))
 		return (0);
-	if (!(res = malloc((ft_count_len_nbr_ui(nb, base_to)) * sizeof(char))))
+	res = malloc((ft_count_len_nbr_ui(nb, base_to)) * sizeof(char));
+	if (!res)
 		return (0);
 	fill_nbr_base_ui(res, nb, base_to);
 	return (ft_strrev_minus_ui(res));

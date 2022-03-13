@@ -6,7 +6,7 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:56:15 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/03/21 09:14:00 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	*ft_itoa_width(int nb, int width)
 	int		diff;
 	int		i;
 
-	if (!(res = malloc((width + 1) * sizeof(char))))
+	res = malloc((width + 1) * sizeof(char));
+	if (!res)
 		return (NULL);
 	diff = width - ft_nbrlen(nb);
 	if (diff > 0)

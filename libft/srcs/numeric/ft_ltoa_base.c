@@ -6,13 +6,13 @@
 /*   By: hthomas <hthomas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 08:15:50 by hthomas           #+#    #+#             */
-/*   Updated: 2020/09/30 14:08:40 by hthomas          ###   ########.fr       */
+/*   Updated: 2021/06/17 14:53:39 by hthomas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-int		ft_count_len_nbr_l(unsigned long n, char *base_to)
+int	ft_count_len_nbr_l(unsigned long n, char *base_to)
 {
 	int		res;
 
@@ -33,7 +33,8 @@ char	*ft_ltoa_base(unsigned long nb, char *base_to)
 
 	if (!check_base(base_to))
 		return (0);
-	if (!(res = malloc((ft_count_len_nbr_l(nb, base_to) + 1) * sizeof(char))))
+	res = malloc((ft_count_len_nbr_l(nb, base_to) + 1) * sizeof(char));
+	if (!res)
 		return (0);
 	res[ft_count_len_nbr_l(nb, base_to)] = '\0';
 	fill_nbr_base(res, nb, base_to, 1);
