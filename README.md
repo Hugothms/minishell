@@ -5,7 +5,7 @@ The objective of this project is to create a simple shell like bash or zsh
 
 ![Minishell-gif][minishell-gif]
 
-[![hthomas' 42 Project Score](https://badge42.herokuapp.com/api/project/hthomas/minishell)](https://github.com/JaeSeoKim/badge42)
+[![hthomas's 42 minishell Score](https://badge42.vercel.app/api/v2/cl1m0540e000609mon8jcubug/project/1940032)](https://github.com/JaeSeoKim/badge42)
 
 ## Usage
 First clone the repository and the git submodules:
